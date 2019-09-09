@@ -15,9 +15,10 @@ Indirect:
 * f) Ocaml -> optimized machine code -> WASM
 
 Garbage collector
-* "manual" garbage collection on the WASM $mem$, by maintaining a shadow stack
-* using the WASM garbage collector, if/when it becomes available
-* using `anyref` to allocate when [Reference Types](https://github.com/WebAssembly/reference-types/blob/master/proposals/reference-types/Overview.md) become available
+* "Manual" garbage collection on the WASM `mem`, by maintaining a shadow stack
+* Using the WASM garbage collector, if/when it becomes available
+* Using `anyref` to allocate heap objects when [Reference Types](https://github.com/WebAssembly/reference-types/blob/master/proposals/reference-types/Overview.md) become available.
+  
   This means using the JavaScript garbage collector, and may or may not be different to the "WASM garbage collector".
 
 # Related Projects and Discussions
@@ -43,9 +44,16 @@ Garbage collector
 
 I have not found anything yet.
 
+#### Related
+
+In the past, translating bytecode has proven a successful strategy:
+
+* OCaml bytecode -> JavaScript: https://github.com/ocsigen/js_of_ocaml
+* Ocaml bytecode -> C: https://github.com/bvaugon/ocamlcc
+
 ### c) bytecode interpreter in WASM
 
-* [INACTIVE] https://github.com/sebmarkbage/ocamlrun-wasm
+* **[inactive]** https://github.com/sebmarkbage/ocamlrun-wasm
 
   sebmarkbage compiled the OCaml bytecode interpreter, as well as the GC to WASM using emscripten. [Latest commit Mar 6, 2017](https://github.com/sebmarkbage/ocamlrun-wasm/commit/473580d7d2955ce254c2d0263383f7e251f6e497)
 
@@ -56,13 +64,13 @@ I have not found anything yet.
 
 ### d) Cmm -> LLVM
 
-* [ABANDONED] https://github.com/whitequark/ocaml-llvm-ng/blob/master/lib/llvmcomp.ml
+* **[abandoned]** https://github.com/whitequark/ocaml-llvm-ng/blob/master/lib/llvmcomp.ml
 
 
-* [DISCUSSION] http://caml.inria.fr/pub/ml-archives/caml-list/2009/03/3a77bfcca0f90b763d127d1581d6a2f1.en.html
+* **[discussion]** http://caml.inria.fr/pub/ml-archives/caml-list/2009/03/3a77bfcca0f90b763d127d1581d6a2f1.en.html
 
 
-* [DISCUSSION] https://discuss.ocaml.org/t/llvm-backend-for-ocaml/1132/5
+* **[discussion]** https://discuss.ocaml.org/t/llvm-backend-for-ocaml/1132/5
 
 ### e) OCaml bytecode -> LLVM
 

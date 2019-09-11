@@ -20,13 +20,13 @@ Indirect::
 Runtime / Garbage collector::
 * "Manual" garbage collection on the WASM `mem`, by maintaining a shadow stack
 +
-This is apparently what the [WASM backend of the Go language](https://docs.google.com/document/d/131vjr4DH6JFnb-blm_uRdaC0_Nv3OUwjEY5qVCxCup4/preview#heading=h.nrkaoiab5j18) does.
+This is apparently what the https://docs.google.com/document/d/131vjr4DH6JFnb-blm_uRdaC0_Nv3OUwjEY5qVCxCup4/preview#heading=h.nrkaoiab5j18[WASM backend of the Go language] does.
 
 * Use the WASM garbage collector, if/when it becomes available
 +
 The WASM garbage collector specification is still at a very early stage, and it is not clear how exactly it will work.
 
-* Using `anyref` to allocate heap objects when [Reference Types](https://github.com/WebAssembly/reference-types/blob/master/proposals/reference-types/Overview.md) become available.
+* Using `anyref` to allocate heap objects when https://github.com/WebAssembly/reference-types/blob/master/proposals/reference-types/Overview.md[Reference Types] become available.
 +  
 This means using the JavaScript garbage collector, which might or might not be very different from the upcoming WASM garbage collector.
 
@@ -90,7 +90,7 @@ I am not aware of any projects that attempt translating from OCaml bytecode to W
 
 * **Maintainability**
 +
-The bytecode interpreter hardly ever changes at all, and it is fairly well-documented (it is said to still largely correspond to what is laid out in [the original report on ZINC](https://caml.inria.fr/pub/papers/xleroy-zinc.pdf)).
+The bytecode interpreter hardly ever changes at all, and it is fairly well-documented (it is said to still largely correspond to what is laid out in https://caml.inria.fr/pub/papers/xleroy-zinc.pdf[the original report on ZINC]).
   There is no dependency on compiler internals, as we can work on the bytecode output of `ocamlc`.
 
 #### Related
@@ -115,9 +115,9 @@ According to http://michel.mauny.net/data/papers/mauny-vaugon-ocamlcc-oud2012.pd
 
 * **[inactive]** https://github.com/sebmarkbage/ocamlrun-wasm
 +
-sebmarkbage compiled the OCaml bytecode interpreter, as well as the GC to WASM using emscripten. [Latest commit Mar 6, 2017](https://github.com/sebmarkbage/ocamlrun-wasm/commit/473580d7d2955ce254c2d0263383f7e251f6e497)
+sebmarkbage compiled the OCaml bytecode interpreter, as well as the GC to WASM using emscripten. https://github.com/sebmarkbage/ocamlrun-wasm/commit/473580d7d2955ce254c2d0263383f7e251f6e497[Latest commit Mar 6, 2017]
 +
-I tried to compile this, but am stuck at the problem described in [Issue 1](https://github.com/sebmarkbage/ocamlrun-wasm/issues/1)
+I tried to compile this, but am stuck at the problem described in https://github.com/sebmarkbage/ocamlrun-wasm/issues/1[Issue 1]
 
 ## Indirect Roads to WASM
 

@@ -46,7 +46,7 @@ From https://github.com/BuckleScript/bucklescript/blob/master/site/docsource/Dif
 +
 "Js_of_ocaml focuses more on existing OCaml ecosystem(opam) while BuckleScript’s major goal is to target npm"
 +
-"s_of_ocaml and BuckleScript have slightly different runtime encoding in several places, for example, BuckleScript encodes OCaml Array as JS Array while js_of_ocaml requires its index 0 to be of value 0."
+"Js_of_ocaml and BuckleScript have slightly different runtime encoding in several places, for example, BuckleScript encodes OCaml Array as JS Array while js_of_ocaml requires its index 0 to be of value 0."
 +
 Overview of the bucklescript compiler: https://github.com/BuckleScript/bucklescript/blob/master/site/docsource/Compiler-overview.adoc
 
@@ -73,10 +73,6 @@ From all approaches, this one is likely to have the best runtime performance, wi
 "first working version: compiles arith exprs only", latest commit Jul 27, 2018
 
 * **[WIP]** https://github.com/SanderSpies/ocaml/tree/manual_gc/asmcomp/wasm32
-+
-solo effort by Sander Spies, so far
-+
-Translates from Cmm to WASM.
 +
 https://medium.com/@sanderspies/a-webassembly-backend-for-ocaml-b78e7eeea9d5
 +
@@ -146,9 +142,13 @@ The author provides some details on his experience here: https://news.ycombinato
 ### 2c) machine code -> WASM
 
 For compiling machine code to WASM, there apparently do not currently exist any solutions, even though I would have expected that this is an idea that at least some people would consider.
+
 It may be that it is commonly thought (and, possibly, actually true) that machine code is already too highly specialized to the specific architecture it runs on, so that "reverse-compiling" to WASM is unlikely to give good results.
+
 I do not know if this is the case for all architectures.
+
 If there was an architecture whose machine code can be translated to WASM in a reasonably efficient fashion, and it turns out that OCaml already compiles to this architecture, this could be an interesting project.
+
 If successful, this would not only enable compiling OCaml to WASM, but could be helpful for getting many other languages to compile to WASM as well.
 
 

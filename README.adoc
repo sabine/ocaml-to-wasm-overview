@@ -34,6 +34,8 @@ This means using the JavaScript garbage collector, which might or might not be v
 
 ### 1a) Lambda -> WASM
 
+While there are currently no projects that translate OCaml's lambda IR to WASM, there are these:
+
 * **[production-ready]** Bucklescript (Ocaml rawlambda) -> JavaScript: https://github.com/BuckleScript/bucklescript
 +
 This may or may not be helpful, I do not know. 

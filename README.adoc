@@ -109,6 +109,10 @@ https://medium.com/@sanderspies/a-webassembly-backend-for-ocaml-b78e7eeea9d5
 https://medium.com/@sanderspies/the-road-to-webassembly-gc-for-ocaml-bd44dc7f9a9d
 +
 Experiments on GC: https://github.com/SanderSpies/ocaml-wasm-gc-experimenting
++
+I seems that this is based on the official WASM specification `ast.ml`, but copied and modified to use a symbol type, instead of string for function and variable identifiers: https://github.com/SanderSpies/ocaml/commit/60a0d4218b34a0ace29a39e925c12cb5a76a3c55
++
+It also looks like there is a few (commmented-out) lines added for https://github.com/WebAssembly/exception-handling/blob/master/proposals/Exceptions.md[the upcoming WASM exception-handling feature].
 
 * **[WIP]** Haskell Cmm -> WASM https://github.com/tweag/asterius
 +

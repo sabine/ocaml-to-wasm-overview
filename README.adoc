@@ -18,25 +18,21 @@ Indirect::
 * 2c) Ocaml -> machine code -> WASM
 
 Runtime / Garbage collector::
-* "Manual" garbage collection on the WASM `mem`, by maintaining a shadow stack
+* gc1) "Manual" garbage collection on the WASM `mem`, by maintaining a shadow stack
 +
 This is apparently what the https://docs.google.com/document/d/131vjr4DH6JFnb-blm_uRdaC0_Nv3OUwjEY5qVCxCup4/preview#heading=h.nrkaoiab5j18[WASM backend of the Go language] does.
 
-* Use the WASM garbage collector, if/when it becomes available
+* gc2) Use the WASM garbage collector, if/when it becomes available
 +
 The WASM garbage collector specification is still at a very early stage, and it is not clear how exactly it will work.
 
-* Using `anyref` to allocate heap objects when https://github.com/WebAssembly/reference-types/blob/master/proposals/reference-types/Overview.md[Reference Types] become available.
+* gc3) Using `anyref` to allocate heap objects when https://github.com/WebAssembly/reference-types/blob/master/proposals/reference-types/Overview.md[Reference Types] become available.
 +  
 This means using the JavaScript garbage collector, which might or might not be very different from the upcoming WASM garbage collector.
 
 ## Direct Roads to WASM
 
 ### 1a) Lambda -> WASM
-
-I'm not aware of any existing approaches.
-
-#### Related
 
 * **[production-ready]** Bucklescript (Ocaml rawlambda) -> JavaScript: https://github.com/BuckleScript/bucklescript
 +
@@ -60,14 +56,7 @@ Even though the source language used here is not OCaml, there might be some inte
 
 ### 1b) Cmm -> WASM
 
-#### Advantages
-
-* **Execution speed**
-+
-From all approaches, this one is likely to have the best runtime performance, with executable file size similar to that of native machine code.
-  This is due to translating a version of the program that has already been optimized.
-
-#### Related
+Starting from an already optimized version of the program is likely to result in a comparatively fast execution speed.
 
 * **[incomplete, probably abandoned]** https://github.com/rolph-recto/ocaml-wasm/tree/wasm/wasmcomp
 +
@@ -87,14 +76,9 @@ https://medium.com/@sanderspies/the-road-to-webassembly-gc-for-ocaml-bd44dc7f9a9
 
 I am not aware of any projects that attempt translating from OCaml bytecode to WASM. Please let me know if you are.
 
-#### Advantages
+An advantage is that the bytecode interpreter hardly ever changes at all (it is said to still be quite similar to what is laid out in https://caml.inria.fr/pub/papers/xleroy-zinc.pdf[the original report on ZINC]).
 
-* **Maintainability**
-+
-The bytecode interpreter hardly ever changes at all, and it is fairly well-documented (it is said to still largely correspond to what is laid out in https://caml.inria.fr/pub/papers/xleroy-zinc.pdf[the original report on ZINC]).
-  There is no dependency on compiler internals, as we can work on the bytecode output of `ocamlc`.
-
-#### Related
+There is no dependency on compiler internals, as we can work on the bytecode output of `ocamlc`.
 
 In the past, translating bytecode has proven to be a successful and maintainable strategy for compiling OCaml to different languages:
 
@@ -129,8 +113,6 @@ If there was a compiler from OCaml to LLVM, it would immediately enable compilat
 * **[discussion]** https://discuss.ocaml.org/t/llvm-backend-for-ocaml/1132/5
 
 ### 2a) Cmm -> LLVM
-
-#### Related
 
 * **[abandoned]** Cmm -> LLVM https://github.com/whitequark/ocaml-llvm-ng/blob/master/lib/llvmcomp.ml
 

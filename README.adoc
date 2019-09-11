@@ -38,7 +38,7 @@ I'm not aware of any existing approaches.
 
 #### Related
 
-* **[production-ready]** rawlambda -> JavaScript: https://github.com/BuckleScript/bucklescript
+* **[production-ready]** Bucklescript (Ocaml rawlambda) -> JavaScript: https://github.com/BuckleScript/bucklescript
 +
 This may or may not be helpful, I do not know. 
 +
@@ -57,6 +57,7 @@ Even though the source language used here is not OCaml, there might be some inte
 "Low-level IR, suitable for direct translation into WASM": https://github.com/grain-lang/grain/blob/master/src/codegen/mashtree.ml
 
 
+
 ### 1b) Cmm -> WASM
 
 #### Advantages
@@ -72,11 +73,15 @@ From all approaches, this one is likely to have the best runtime performance, wi
 +
 "first working version: compiles arith exprs only", latest commit Jul 27, 2018
 
-* **[WIP]** https://github.com/SanderSpies/ocaml/tree/manual_gc/asmcomp/wasm32
+* **[WIP]** Ocaml Cmm -> WASM https://github.com/SanderSpies/ocaml/tree/manual_gc/asmcomp/wasm32
 +
 https://medium.com/@sanderspies/a-webassembly-backend-for-ocaml-b78e7eeea9d5
 +
 https://medium.com/@sanderspies/the-road-to-webassembly-gc-for-ocaml-bd44dc7f9a9d
+
+* Haskell Cmm -> WASM https://github.com/tweag/asterius
++
+"we implement the cmm-to-wasm code generator as yet another native backend, and any non-Haskell logic of the runtime is hand-written WebAssembly code, which means we're simulating various rts interfaces to the degree that a significant portion of vanilla Haskell code becomes runnable." (https://www.tweag.io/posts/2018-05-29-hello-asterius.html[see here])
 
 ### 1c) OCaml bytecode -> WASM
 
@@ -119,21 +124,19 @@ I tried to compile this, but am stuck at the problem described in https://github
 
 If there was a compiler from OCaml to LLVM, it would immediately enable compilation to WASM.
 
+* **[discussion]** http://caml.inria.fr/pub/ml-archives/caml-list/2009/03/3a77bfcca0f90b763d127d1581d6a2f1.en.html
+
+* **[discussion]** https://discuss.ocaml.org/t/llvm-backend-for-ocaml/1132/5
+
 ### 2a) Cmm -> LLVM
 
 #### Related
 
-* **[abandoned]** https://github.com/whitequark/ocaml-llvm-ng/blob/master/lib/llvmcomp.ml
-
-
-* **[discussion]** http://caml.inria.fr/pub/ml-archives/caml-list/2009/03/3a77bfcca0f90b763d127d1581d6a2f1.en.html
-
-
-* **[discussion]** https://discuss.ocaml.org/t/llvm-backend-for-ocaml/1132/5
+* **[abandoned]** Cmm -> LLVM https://github.com/whitequark/ocaml-llvm-ng/blob/master/lib/llvmcomp.ml
 
 ### 2b) OCaml bytecode -> LLVM
 
-* **[abandoned]** CamllVM - https://github.com/raph-amiard/CamllVM
+* **[abandoned]** OCaml bytecode -> LLVM https://github.com/raph-amiard/CamllVM
 +
 The author provides some details on his experience here: https://news.ycombinator.com/item?id=4798320
 +

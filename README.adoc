@@ -22,7 +22,7 @@ Runtime / Garbage collector::
 +
 This is apparently what the https://docs.google.com/document/d/131vjr4DH6JFnb-blm_uRdaC0_Nv3OUwjEY5qVCxCup4/preview#heading=h.nrkaoiab5j18[WASM backend of the Go language] does.
 
-* gc2) Use the WASM garbage collector, if/when it becomes available
+* gc2) Use the https://github.com/WebAssembly/gc[WASM garbage collector], if/when it becomes available
 +
 The WASM garbage collector specification is still at a very early stage, and it is not clear how exactly it will work.
 

@@ -104,6 +104,7 @@ I managed to compile this using an older version of the OCaml compiler.
 I can compile trivial test programs to C.
 +
 Compiling that C code using Emscripten to WASM, I am stuck with this error on the JavaScript console:
++
 ....
 exception thrown: RuntimeError: index out of bounds,_caml_page_table_modify@http://127.0.0.1:8000/output.js:45026:1
 _caml_page_table_add@http://127.0.0.1:8000/output.js:44203:1

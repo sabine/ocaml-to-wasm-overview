@@ -101,7 +101,8 @@ I'm not aware of any existing approaches.
 #### Related
 
 * **[production-ready]** rawlambda -> JavaScript: https://github.com/BuckleScript/bucklescript
-  This may or may not be helpful, I do not know. 
+
+This may or may not be helpful, I do not know. 
 
   From https://github.com/BuckleScript/bucklescript/blob/master/site/docsource/Differences-from-js_of_ocaml.adoc:
 
@@ -111,10 +112,15 @@ I'm not aware of any existing approaches.
 
   Overview of the bucklescript compiler: https://github.com/BuckleScript/bucklescript/blob/master/site/docsource/Compiler-overview.adoc
 
+* **[probably abandoned]** the Grain Language -> WASM https://github.com/grain-lang/grain
+
+  Even though the source language used here is not OCaml, there might be some interesting observations in here about compiling a functional language to WASM.
+
+  "Low-level IR, suitable for direct translation into WASM": https://github.com/grain-lang/grain/blob/master/src/codegen/mashtree.ml
 
 ## Indirect Roads to WASM
 
-If there was a compiler from OCaml to LLVM, it would immediately enable compilation to WASM. Whether there are other benefits is mostly unknown.
+If there was a compiler from OCaml to LLVM, it would immediately enable compilation to WASM.
 
 For compiling machine code to WASM, there apparently do not currently exist any solutions, even though I would have expected that this is an idea that at least some people would consider.
 It may be that it is commonly thought (and, possibly, actually true) that machine code is already too highly specialized to the specific architecture it runs on, so that "reverse-compiling" to WASM is unlikely to give good results.

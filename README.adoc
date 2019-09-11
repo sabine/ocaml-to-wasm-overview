@@ -147,3 +147,10 @@ I haven't found anything.
 ### 2c) optimized machine code -> WASM
 
 I haven't found anything.
+
+
+## Useful Libraries
+
+* wasm - https://opam.ocaml.org/packages/wasm/
+
+  "An OCaml library to read and write Web Assembly (wasm) files and manipulate their AST."

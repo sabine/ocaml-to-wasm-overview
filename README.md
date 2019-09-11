@@ -80,6 +80,16 @@ In the past, translating bytecode has proven to be a successful and maintainable
   
   *Note:* It is unlikely, that exceptions will be an issue when compiling to WASM, since the exception mechanism in WASM is different from the one in JavaScript.
 
+* **[production-ready]** rawlambda -> JavaScript: https://github.com/BuckleScript/bucklescript
+  This may or may not be helpful, I do not know. 
+
+  From https://github.com/BuckleScript/bucklescript/blob/master/site/docsource/Differences-from-js_of_ocaml.adoc:
+
+  "Js_of_ocaml focuses more on existing OCaml ecosystem(opam) while BuckleScript’s major goal is to target npm"
+
+  "s_of_ocaml and BuckleScript have slightly different runtime encoding in several places, for example, BuckleScript encodes OCaml Array as JS Array while js_of_ocaml requires its index 0 to be of value 0."
+
+  Overview of the bucklescript compiler: https://github.com/BuckleScript/bucklescript/blob/master/site/docsource/Compiler-overview.adoc
 
 * **[inactive]** Ocaml bytecode -> C: https://github.com/bvaugon/ocamlcc
 

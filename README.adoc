@@ -10,12 +10,12 @@ Direct::
 * 1a) translate Lambda -> WASM
 * 1b) translate Cmm -> WASM
 * 1c) translate OCaml bytecode -> WASM
-* 1d) run the bytecode interpreter for OCaml in WASM
+* 1d) run a bytecode interpreter for OCaml in WASM
 
 Indirect::
 * 2a) Cmm -> LLVM -> WASM
 * 2b) OCaml bytecode -> LLVM -> WASM
-* 2c) Ocaml -> optimized machine code -> WASM
+* 2c) Ocaml -> machine code -> WASM
 
 Runtime / Garbage collector::
 * "Manual" garbage collection on the WASM `mem`, by maintaining a shadow stack
@@ -123,12 +123,6 @@ I tried to compile this, but am stuck at the problem described in https://github
 
 If there was a compiler from OCaml to LLVM, it would immediately enable compilation to WASM.
 
-For compiling machine code to WASM, there apparently do not currently exist any solutions, even though I would have expected that this is an idea that at least some people would consider.
-It may be that it is commonly thought (and, possibly, actually true) that machine code is already too highly specialized to the specific architecture it runs on, so that "reverse-compiling" to WASM is unlikely to give good results.
-I do not know if this is the case for all architectures.
-If there was an architecture whose machine code can be translated to WASM in a reasonably efficient fashion, and it turns out that OCaml already compiles to this architecture, this could be an interesting project.
-If successful, this would not only enable compiling OCaml to WASM, but could be helpful for getting many other languages to compile to WASM as well.
-
 ### 2a) Cmm -> LLVM
 
 #### Related
@@ -143,12 +137,19 @@ If successful, this would not only enable compiling OCaml to WASM, but could be 
 
 ### 2b) OCaml bytecode -> LLVM
 
-I haven't found anything.
+* **[abandoned]** CamllVM - https://github.com/raph-amiard/CamllVM
++
+The author provides some details on his experience here: https://news.ycombinator.com/item?id=4798320
++
+"TLDR : In the end it is just not worth it to optimize this project for performance. A better approach would be to start from scratch and do a real OCaml -> LLVM compiler for ocamlopt, that would be able to use the full AST with type information."
 
-### 2c) optimized machine code -> WASM
+### 2c) machine code -> WASM
 
-I haven't found anything.
-
+For compiling machine code to WASM, there apparently do not currently exist any solutions, even though I would have expected that this is an idea that at least some people would consider.
+It may be that it is commonly thought (and, possibly, actually true) that machine code is already too highly specialized to the specific architecture it runs on, so that "reverse-compiling" to WASM is unlikely to give good results.
+I do not know if this is the case for all architectures.
+If there was an architecture whose machine code can be translated to WASM in a reasonably efficient fashion, and it turns out that OCaml already compiles to this architecture, this could be an interesting project.
+If successful, this would not only enable compiling OCaml to WASM, but could be helpful for getting many other languages to compile to WASM as well.
 
 
 # Useful Libraries

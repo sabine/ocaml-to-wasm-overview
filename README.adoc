@@ -58,7 +58,7 @@ Even though the source language used here is not OCaml, there might be some inte
 
 Starting from an already optimized version of the program is likely to result in a comparatively fast execution speed.
 
-* **[incomplete, probably abandoned]** https://github.com/rolph-recto/ocaml-wasm/tree/wasm/wasmcomp
+* **[abandoned]** https://github.com/rolph-recto/ocaml-wasm/tree/wasm/wasmcomp
 +
 "first working version: compiles arith exprs only", latest commit Jul 27, 2018
 
@@ -67,10 +67,14 @@ Starting from an already optimized version of the program is likely to result in
 https://medium.com/@sanderspies/a-webassembly-backend-for-ocaml-b78e7eeea9d5
 +
 https://medium.com/@sanderspies/the-road-to-webassembly-gc-for-ocaml-bd44dc7f9a9d
++
+Experiments on GC: https://github.com/SanderSpies/ocaml-wasm-gc-experimenting
 
-* Haskell Cmm -> WASM https://github.com/tweag/asterius
+* **[WIP]** Haskell Cmm -> WASM https://github.com/tweag/asterius
 +
 "we implement the cmm-to-wasm code generator as yet another native backend, and any non-Haskell logic of the runtime is hand-written WebAssembly code, which means we're simulating various rts interfaces to the degree that a significant portion of vanilla Haskell code becomes runnable." (https://www.tweag.io/posts/2018-05-29-hello-asterius.html[see here])
++
+Garbage collection: https://github.com/tweag/asterius/issues/52
 
 ### 1c) OCaml bytecode -> WASM
 

@@ -163,6 +163,12 @@ run/<@http://127.0.0.1:8000/output.js:7075:7
 ....
 +
 I'm having trouble debugging this because I don't have source maps for the C files where the `\_caml_`-functions come from. The reason seems to be that the files aren't actually included, only the headers. So I need to figure out what parameters to provide to emcc. In order to do that, I need to figure out what parameters ocamlcc uses to compile the code with gcc.
++
+I was able to get the parameters from ocamlcc by using the -verbose option, now the error is this:
++
+....
+shared:ERROR: emcc: cannot find library "curses"
+....
 
 ### 1d) bytecode interpreter in WASM
 

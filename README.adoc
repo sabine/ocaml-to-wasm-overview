@@ -209,8 +209,27 @@ If there was an architecture whose machine code can be translated to WASM in a r
 If successful, this would not only enable compiling OCaml to WASM, but could be helpful for getting many other languages to compile to WASM as well.
 
 
-# Useful Libraries
+# Useful Things
 
 * wasm - https://opam.ocaml.org/packages/wasm/
 +
 "An OCaml library to read and write Web Assembly (wasm) files and manipulate their AST."
+
+* "Malfunctional Programming" (the author implemented an interpreter for lambda, which should be similar to one for Cmm) https://www.cl.cam.ac.uk/~sd601/papers/malfunction.pdf
+
+* "Caml Virtual Machine - Instruction set Document version: 1.4" http://cadmium.x9c.fr/distrib/caml-instructions.pdf
++
+description of compiler version 3.11.2's bytecode
+
+* How to write programs that never allocate http://www.ocamlpro.com/2016/04/01/asm-ocaml/
+
+* loading `Cmm` in the interpreter:
++
+....
+#load "compiler-libs/ocamlcommon.cma";;
+#load "compiler-libs/ocamloptcomp.cma";;
+#require "compiler-libs.optcomp";;
+#show_module Cmm;;
+....
+
+* A Scheme to WASM compiler - https://github.com/google/schism

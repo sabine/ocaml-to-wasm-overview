@@ -1,0 +1,8 @@
+....
+dune exec ./main.exe
+
+python -m SimpleHTTPServer 8000
+....
+
+Open in Browser, see in console that 42, the result of calling the function `helloWorld`, is displayed.
+

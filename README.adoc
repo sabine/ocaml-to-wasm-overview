@@ -200,7 +200,7 @@ If there was a compiler from OCaml to LLVM, it would immediately enable compilat
 
 For compiling machine code to WASM, there apparently do not currently exist any solutions.
 
-It may be that it is commonly thought (and, possibly, actually true) that machine code is already too highly specialized to the specific architecture it runs on, so that "reverse-compiling" to WASM is unlikely to give good results.
+It may be that it is commonly thought (and, possibly, actually true) that machine code is already too highly specialized to the specific architecture it runs on, so that "reverse-compiling" to WASM is unlikely to give good results. In any case, one would need to apply some kind of algorithm that transforms the control flow from a program-counter-based representation to the labeled continuations that can be seen in WASM, just like Emscripten's "Relooper" algorithm does for LLVM.
 
 I do not know if this is the case for all architectures.
 
@@ -233,3 +233,11 @@ description of compiler version 3.11.2's bytecode
 ....
 
 * A Scheme to WASM compiler - https://github.com/google/schism
+
+* WASM tail calls proposal - https://github.com/WebAssembly/tail-call/blob/master/proposals/tail-call/Overview.md
+
+* CakeML a verified ML compiler - https://cakeml.org/
++
+Contains formal semantics for different intermediate representations in their compilation pipeline.
++
+"A New Verified Compiler Backend for CakeML" (presentation of the overall structure and the intermediate languages of the CakeML compiler) https://cakeml.org/icfp16.pdf

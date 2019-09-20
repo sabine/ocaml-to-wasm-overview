@@ -42,6 +42,56 @@ From http://caml.inria.fr/pub/ml-archives/caml-list/2009/03/3a77bfcca0f90b763d12
                Assembly code
 ....
 
+
+A more recent high-level view of the compilation pipeline (from https://ocamllabs.slack.com/archives/C0JCHGE78/p1568626615023800, Sep 16, 2019):
+....
+ Source code
+   |
+   | parsing
+   v
+ Parsetree
+   |
+   | typing
+   v
+ Typedtree
+   |
+   | desugar pattern matching, modules, objects, etc; erase types,
+   | make explicit memory layout in terms of blocks and values
+   |
+   v
+ Lambda (higher order lambda calculus based IR)
+   |
+   | make closure construction and usage explicit
+   | perform inlining
+   |
+   v
+ Clambda (like Lambda but with explicit closures, direct/indirect calls)
+   |
+   | make block/value manipulation explicit
+   | make allocation explicit
+   |
+   v
+  Cmm (tree-structured, explicit memory manipulation, C calls, etc)
+   |
+   | perform instruction selection,
+   | sequentialization into basic blocks,
+   | assignment of pseudo-registers
+   |
+   v
+  Mach (block structured IR)
+   |
+   | liveness, register allocation, dead code elimination
+   | are Mach -> Mach transformations
+   |
+   v
+ Linear (linear sequence of abstract assembly instructions, explicit register assignments)
+   |
+   | this step is heavily backend-dependent, implemented in `emit.mlp`
+   |
+   v
+ Textual assembly code
+....
+
 ## Paths to WASM
 
 Direct::
@@ -200,14 +250,11 @@ If there was a compiler from OCaml to LLVM, it would immediately enable compilat
 
 For compiling machine code to WASM, there apparently do not currently exist any solutions.
 
-It may be that it is commonly thought (and, possibly, actually true) that machine code is already too highly specialized to the specific architecture it runs on, so that "reverse-compiling" to WASM is unlikely to give good results. In any case, one would need to apply some kind of algorithm that transforms the control flow from a program-counter-based representation to the labeled continuations that can be seen in WASM, just like Emscripten's "Relooper" algorithm does for LLVM.
+One would need to apply some kind of algorithm that transforms the control flow from a program-counter-based representation to the labeled continuations that can be seen in WASM, just like Emscripten's "Relooper" algorithm does for LLVM.
 
-I do not know if this is the case for all architectures.
+If there is an architecture whose machine code can be translated to WASM in a reasonably efficient fashion, and it turns out that OCaml already compiles to this architecture, this could be interesting.
 
-If there was an architecture whose machine code can be translated to WASM in a reasonably efficient fashion, and it turns out that OCaml already compiles to this architecture, this could be interesting.
-
-If successful, this would not only enable compiling OCaml to WASM, but could be helpful for getting many other languages to compile to WASM as well.
-
+If successful, this could, in the long run, help getting many other languages to compile to WASM as well.
 
 # Useful Things
 
@@ -241,3 +288,18 @@ description of compiler version 3.11.2's bytecode
 Contains formal semantics for different intermediate representations in their compilation pipeline.
 +
 "A New Verified Compiler Backend for CakeML" (presentation of the overall structure and the intermediate languages of the CakeML compiler) https://cakeml.org/icfp16.pdf
+
+* How to Represent Elm functions in Web Assembly https://dev.to/briancarroll/elm-functions-in-webassembly-50ak
+
+* Solving the structured control flow problem (Improving on the Relooper algorithm) https://medium.com/leaningtech/solving-the-structured-control-flow-problem-once-and-for-all-5123117b1ee2
+
+* How to explore Cmm semantics by looking at the generated x86 code (useful if you feel comfortable with assembly code):
++
+....
+ocamlopt test2.ml -S -inline 0 -nodynlink
+ocamlopt test2.ml -dcmm
+....
++
+One can then look at the Cmm and the generated `test2.s` side-by-side.
++
+What I would like to see is the asm code of the runtime, so that it all makes sense coming together. TODO: find out how to get that.

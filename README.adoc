@@ -303,3 +303,6 @@ ocamlopt test2.ml -dcmm
 One can then look at the Cmm and the generated `test2.s` side-by-side.
 +
 What I would like to see is the asm code of the runtime, so that it all makes sense coming together. TODO: find out how to get that.
+
+* Talk on Rust, WebAssembly and JavaScript by Ashley Williams https://www.infoq.com/presentations/rust-webassembly-javascript/?utm_source=youtube&utm_medium=link&utm_campaign=qcontalks
+

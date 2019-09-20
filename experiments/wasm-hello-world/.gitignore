@@ -1,3 +1,4 @@
+out.wasm
 *.annot
 *.cmo
 *.cma

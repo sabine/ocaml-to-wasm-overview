@@ -92,6 +92,23 @@ A more recent high-level view of the compilation pipeline (from https://ocamllab
  Textual assembly code
 ....
 
+## Runtime / Garbage Collection
+
+Both OCaml bytecode and OCaml native code needs a runtime accompanying the executable, in order to run the compiled program.
+
+* gc1) "Manual" garbage collection on the WASM `mem`, by maintaining a shadow stack
++
+This is apparently what the https://docs.google.com/document/d/131vjr4DH6JFnb-blm_uRdaC0_Nv3OUwjEY5qVCxCup4/preview#heading=h.nrkaoiab5j18[WASM backend of the Go language] does.
+
+* gc2) Use the https://github.com/WebAssembly/gc[WASM garbage collector], if/when it becomes available
++
+The WASM garbage collector specification is still at a very early stage, and it is not clear how exactly it will work.
+
+* gc3) Using `anyref` to allocate heap objects on "the JavaScript side of the world" when https://github.com/WebAssembly/reference-types/blob/master/proposals/reference-types/Overview.md[Reference Types] become available.
++  
+This means using the JavaScript garbage collector, which might or might not be very different from the upcoming WASM garbage collector.
+
+
 ## Paths to WASM
 
 Direct::
@@ -105,19 +122,6 @@ Indirect::
 * 2b) OCaml bytecode -> LLVM -> WASM
 * 2c) Ocaml -> machine code -> WASM
 
-Runtime / Garbage collector::
-* gc1) "Manual" garbage collection on the WASM `mem`, by maintaining a shadow stack
-+
-This is apparently what the https://docs.google.com/document/d/131vjr4DH6JFnb-blm_uRdaC0_Nv3OUwjEY5qVCxCup4/preview#heading=h.nrkaoiab5j18[WASM backend of the Go language] does.
-
-* gc2) Use the https://github.com/WebAssembly/gc[WASM garbage collector], if/when it becomes available
-+
-The WASM garbage collector specification is still at a very early stage, and it is not clear how exactly it will work.
-
-* gc3) Using `anyref` to allocate heap objects when https://github.com/WebAssembly/reference-types/blob/master/proposals/reference-types/Overview.md[Reference Types] become available.
-+  
-This means using the JavaScript garbage collector, which might or might not be very different from the upcoming WASM garbage collector.
-
 ## Direct Roads to WASM
 
 ### 1a) Lambda -> WASM
@@ -128,19 +132,19 @@ While there are currently no projects that translate OCaml's lambda IR to WASM, 
 +
 This may or may not be helpful, I do not know. 
 +
-From https://github.com/BuckleScript/bucklescript/blob/master/site/docsource/Differences-from-js_of_ocaml.adoc:
+From https://github.com/BuckleScript/bucklescript/blob/00ad78cbcfd1132d3a5931fe760706de35e480f6/site/docsource/Differences-from-js_of_ocaml.adoc:
 +
 "Js_of_ocaml focuses more on existing OCaml ecosystem(opam) while BuckleScript’s major goal is to target npm"
 +
 "Js_of_ocaml and BuckleScript have slightly different runtime encoding in several places, for example, BuckleScript encodes OCaml Array as JS Array while js_of_ocaml requires its index 0 to be of value 0."
 +
-Overview of the bucklescript compiler: https://github.com/BuckleScript/bucklescript/blob/master/site/docsource/Compiler-overview.adoc
+Overview of the bucklescript compiler: https://github.com/BuckleScript/bucklescript/blob/00ad78cbcfd1132d3a5931fe760706de35e480f6/site/docsource/Compiler-overview.adoc
 
 * **[probably abandoned]** the Grain Language -> WASM https://github.com/grain-lang/grain
 +
 Even though the source language used here is not OCaml, there might be some interesting observations in here about compiling a functional language to WASM.
 +
-"Low-level IR, suitable for direct translation into WASM": https://github.com/grain-lang/grain/blob/master/src/codegen/mashtree.ml
+"Low-level IR, suitable for direct translation into WASM": https://github.com/grain-lang/grain/blob/78dc08b2887226cf0b9f93357ca6fd689fcd1405/src/codegen/mashtree.ml
 
 
 
@@ -186,8 +190,11 @@ https://www.irif.fr/~balat/publications/vouillon_balat-js_of_ocaml.pdf presents 
   Exceptions turned out to be very expensive.
 +  
 `js_of_ocaml` is being used in production systems, as far as I know, it is currently the best tool to compile OCaml to JavaScript.
-+  
-*Note:* It is unlikely, that exceptions will be an issue when compiling to WASM, since the exception mechanism in WASM is different from the one in JavaScript.
++
+OCaml values are allocated on the JavaScript heap (**gc3**), thus, the calls to the garbage collector are just stubs: https://github.com/ocsigen/js_of_ocaml/blob/e7a34b8e0697a34b235ff121132c72121c16798d/runtime/gc.js
++
+*Note:* It is unlikely, that exceptions will be an issue when compiling to WASM, since the exception mechanism in WASM will be different from the one in JavaScript.
+
 
 * **[inactive]** Ocaml bytecode -> C: https://github.com/bvaugon/ocamlcc
 +
@@ -219,6 +226,8 @@ I was able to get the parameters from ocamlcc by using the -verbose option, now 
 ....
 shared:ERROR: emcc: cannot find library "curses"
 ....
++
+While I could continue here, I think that this is a dead end due to the large code size.
 
 ### 1d) bytecode interpreter in WASM
 
@@ -227,6 +236,7 @@ shared:ERROR: emcc: cannot find library "curses"
 sebmarkbage compiled the OCaml bytecode interpreter, as well as the GC to WASM using emscripten. https://github.com/sebmarkbage/ocamlrun-wasm/commit/473580d7d2955ce254c2d0263383f7e251f6e497[Latest commit Mar 6, 2017]
 +
 I tried to compile this, but am stuck at the problem described in https://github.com/sebmarkbage/ocamlrun-wasm/issues/1[Issue 1]
+
 
 ## Indirect Roads to WASM
 
@@ -281,7 +291,7 @@ description of compiler version 3.11.2's bytecode
 
 * A Scheme to WASM compiler - https://github.com/google/schism
 
-* WASM tail calls proposal - https://github.com/WebAssembly/tail-call/blob/master/proposals/tail-call/Overview.md
+* WASM tail calls proposal - https://github.com/WebAssembly/tail-call/blob/125201ced9a0f158553d08d8a20b7152f3057367/proposals/tail-call/Overview.md
 
 * CakeML a verified ML compiler - https://cakeml.org/
 +
@@ -302,7 +312,7 @@ ocamlopt test2.ml -dcmm
 +
 One can then look at the Cmm and the generated `test2.s` side-by-side.
 +
-What I would like to see is the asm code of the runtime, so that it all makes sense coming together. TODO: find out how to get that.
+When compiling on an x86-64 Intel machine using Debian, one can look at the runtime functions in https://github.com/ocaml/ocaml/blob/5ad64306d36755b600f2556805effb73627508c8/runtime/amd64.S.
 
 * Talk on Rust, WebAssembly and JavaScript by Ashley Williams https://www.infoq.com/presentations/rust-webassembly-javascript/?utm_source=youtube&utm_medium=link&utm_campaign=qcontalks
 

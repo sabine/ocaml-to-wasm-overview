@@ -1,4 +1,4 @@
-files = a01_closures a02_match a03_fibonacci
+files = a01_closures a02_match a03_fibonacci a04_factorial
 
 all: $(files:=.cmm) $(files:=.s)
 	rm -rf *.cmx *.cmi *.o a.out

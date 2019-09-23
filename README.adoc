@@ -323,3 +323,4 @@ When compiling on an x86-64 Intel machine using Debian, one can look at the runt
 
 * Talk on Rust, WebAssembly and JavaScript by Ashley Williams https://www.infoq.com/presentations/rust-webassembly-javascript/?utm_source=youtube&utm_medium=link&utm_campaign=qcontalks
 
+* IR for compiling WASM to Cmm https://github.com/SimonJF/cmm_of_wasm/blob/10fea570f80f91ee26c23a6cca48b29795c9967b/src/lib/ir/annotated.ml

@@ -96,6 +96,8 @@ A more recent high-level view of the compilation pipeline (from https://ocamllab
 
 Both OCaml bytecode and OCaml native code needs a runtime accompanying the executable, in order to run the compiled program.
 
+TODO: find out what else the runtime does, besides garbage collection and allocation.
+
 * gc1) "Manual" garbage collection on the WASM `mem`, by maintaining a shadow stack
 +
 This is apparently what the https://docs.google.com/document/d/131vjr4DH6JFnb-blm_uRdaC0_Nv3OUwjEY5qVCxCup4/preview#heading=h.nrkaoiab5j18[WASM backend of the Go language] does.

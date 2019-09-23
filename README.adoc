@@ -96,7 +96,11 @@ A more recent high-level view of the compilation pipeline (from https://ocamllab
 
 Both OCaml bytecode and OCaml native code needs a runtime accompanying the executable, in order to run the compiled program.
 
-TODO: find out what else the runtime does, besides garbage collection and allocation.
+The runtime provides::
+* a copying garbage collector, the `caml_alloc`-functions
+* the `caml_apply`-functions that implement curried function application
+
+TODO: find out what else the runtime does.
 
 * gc1) "Manual" garbage collection on the WASM `mem`, by maintaining a shadow stack
 +

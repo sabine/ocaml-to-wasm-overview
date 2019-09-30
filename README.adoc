@@ -99,6 +99,8 @@ Both OCaml bytecode and OCaml native code needs a runtime accompanying the execu
 The runtime provides::
 * a copying garbage collector, the `caml_alloc`-functions
 * the `caml_apply`-functions that implement curried function application
+* binary and unary operations on tagged integers/floats
+* exception handling
 
 TODO: find out what else the runtime does.
 
@@ -324,3 +326,35 @@ When compiling on an x86-64 Intel machine using Debian, one can look at the runt
 * Talk on Rust, WebAssembly and JavaScript by Ashley Williams https://www.infoq.com/presentations/rust-webassembly-javascript/?utm_source=youtube&utm_medium=link&utm_campaign=qcontalks
 
 * IR for compiling WASM to Cmm https://github.com/SimonJF/cmm_of_wasm/blob/10fea570f80f91ee26c23a6cca48b29795c9967b/src/lib/ir/annotated.ml
+
+* Mozilla Garbage collector Info https://github.com/lars-t-hansen/moz-gc-experiments/
++
+Some tests related to `anyref` and garbage collector:
+https://hg.mozilla.org/mozilla-central/file/tip/js/src/jit-test/tests/wasm/gc/
+
+* Web assembly meetings repository (last video call from July 23rd) https://github.com/WebAssembly/meetings
+
+* GC without a shadow stack in an "uncooperative environment" 
+https://github.com/WebAssembly/gc/issues/36#issuecomment-406721705
++
+As noted in a later comment, this technique becomes even more complex when the stack consists of both JavaScript and WASM frames. It doesn't look like a good idea to do that due to the increase in code size.
++
+This later comment https://github.com/WebAssembly/gc/issues/36#issuecomment-461679185 proposes "making the execution stack visible" or implementing "an efficient user stack with a defined layout, including what gets put there when a function is called. Have a second instruction set that works with this stack: us.i32.const 50, us.i32.mul, etc".
++
+If we had any possibility to inspect the WASM stack to discover the gc roots, this would be nice. However, in order for the OCaml GC to move blocks, we also need the ability to modify. A generic read/write feature for the WASM stack is not desirable due to security implications.
+
+* sharing JS data structures with WASM in the absence of reference types https://github.com/WebAssembly/interface-types/issues/18#issuecomment-430605795
++
+Inefficient but interesting workaround to use browser GC before a WASM GC appears: a) keep an Object that maps references (keys of the JavaScript Object) to arrays (representing the OCaml heap blocks), b) allocate by adding a new key to the Object, c) deallocate by deleting a key from the Object, d) provide functions to write/read the heap blocks from WASM. Clearly, the runtime performance here depends on: x) how fast function calls from WASM to JS are, y) how fast Object and array access is in JS. Note: if we had a way to read the WASM stack, we know the roots, and we can "deallocate" by removing unreachable keys from the Object. The actual garbage collection is done by the JavaScript GC. In WASM we only keep immutable handles to the data (the keys to the JS Object).
++
+Performance will be worse than using a shadow stack with the OCaml gc compiled to WASM on the WASM linear memory. In order to be able to refer to any heap block by a reference, data will be "flattened" in the sense that every key maps to an array consisting of only numbers (primitives) and strings (references into the JS Object).
++
+In this comment, the same approach is mentioned: https://www.reddit.com/r/ProgrammingLanguages/comments/bbhz69/wasm_reftypes_are_enabled_by_default_in_firefox/ekj4mhr/
++
+With reftypes, the technique of using JavaScript values to represent OCaml heap blocks is simplified by not having to take the additional indirection through a JS Object - the references to JS data can be passed to WASM directly (which, I think, implies that the Browser GC is responsible for modifying moved references and for discovering its own GC roots). To model pointer values in OCaml heap blocks correctly, one would need to embed the data pointed to in the JavaScript array. So, we would have Arrays of numbers and arrays in JavaScript to model OCaml heap blocks. Performance now largely depends on the cost of array access and on the cost of function calls between WASM and JS.
++
+Note that we don't ever need to inspect the WASM stack, we can store heap references in WASM local variables, and we don't need to keep a shadow stack, so the cost tradeoff would be between a) maintaining a shadow stack with OCaml's GC and b) modeling OCaml heap blocks via reftypes and JS arrays accessed by function calls with the JavaScript GC. Code size is likely smaller with the JS approach.
+
+* Note: We could avoid using local variables for OCaml values in WASM and instead use global variables as "registers". This means that compilation to WASM would not be very different from compilation to machine code (the main difference would be how control flow is compiled / register allocation works exactly as in compilation to native). However, currently this does not work since it is not possible to import/export global variables. See here: https://github.com/WebAssembly/mutable-global/blob/89e5be9d69f2afac7243b6d2ff36b9c8723efb77/proposals/mutable-global/Overview.md
+
+* WASM future features list https://github.com/WebAssembly/design/blob/master/FutureFeatures.md

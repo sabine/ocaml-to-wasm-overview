@@ -10,31 +10,92 @@
     <h1>WASM</h1>
 
     <script>
+
+function storeAndLoadJSArray (repeats) {
+  for (i=0;i<repeats;i++) {
+    global_array[5] = 42;
+
+    var y = global_array[5];
+  }
+}
+
+function f (a) {return a}
+
+function functionCallJS (repeats) {
+  for (i=0;i<repeats;i++) {
+  
+    f(42);
+  }
+}
+
+function loopJS (repeats) {
+  for (i=0;i<repeats;i++) {
+  
+  }
+}
+
+var wasm = null;
+
+var global_array = [1,2,3,4,5,6];
+
 function loadWebAssembly(fileName) {
   return fetch(fileName)
     .then(response => response.arrayBuffer())
     .then(buffer => WebAssembly.compile(buffer))
     .then(module => {return new WebAssembly.Instance(module, {
-  imports: { sayHello: function () {}} }); });
+  imports: { sayHello: function () {},
+    loadArray: function () { return global_array[5];},
+    storeArray: function (val) { global_array[5] = val;}
+  } });
+    });
 };
 
-function run(f, text) {
+function run(f, text, normalize_time) {
+  var times = 100;
+  var sum = 0;
+  for (i=0;i<times;i++) {
     var before = Date.now();
     f(10000000);
     var after = Date.now();
-    console.log("("+text+") time: "+(after-before));
+    sum += (after-before);
+  }
+
+  var avg = sum/times;
+  console.log("("+text+") time: "+avg);
+  console.log("("+text+") time, normalized: "+(avg-normalize_time));
+  return avg;
 }
 
 loadWebAssembly('http://127.0.0.1:8000/test.wasm') 
   .then(instance => {
+    wasm = instance;
     console.log('Finished compiling! Ready when you are...');
 
+    var times = 100;
+    var sum = 0;
+    for (i=0;i<times;i++) {
+      var before = Date.now();
+      for (j=0;j<10000000;j++) { instance.exports.noop(42); }
+      var after = Date.now();
+      sum += (after-before);
+    }
+
+    var avg = sum/times;
+    console.log("(call to WASM) time: "+avg);
+    var call_to_wasm_time = avg;
+
+    var loop_time = run(instance.exports.loop, "loop", call_to_wasm_time);
+    var callJS_time = run(instance.exports.callJS, "callJS", loop_time);
+    var storeAndLoadMem_time = run(instance.exports.storeAndLoadMem, "storeAndLoadMem", loop_time);
+    var storeAndLoadLocal_time = run(instance.exports.storeAndLoadLocal, "storeAndLoadLocal", loop_time);
+    var storeAndLoadGlobal_time = run(instance.exports.storeAndLoadGlobal, "storeAndLoadGlobal", loop_time);
+    var storeAndLoadJS_time = run(instance.exports.storeAndLoadJS, "storeAndLoadJS", callJS_time*2-loop_time);
+
+    var loop_js_time = run(loopJS, "(javascript) loop");
+    run(storeAndLoadJSArray, "(javascript) store and load from JS array",loop_js_time);
+    run(functionCallJS, "(javascript) function call", loop_js_time);
 
 
-    run(instance.exports.loop, "loop");
-    run(instance.exports.callJS, "callJS");
-    run(instance.exports.storeAndLoadMem, "storeAndLoadMem");
-    run(instance.exports.storeAndLoadLocal, "storeAndLoadLocal");
 
   });
     </script>

@@ -358,3 +358,9 @@ Note that we don't ever need to inspect the WASM stack, we can store heap refere
 * Note: We could avoid using local variables for OCaml values in WASM and instead use global variables as "registers". This means that compilation to WASM would not be very different from compilation to machine code (the main difference would be how control flow is compiled / register allocation works exactly as in compilation to native). However, currently this does not work since it is not possible to import/export global variables. See here: https://github.com/WebAssembly/mutable-global/blob/89e5be9d69f2afac7243b6d2ff36b9c8723efb77/proposals/mutable-global/Overview.md
 
 * WASM future features list https://github.com/WebAssembly/design/blob/master/FutureFeatures.md
+
+* LLVM WASM backend https://github.com/llvm/llvm-project/tree/6088f84398847152ad97eb1bc0b139a28e879b48/llvm/lib/Target/WebAssembly
++
+"After register stackification and register coloring, convert non-stackified
+registers into locals, inserting explicit local.get and local.set
+instructions." https://github.com/llvm/llvm-project/blob/6088f84398847152ad97eb1bc0b139a28e879b48/llvm/lib/Target/WebAssembly/WebAssemblyExplicitLocals.cpp

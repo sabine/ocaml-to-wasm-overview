@@ -312,6 +312,8 @@ Contains formal semantics for different intermediate representations in their co
 
 * Solving the structured control flow problem (Improving on the Relooper algorithm) https://medium.com/leaningtech/solving-the-structured-control-flow-problem-once-and-for-all-5123117b1ee2
 
+* there is a parser for `.cmm` files in `testsuite/tools/parsecmm.mly` of the OCaml compiler 
+
 * How to explore Cmm semantics by looking at the generated x86 code (useful if you feel comfortable with assembly code):
 +
 ....

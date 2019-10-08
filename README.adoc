@@ -372,3 +372,5 @@ instructions." https://github.com/llvm/llvm-project/blob/6088f84398847152ad97eb1
 * wasm-ld https://lld.llvm.org/WebAssembly.html
 +
 WASM tool conventions on linking https://github.com/WebAssembly/tool-conventions/blob/master/Linking.md
+
+* Notes on the background of WASI https://github.com/CraneStation/wasmtime/blob/3ae7c60b1395fe25971f683828241e7fac8cb40b/docs/WASI-background.md

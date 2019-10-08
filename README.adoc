@@ -366,3 +366,5 @@ Note that we don't ever need to inspect the WASM stack, we can store heap refere
 "After register stackification and register coloring, convert non-stackified
 registers into locals, inserting explicit local.get and local.set
 instructions." https://github.com/llvm/llvm-project/blob/6088f84398847152ad97eb1bc0b139a28e879b48/llvm/lib/Target/WebAssembly/WebAssemblyExplicitLocals.cpp
+
+* An explanation of dynamic linking with LLD for WASM: https://iandouglasscott.com/2019/07/18/experimenting-with-webassembly-dynamic-linking-with-clang/

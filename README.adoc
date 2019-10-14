@@ -368,3 +368,11 @@ registers into locals, inserting explicit local.get and local.set
 instructions." https://github.com/llvm/llvm-project/blob/6088f84398847152ad97eb1bc0b139a28e879b48/llvm/lib/Target/WebAssembly/WebAssemblyExplicitLocals.cpp
 
 * `ocaml/runtime/globroots.c` I currently believe that the purpose is that you can use the OCaml `alloc` from other languages (e.g. C, Java) explicitly (so that you can deallocate eventually by removing from the global roots). This technique could be ported to WASM. `ocaml/runtime/roots_nat.c` scans the stack for gc roots, which is something that cannot be ported as-is to WASM.
+
+* An explanation of dynamic linking with LLD for WASM: https://iandouglasscott.com/2019/07/18/experimenting-with-webassembly-dynamic-linking-with-clang/
+
+* wasm-ld https://lld.llvm.org/WebAssembly.html
++
+WASM tool conventions on linking https://github.com/WebAssembly/tool-conventions/blob/master/Linking.md
+
+* Notes on the background of WASI https://github.com/CraneStation/wasmtime/blob/3ae7c60b1395fe25971f683828241e7fac8cb40b/docs/WASI-background.md

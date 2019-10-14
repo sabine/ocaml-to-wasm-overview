@@ -104,19 +104,22 @@ The runtime provides::
 
 TODO: find out what else the runtime does.
 
-Possible garbage collector implementations in WASM::
-* gc1) "Manual" garbage collection on the WASM `mem`, by maintaining a shadow stack
+Dealing with OCaml values' lifetimes in WASM::
+* gc1) "Manual" garbage collection on the WASM linear memory, by maintaining a stack in WASM linear memory and porting the garbage collector to WASM
 +
 This is apparently what the https://docs.google.com/document/d/131vjr4DH6JFnb-blm_uRdaC0_Nv3OUwjEY5qVCxCup4/preview#heading=h.nrkaoiab5j18[WASM backend of the Go language] does.
 
-* gc2) Use the https://github.com/WebAssembly/gc[WASM garbage collector], if/when it becomes available
+* gc2) Use the https://github.com/WebAssembly/gc[WASM garbage collector extension] to allocate and manage OCaml values
 +
-The WASM garbage collector specification is still at a very early stage, and it is not clear how exactly it will work.
+The WASM garbage collector specification is still at a very early stage, and it is not clear how exactly it will work. The only reasonable way, at this point in time, to attempt this is to prototype our own WASM GC extension.
 
-* gc3) Using `anyref` to allocate heap objects on "the JavaScript side of the world" when https://github.com/WebAssembly/reference-types/blob/master/proposals/reference-types/Overview.md[Reference Types] become available.
+* gc3) Allocate heap objects on "the JavaScript side of the world" via https://github.com/WebAssembly/reference-types/blob/master/proposals/reference-types/Overview.md[Reference Types]
 +  
-This means using the JavaScript garbage collector, which might or might not be very different from the upcoming WASM garbage collector.
+This is more or less a work-around for not having a WASM GC extension.
 
+* gc4) Create a version of OCaml that has static lifetimes, similar to Rust.
++
+I will not do this, since pretty much all existing OCaml code would need to be rewritten in order to be compiled to WASM with this variant of the language.
 
 ## Paths to WASM
 
@@ -155,11 +158,11 @@ Even though the source language used here is not OCaml, there might be some inte
 +
 "Low-level IR, suitable for direct translation into WASM": https://github.com/grain-lang/grain/blob/78dc08b2887226cf0b9f93357ca6fd689fcd1405/src/codegen/mashtree.ml
 
-
-
 ### 1b) Cmm -> WASM
 
 Starting from an already optimized version of the program is likely to result in a comparatively fast execution speed.
+
+Generally, it appears that Cmm is a good starting point when compiling to WASM without using the WASM GC extension, since the memory representation has already been flattened at the Cmm stage.
 
 * **[abandoned]** https://github.com/rolph-recto/ocaml-wasm/tree/wasm/wasmcomp
 +
@@ -275,7 +278,7 @@ If there is an architecture whose machine code can be translated to WASM in a re
 
 If successful, this could, in the long run, help getting many other languages to compile to WASM as well.
 
-# Useful Things
+# My Collection of Links to Sort Through
 
 * wasm - https://opam.ocaml.org/packages/wasm/
 +

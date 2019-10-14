@@ -5,32 +5,46 @@
 
 ## Tail calls
 
-Proposal: https://github.com/webassembly/tail-call
+Proposal: https://github.com/WebAssembly/tail-call/blob/master/proposals/tail-call/Overview.md
 
-Status of proposal: ?
+Formal spec: https://webassembly.github.io/tail-call/core/
+
+Status of proposal: Apr 4, 2018
 
 Browser implementations:
 
 * https://bugzilla.mozilla.org/show_bug.cgi?id=1571996
 * https://www.chromestatus.com/feature/5423405012615168
 
+Interesting:
+
+* Tail calls in Schism #5 https://github.com/WebAssembly/tail-call/issues/5
+* Including tail-callability in signatures #1 https://github.com/WebAssembly/tail-call/issues/1
+
 ## GC
 
-Proposal: https://github.com/WebAssembly/gc
+Proposal: https://github.com/WebAssembly/gc/blob/master/proposals/gc/Overview.md
 
-Status of proposal: ?
+Status of proposal: **design is still in flux**, Jun 26, 2019
 
 Browser implementations:
 
-* https://hg.mozilla.org/mozilla-central/file/tip/js/src/jit-test/tests/wasm/gc/
 * https://bugzilla.mozilla.org/buglist.cgi?quicksearch=webassembly+gc
 * https://www.chromestatus.com/feature/6062715726462976
 
+Interesting:
+
+* https://hg.mozilla.org/mozilla-central/file/tip/js/src/jit-test/tests/wasm/gc/
+
 ## Exceptions
 
-Proposal: https://github.com/WebAssembly/exception-handling
+Proposal: https://github.com/WebAssembly/exception-handling/blob/master/proposals/Exceptions.md
 
-Status of proposal: ?
+Formal spec: (sketch) https://github.com/WebAssembly/exception-handling/issues/87
+
+Status of proposal: Latest commit 7779599 on Jul 14, 2019
+
+Required Extensions: reference types
 
 Browser implementations:
 
@@ -41,6 +55,6 @@ Browser implementations:
 
 Proposal: https://github.com/effect-handlers/wasm-effect-handlers
 
-Status of proposal: **Incomplete**,  Latest commit c034db2 on Feb 17, 2019
+Status of proposal:  Latest commit c034db2 on Feb 17, 2019
 
 No browsers implement this, currently.

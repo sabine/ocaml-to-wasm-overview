@@ -1,0 +1,38 @@
+# WASM extensions that could be helpful
+:toc:
+:toclevels: 5
+
+
+## Tail calls
+
+Proposal: https://github.com/webassembly/tail-call
+
+Status of proposal: ?
+
+Browser vendors:
+* https://bugzilla.mozilla.org/show_bug.cgi?id=1571996
+
+## GC
+
+Proposal: https://github.com/WebAssembly/gc
+
+Status of proposal: ?
+
+Browser vendors:
+* https://hg.mozilla.org/mozilla-central/file/tip/js/src/jit-test/tests/wasm/gc/
+
+## Exceptions
+
+Proposal: https://github.com/WebAssembly/exception-handling
+
+Status of proposal: ?
+
+Browser vendors:
+
+
+## Algebraic effects
+
+Proposal: https://github.com/effect-handlers/wasm-effect-handlers
+
+Status of proposal: **Incomplete**,  Latest commit c034db2 on Feb 17
+

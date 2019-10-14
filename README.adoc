@@ -366,3 +366,5 @@ Note that we don't ever need to inspect the WASM stack, we can store heap refere
 "After register stackification and register coloring, convert non-stackified
 registers into locals, inserting explicit local.get and local.set
 instructions." https://github.com/llvm/llvm-project/blob/6088f84398847152ad97eb1bc0b139a28e879b48/llvm/lib/Target/WebAssembly/WebAssemblyExplicitLocals.cpp
+
+* `ocaml/runtime/globroots.c` I currently believe that the purpose is that you can use the OCaml `alloc` from other languages (e.g. C, Java) explicitly (so that you can deallocate eventually by removing from the global roots). This technique could be ported to WASM. `ocaml/runtime/roots_nat.c` scans the stack for gc roots, which is something that cannot be ported as-is to WASM.

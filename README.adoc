@@ -94,7 +94,7 @@ A more recent high-level view of the compilation pipeline (from https://ocamllab
 
 ## Runtime / Garbage Collection
 
-Both OCaml bytecode and OCaml native code needs a runtime accompanying the executable, in order to run the compiled program.
+Both OCaml bytecode and OCaml native code comes with a runtime that provides functions needed to run the compiled program.
 
 The runtime provides::
 * a copying garbage collector, the `caml_alloc`-functions
@@ -119,7 +119,7 @@ This is more or less a work-around for not having a WASM GC extension.
 
 * gc4) Create a version of OCaml that has static lifetimes, similar to Rust.
 +
-I will not do this, since pretty much all existing OCaml code would need to be rewritten in order to be compiled to WASM with this variant of the language.
+I will not do this, since pretty much all existing OCaml code would need to be rewritten in order to be compiled to WASM with this variant of the language. Also, this may be different enough to OCaml that this is essentially a new programming language.
 
 ## Paths to WASM
 

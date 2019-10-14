@@ -27,6 +27,8 @@ Proposal: https://github.com/WebAssembly/gc/blob/master/proposals/gc/Overview.md
 
 Status of proposal: **design is still in flux**, Jun 26, 2019
 
+Required Extensions: **reference types**
+
 Browser implementations:
 
 * https://bugzilla.mozilla.org/buglist.cgi?quicksearch=webassembly+gc
@@ -44,7 +46,7 @@ Formal spec: (sketch) https://github.com/WebAssembly/exception-handling/issues/8
 
 Status of proposal: Latest commit 7779599 on Jul 14, 2019
 
-Required Extensions: reference types
+Required Extensions: **reference types**
 
 Browser implementations:
 

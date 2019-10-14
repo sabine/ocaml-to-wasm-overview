@@ -9,8 +9,10 @@ Proposal: https://github.com/webassembly/tail-call
 
 Status of proposal: ?
 
-Browser vendors:
+Browser implementations:
+
 * https://bugzilla.mozilla.org/show_bug.cgi?id=1571996
+* https://www.chromestatus.com/feature/5423405012615168
 
 ## GC
 
@@ -18,8 +20,11 @@ Proposal: https://github.com/WebAssembly/gc
 
 Status of proposal: ?
 
-Browser vendors:
+Browser implementations:
+
 * https://hg.mozilla.org/mozilla-central/file/tip/js/src/jit-test/tests/wasm/gc/
+* https://bugzilla.mozilla.org/buglist.cgi?quicksearch=webassembly+gc
+* https://www.chromestatus.com/feature/6062715726462976
 
 ## Exceptions
 
@@ -27,12 +32,15 @@ Proposal: https://github.com/WebAssembly/exception-handling
 
 Status of proposal: ?
 
-Browser vendors:
+Browser implementations:
 
+* https://www.chromestatus.com/feature/4756734233018368
+* https://bugzilla.mozilla.org/show_bug.cgi?id=1571689
 
 ## Algebraic effects
 
 Proposal: https://github.com/effect-handlers/wasm-effect-handlers
 
-Status of proposal: **Incomplete**,  Latest commit c034db2 on Feb 17
+Status of proposal: **Incomplete**,  Latest commit c034db2 on Feb 17, 2019
 
+No browsers implement this, currently.

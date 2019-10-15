@@ -11,15 +11,16 @@ Formal spec: https://webassembly.github.io/tail-call/core/
 
 Status of proposal: Apr 4, 2018
 
-Browser implementations:
+### Browser implementations
 
 * https://bugzilla.mozilla.org/show_bug.cgi?id=1571996
 * https://www.chromestatus.com/feature/5423405012615168
 
-Interesting:
+### Interesting
 
 * Tail calls in Schism #5 https://github.com/WebAssembly/tail-call/issues/5
 * Including tail-callability in signatures #1 https://github.com/WebAssembly/tail-call/issues/1
+* Tail call optimization in js_of_ocaml https://ocsigen.org/js_of_ocaml/3.1.0/manual/tailcall
 
 ## GC
 
@@ -29,12 +30,12 @@ Status of proposal: **design is still in flux**, Jun 26, 2019
 
 Required Extensions: **reference types**
 
-Browser implementations:
+### Browser implementations
 
 * https://bugzilla.mozilla.org/buglist.cgi?quicksearch=webassembly+gc
 * https://www.chromestatus.com/feature/6062715726462976
 
-Interesting:
+###Interesting
 
 * https://hg.mozilla.org/mozilla-central/file/tip/js/src/jit-test/tests/wasm/gc/
 
@@ -48,7 +49,7 @@ Status of proposal: Latest commit 7779599 on Jul 14, 2019
 
 Required Extensions: **reference types**
 
-Browser implementations:
+### Browser implementations
 
 * https://www.chromestatus.com/feature/4756734233018368
 * https://bugzilla.mozilla.org/show_bug.cgi?id=1571689

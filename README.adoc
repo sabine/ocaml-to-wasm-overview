@@ -112,6 +112,8 @@ This is apparently what the https://docs.google.com/document/d/131vjr4DH6JFnb-bl
 * gc2) Use the https://github.com/WebAssembly/gc[WASM garbage collector extension] to allocate and manage OCaml values
 +
 The WASM garbage collector specification is still at a very early stage, and it is not clear how exactly it will work. The only reasonable way, at this point in time, to attempt this is to prototype our own WASM GC extension.
++
+What if, while browser support is not there yet, we could compile to WASM+GC and then compile WASM+GC to WASM?
 
 * gc3) Allocate heap objects on "the JavaScript side of the world" via https://github.com/WebAssembly/reference-types/blob/master/proposals/reference-types/Overview.md[Reference Types]
 +  
@@ -379,3 +381,7 @@ instructions." https://github.com/llvm/llvm-project/blob/6088f84398847152ad97eb1
 WASM tool conventions on linking https://github.com/WebAssembly/tool-conventions/blob/master/Linking.md
 
 * Notes on the background of WASI https://github.com/CraneStation/wasmtime/blob/3ae7c60b1395fe25971f683828241e7fac8cb40b/docs/WASI-background.md
+
+* Planning of reference types implementation in the Lucet WASM compiler https://github.com/fastly/lucet/issues/272
++
+Using Lucet as a playground to prototype WASM implementations doesn't seem a good idea.

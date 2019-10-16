@@ -11,6 +11,12 @@ Formal spec: https://webassembly.github.io/tail-call/core/
 
 Status of proposal: Apr 4, 2018
 
+### Interpreter
+
+In the master branch.
+
+Tests in `test/core/return_call_indirect.wast` and `test/core/return_call.wast`.
+
 ### Browser implementations
 
 * https://bugzilla.mozilla.org/show_bug.cgi?id=1571996
@@ -29,6 +35,14 @@ Proposal: https://github.com/WebAssembly/gc/blob/master/proposals/gc/Overview.md
 Status of proposal: **design is still in flux**, Jun 26, 2019
 
 Required Extensions: **reference types**
+
+### Interpreter
+
+In the branch `interpreter.basics`.
+
+https://github.com/WebAssembly/gc/pull/6
+
+Tests for struct syntax in `test/core/struct.wast`.
 
 ### Browser implementations
 
@@ -49,6 +63,10 @@ Status of proposal: Latest commit 7779599 on Jul 14, 2019
 
 Required Extensions: **reference types**
 
+### Interpreter
+
+There is a partial implementation in this pull request: https://github.com/WebAssembly/exception-handling/pull/28.
+
 ### Browser implementations
 
 * https://www.chromestatus.com/feature/4756734233018368
@@ -60,4 +78,15 @@ Proposal: https://github.com/effect-handlers/wasm-effect-handlers
 
 Status of proposal:  Latest commit c034db2 on Feb 17, 2019
 
+### Interpreter
+
+There is some work in progress(?) in several branches with prefix `ex`. I opened an Issue in order to ask about the current status of interpreter implementations. https://github.com/effect-handlers/wasm-effect-handlers/issues/4
+
+### Browser Implementations
+
 No browsers implement this, currently.
+
+### Interesting
+
+Bibliography: https://github.com/effect-handlers/wasm-effect/blob/master/wasm-effect.bib
+

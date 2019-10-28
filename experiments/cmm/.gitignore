@@ -1,4 +1,5 @@
 *.cmm
+*.clambda
 *.s
 *.annot
 *.cmo

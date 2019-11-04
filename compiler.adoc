@@ -1,0 +1,26 @@
+# Notes on an OCaml to WASM Compiler
+:toc:
+:toclevels: 5
+
+Goals:::
+* bring the OCaml ecosystem to WASM
+* interoperate with some deliberately chosen other languages that compile to WASM (C would be a likely candidate, since interoperating with C seems to be common for OCaml code, but Rust might be interesting as well)
+
+Choices to make:::
+* Per-module compilation vs. monolithic binary
++
+A linker for the generated WASM modules vs. linking as a step in the compiler
+
+* Where to branch off from the existing OCaml compiler: Cmm, Lambda?
+
+* Try to use the WASM GC or not
++
+The answer may depend on what kind of code we actually want to run, and how important interop with the JS side of the world is in that context.
+
+* What embedders do we want to run on?
++
+E.g. WASM PaaS (i.e. cloud computing with WASM, running "microservices"), WASM->native compilers, web browsers
+
+Important keywords that will help you to understand what is going on:::
+* uniform value representation, boxed values, polymorphism, no monomorphization, no type argument passing
+* 31-bit tagged integers, garbage collector distinguishing unboxed integers and pointers (word-aligned)

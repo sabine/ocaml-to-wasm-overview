@@ -19,6 +19,8 @@ Tests in `test/core/return_call_indirect.wast` and `test/core/return_call.wast`.
 
 ### Browser implementations
 
+The proposal is currently (August 2019) in phase 3 (implementation) of the WebAssembly standardization process.
+
 * https://bugzilla.mozilla.org/show_bug.cgi?id=1571996
 * https://www.chromestatus.com/feature/5423405012615168
 
@@ -27,6 +29,7 @@ Tests in `test/core/return_call_indirect.wast` and `test/core/return_call.wast`.
 * Tail calls in Schism #5 https://github.com/WebAssembly/tail-call/issues/5
 * Including tail-callability in signatures #1 https://github.com/WebAssembly/tail-call/issues/1
 * Tail call optimization in js_of_ocaml https://ocsigen.org/js_of_ocaml/3.1.0/manual/tailcall
+* Continuations #1252 https://github.com/WebAssembly/design/issues/1252
 
 ## GC
 
@@ -52,6 +55,17 @@ Tests for struct syntax in `test/core/struct.wast`.
 ### Interesting
 
 * https://hg.mozilla.org/mozilla-central/file/tip/js/src/jit-test/tests/wasm/gc/
+
+* Efficient data representation
+in polymorphic languages. X. Leroy. https://xavierleroy.org/publi/data-representation-plilp.pdf
+
+* Unboxed Types for OCaml. Talk by Stephen Dolan. https://www.janestreet.com/tech-talks/unboxed-types-for-ocaml/
+
+* Value types rather than int31 #53 https://github.com/WebAssembly/gc/issues/53
+
+* Tagged GC Pointers #919 https://github.com/WebAssembly/design/issues/919
+
+* Priority: JavaScript-integrated GC or primitives for implementing GC in WASM #733 https://github.com/WebAssembly/design/issues/733
 
 ## Exceptions
 

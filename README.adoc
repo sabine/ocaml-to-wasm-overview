@@ -350,6 +350,10 @@ This later comment https://github.com/WebAssembly/gc/issues/36#issuecomment-4616
 +
 If we had any possibility to inspect the WASM stack to discover the gc roots, this would be nice. However, in order for the OCaml GC to move blocks, we also need the ability to modify. A generic read/write feature for the WASM stack is not desirable due to security implications.
 
+* Paper: Accurate Garbage Collection in an Uncooperative Environment. Fergus Henderson. http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.87.3769&rep=rep1&type=pdf
+
+* Paper: Accurate Garbage Collection in Uncooperative Environments Revisited. J. Baker, A. Cunei, T. Kalibera, F. Pizlo, J. Vitek. http://www.filpizlo.com/papers/baker-ccpe09-accurate.pdf
+
 * sharing JS data structures with WASM in the absence of reference types https://github.com/WebAssembly/interface-types/issues/18#issuecomment-430605795
 +
 Inefficient but interesting workaround to use browser GC before a WASM GC appears: a) keep an Object that maps references (keys of the JavaScript Object) to arrays (representing the OCaml heap blocks), b) allocate by adding a new key to the Object, c) deallocate by deleting a key from the Object, d) provide functions to write/read the heap blocks from WASM. Clearly, the runtime performance here depends on: x) how fast function calls from WASM to JS are, y) how fast Object and array access is in JS. Note: if we had a way to read the WASM stack, we know the roots, and we can "deallocate" by removing unreachable keys from the Object. The actual garbage collection is done by the JavaScript GC. In WASM we only keep immutable handles to the data (the keys to the JS Object).

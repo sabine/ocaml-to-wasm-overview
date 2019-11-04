@@ -67,6 +67,8 @@ in polymorphic languages. X. Leroy. https://xavierleroy.org/publi/data-represent
 
 * Priority: JavaScript-integrated GC or primitives for implementing GC in WASM #733 https://github.com/WebAssembly/design/issues/733
 
+* One does not need `i31ref` in order to have a uniform value representation. Instead, one can "allocate" integers in JavaScript to get an `anyref` into the WASM program. https://github.com/WebAssembly/gc/issues/53#issuecomment-545882853
+
 ## Exceptions
 
 Proposal: https://github.com/WebAssembly/exception-handling/blob/master/proposals/Exceptions.md

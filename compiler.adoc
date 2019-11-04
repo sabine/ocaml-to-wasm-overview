@@ -15,7 +15,7 @@ A linker for the generated WASM modules vs. linking as a step in the compiler
 
 * Try to use the WASM GC or not
 +
-The answer may depend on what kind of code we actually want to run, and how important interop with the JS side of the world is in that context.
+The answer may depend on what kind of code we actually want to run, and how important interop with the JS side of the world is in that context. Maybe the good path for us is to only use the reference types extension and not GC.
 
 * What embedders do we want to run on?
 +
@@ -24,3 +24,5 @@ E.g. WASM PaaS (i.e. cloud computing with WASM, running "microservices"), WASM->
 Important keywords that will help you to understand what is going on:::
 * uniform value representation, boxed values, polymorphism, no monomorphization, no type argument passing
 * 31-bit tagged integers, garbage collector distinguishing unboxed integers and pointers (word-aligned)
+
+

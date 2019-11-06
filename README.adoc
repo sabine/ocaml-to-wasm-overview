@@ -319,6 +319,8 @@ Contains formal semantics for different intermediate representations in their co
 
 * there is a parser for `.cmm` files in `testsuite/tools/parsecmm.mly` of the OCaml compiler 
 
+* it is possible to generate a `.merlin` file for the compiler by, starting from a clean repository, running `./configure` and `dune build @world`. Even if the full build fails, the `.merlin` file will likely be there and useful.
+
 * How to explore Cmm semantics by looking at the generated x86 code (useful if you feel comfortable with assembly code):
 +
 ....
@@ -389,3 +391,7 @@ WASM tool conventions on linking https://github.com/WebAssembly/tool-conventions
 * Planning of reference types implementation in the Lucet WASM compiler https://github.com/fastly/lucet/issues/272
 +
 Using Lucet as a playground to prototype WASM implementations doesn't seem a good idea.
+
+* Multi-core ocaml compiler Wiki https://github.com/ocaml-multicore/ocaml-multicore/wiki
++
+Garbage collector invariants, possibly helpful https://github.com/ocaml-multicore/ocaml-multicore/wiki/Garbage-collector-invariants

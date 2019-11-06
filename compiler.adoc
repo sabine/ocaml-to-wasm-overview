@@ -7,6 +7,14 @@ Goals:::
 * interoperate with some deliberately chosen other languages that compile to WASM (C would be a likely candidate, since interoperating with C seems to be common for OCaml code, but Rust might be interesting as well)
 
 ## Choices
+
+Note that some choices will not be compatible with each other. In the longer run, I want to turn this into a graph with all the combinations that could make sense together.
+
+Targets:::
+* Web browsers
+* WASM->native compilers
+* WASM PaaS
+
 Compilation output:::
 * Per-module compilation (needs a linker for the generated WASM modules)
 * monolithic binary (can potentially perform cross-module optimizations, if we even want that)
@@ -22,11 +30,6 @@ Garbage collection:::
 * WASM GC 
 * JavaScript GC
 * shipping our own GC as part of the runtime
-
-Targets:::
-* Web browsers
-* WASM->native compilers
-* WASM PaaS
 
 Exceptions:::
 * WASM exceptions extension

@@ -6,22 +6,36 @@ Goals:::
 * bring the OCaml ecosystem to WASM
 * interoperate with some deliberately chosen other languages that compile to WASM (C would be a likely candidate, since interoperating with C seems to be common for OCaml code, but Rust might be interesting as well)
 
-Choices to make:::
-* Per-module compilation vs. monolithic binary
-+
-A linker for the generated WASM modules vs. linking as a step in the compiler
+## Choices
+Compilation output:::
+* Per-module compilation (needs a linker for the generated WASM modules)
+* monolithic binary (can potentially perform cross-module optimizations, if we even want that)
 
-* Where to branch off from the existing OCaml compiler: Cmm, Lambda?
+Source language:::
+* Lambda
+* Clambda
+* Cmm
+* Mach
+* Bytecode
 
-* Try to use the WASM GC or not
-+
-The answer may depend on what kind of code we actually want to run, and how important interop with the JS side of the world is in that context. Maybe the good path for us is to only use the reference types extension and not GC.
+Garbage collection:::
+* WASM GC 
+* JavaScript GC
+* shipping our own GC as part of the runtime
 
-* What embedders do we want to run on?
-+
-E.g. WASM PaaS (i.e. cloud computing with WASM, running "microservices"), WASM->native compilers, web browsers
+Targets:::
+* Web browsers
+* WASM->native compilers
+* WASM PaaS
 
-Important keywords that will help you to understand what is going on:::
+Exceptions:::
+* WASM exceptions extension
+* exception stack frames (bytecode)
+* WASM multi-return extension (return sucess or exception)
+* CPS transformation (passing continuation and exception handler through all function calls)
+
+## Important Keywords
+
 * uniform value representation, boxed values, polymorphism, no monomorphization, no type argument passing
 * 31-bit tagged integers, garbage collector distinguishing unboxed integers and pointers (word-aligned)
 

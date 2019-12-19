@@ -153,6 +153,8 @@ From https://github.com/BuckleScript/bucklescript/blob/00ad78cbcfd1132d3a5931fe7
 "Js_of_ocaml and BuckleScript have slightly different runtime encoding in several places, for example, BuckleScript encodes OCaml Array as JS Array while js_of_ocaml requires its index 0 to be of value 0."
 +
 Overview of the bucklescript compiler: https://github.com/BuckleScript/bucklescript/blob/00ad78cbcfd1132d3a5931fe760706de35e480f6/site/docsource/Compiler-overview.adoc
++
+git compare of the bucklescript fork of the ocaml compiler to the official ocaml compiler: https://github.com/ocaml/ocaml/compare/4.02...BuckleScript:4.02.3+BS
 
 * **[probably abandoned]** the Grain Language -> WASM https://github.com/grain-lang/grain
 +
@@ -304,6 +306,8 @@ description of compiler version 3.11.2's bytecode
 ....
 
 * A Scheme to WASM compiler - https://github.com/google/schism
++
+Schism allocating values on the JS side: https://github.com/WebAssembly/tool-conventions/issues/122#issuecomment-520326189
 
 * WASM tail calls proposal - https://github.com/WebAssembly/tail-call/blob/125201ced9a0f158553d08d8a20b7152f3057367/proposals/tail-call/Overview.md
 

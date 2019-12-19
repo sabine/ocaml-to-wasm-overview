@@ -316,6 +316,8 @@ Schism allocating values on the JS side: https://github.com/WebAssembly/tool-con
 Contains formal semantics for different intermediate representations in their compilation pipeline.
 +
 "A New Verified Compiler Backend for CakeML" (presentation of the overall structure and the intermediate languages of the CakeML compiler) https://cakeml.org/icfp16.pdf
++
+CakeML to WebAssembly talk https://lorenz.leutgeb.xyz/paper/cakeml-wasm-viennajs-beam.pdf
 
 * How to Represent Elm functions in Web Assembly https://dev.to/briancarroll/elm-functions-in-webassembly-50ak
 

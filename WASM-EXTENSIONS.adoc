@@ -69,6 +69,18 @@ in polymorphic languages. X. Leroy. https://xavierleroy.org/publi/data-represent
 
 * One does not need `i31ref` in order to have a uniform value representation. Instead, one can "allocate" integers in JavaScript to get an `anyref` into the WASM program. https://github.com/WebAssembly/gc/issues/53#issuecomment-545882853
 
+* Notes on https://github.com/RossTate/gc:
++
+1) Statically typed function pointers can be stored on the heap, i.e. there is no need for dynamic type checks when calling a function. However, in order to use that, we need to specify a type for every closure.
++
+2) Every heap value can have one array type field (this is nice).
++
+3) The engine decides whether to heap allocate or whether to use some pointer tagging technique to store stomething.
++
+4) There is a description of a uniform representation for values at  https://github.com/RossTate/gc/blob/master/proposals/gc/TypedFun.md.
++
+5) Generally, it looks like the compiler needs to emit a lot of type declarations in order to use the WASM GC. Reason being that people want to allow WASM engines a lot of flexibility for their GC strategy.
+
 ## Exceptions
 
 Proposal: https://github.com/WebAssembly/exception-handling/blob/master/proposals/Exceptions.md

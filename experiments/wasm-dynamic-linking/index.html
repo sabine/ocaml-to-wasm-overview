@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>WASM</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <h1>WASM</h1>
+
+    <script>
+function loadWebAssembly(files) {
+  var compiled_modules = files.map(file => fetch(file) 
+    .then(response => response.arrayBuffer())
+    .then(buffer => WebAssembly.compile(buffer))
+  );
+  
+  console.log(compiled_modules);
+
+  Promise.all(compiled_modules)
+    .then(modules => {
+      console.log(modules);
+
+      var available_exports = {imports: {}};
+
+      modules.map(module => {
+        var exports = WebAssembly.Module.exports(module);
+        console.log(exports);
+
+        // TODO: use the module names instead of "imports"
+        exports.map(ex => available_exports.imports[ex.name] = function () { alert ("oh no!");});
+      });
+
+      var instances = modules.map(module => {
+        var instance = new WebAssembly.Instance(module, available_exports);
+        console.log(instance.exports);
+        Object.assign(available_exports.imports, instance.exports);
+
+        return instance;
+      });
+
+      console.log(instances[1].exports.add_one());
+    });
+};
+
+loadWebAssembly(['exports_something.wasm', 'imports_something.wasm']);
+    </script>
+</body>
+</html>

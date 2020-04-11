@@ -185,7 +185,7 @@
   (export "callJS" (func $callJS))
   (export "storeAndLoadMem" (func $storeAndLoadMem))
   (export "storeAndLoadLocal" (func $storeAndLoadLocal))
-  (export "storeAndLoadGlobal" (func $storeAndLoadLocal))
+  (export "storeAndLoadGlobal" (func $storeAndLoadGlobal))
   (export "storeAndLoadJS" (func $storeAndLoadJS))
 
   (memory $mem 20)

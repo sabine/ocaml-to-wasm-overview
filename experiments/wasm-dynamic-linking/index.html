@@ -10,6 +10,9 @@
     <h1>WASM</h1>
 
     <script>
+
+var mem = new WebAssembly.Memory({initial:100, maximum:100});
+
 function loadWebAssembly(files) {
   var compiled_modules = files.map(file => {
     return fetch(file+".wasm") 
@@ -22,7 +25,7 @@ function loadWebAssembly(files) {
   Promise.all(compiled_modules)
     .then(modules => {
 
-      var available_exports = {};
+      var available_exports = { shared: {mem:mem} };
 
       modules.map(m => {
         var exports = WebAssembly.Module.exports(m.module);
@@ -30,6 +33,7 @@ function loadWebAssembly(files) {
         available_exports[m.name] = {};
         exports.map(ex => available_exports[m.name][ex.name] = function () { alert ("Oh no! Imported function "+m.name+"."+ex.name+" is missing!");});
       });
+
 
       var instances = modules.map(m => {
         var instance = new WebAssembly.Instance(m.module, available_exports);
@@ -42,6 +46,13 @@ function loadWebAssembly(files) {
       console.log(available_exports);
 
       console.log(instances[2].exports.go());
+
+      var x = new DataView(mem.buffer);
+      console.log(x.getInt32(0, true));
+      // second argument specifies endianness.
+      // https://stackoverflow.com/questions/7869752/javascript-typed-arrays-and-endianness
+      // apparently, the endianness of the underlying architecture is exposed
+      // to JavaScript via TypedArray
     });
 };
 

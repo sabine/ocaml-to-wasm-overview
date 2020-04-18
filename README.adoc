@@ -401,3 +401,9 @@ Using Lucet as a playground to prototype WASM implementations doesn't seem a goo
 * Multi-core ocaml compiler Wiki https://github.com/ocaml-multicore/ocaml-multicore/wiki
 +
 Garbage collector invariants, possibly helpful https://github.com/ocaml-multicore/ocaml-multicore/wiki/Garbage-collector-invariants
+
+* Boxing vs. tagging in the OCaml compiler
++
+Boxing is the act of allocating a heap block to store a primitive value. This is done by using the appropriate heap block header for the type of the primitive value. Unboxing is the reverse operation, taking a heap-allocated primitive and returning just the primitive value.
++
+Tagging is done with integers everywhere, in order to be able to store them unboxed on the heap without confusing the garbage collector (who scans the heap for pointers and will confuse integers ending with 0 with pointers).

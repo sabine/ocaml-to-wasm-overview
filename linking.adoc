@@ -1,0 +1,8 @@
+# Linking of WebAssembly modules
+
+* Wat to Asm linker ? #1133 https://github.com/WebAssembly/wabt/issues/1133i
+
+Summary: There exists an unofficial specification for "wasm object files" which is implemented by LLVM's `wasm-ld` tool. This is using C linking conventions.
+
+In case of using the WebAssembly GC extension to represent values, linking might turn out to be as simple as concatenating several modules (and dropping all imports/exports that are resolved?).
+

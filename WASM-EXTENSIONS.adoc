@@ -79,7 +79,7 @@ in polymorphic languages. X. Leroy. https://xavierleroy.org/publi/data-represent
 +
 4) There is a description of a uniform representation for values at  https://github.com/RossTate/gc/blob/master/proposals/gc/TypedFun.md.
 +
-5) Generally, it looks like the compiler needs to emit a lot of type declarations in order to use the WASM GC. Reason being that people want to allow WASM engines a lot of flexibility for their GC strategy.
+5) Generally, it looks like the compiler needs to emit a lot of type declarations in order to use the WASM GC. Reason being that people want to allow WASM engines a lot of flexibility for their GC strategy by having an abstract model of the heap.
 
 ## Exceptions
 

@@ -1,4 +1,4 @@
-files = a01_closures a02_match a03_fibonacci a04_factorial
+files = a01_closures a02_match a03_fibonacci a04_factorial c01_while
 
 all: $(files:=.cmm) $(files:=.s) $(files:=.clambda)
 	rm -rf *.cmx *.cmi *.o a.out
@@ -13,5 +13,5 @@ all: $(files:=.cmm) $(files:=.s) $(files:=.clambda)
 	ocamlopt $< -dclambda 2> $@
 
 clean:
-	rm -rf *.cmx *.cmi *.o a.out *.cmm *.s
+	rm -rf *.cmx *.cmi *.o a.out *.cmm *.s *.clambda
 

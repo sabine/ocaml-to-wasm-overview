@@ -1,6 +1,6 @@
 (module
   (type $t (func (result i32)))
-  (import "m1" "helloWorld" (func $m1.helloWorld (type $t)))
+  (import "m1" "helloWorld" (func $m1.helloWorld $t)))
 
   (func $add_one (result i32)
        (call $m1.helloWorld)

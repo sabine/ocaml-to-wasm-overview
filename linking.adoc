@@ -4,5 +4,8 @@
 
 Summary: There exists an unofficial specification for "wasm object files" which is implemented by LLVM's `wasm-ld` tool. This is using C linking conventions.
 
-In case of using the WebAssembly GC extension to represent values, linking might turn out to be as simple as concatenating several modules (and dropping all imports/exports that are resolved?).
+* WebAssembly Object File Linking https://github.com/WebAssembly/tool-conventions/blob/master/Linking.md
+
+
+* In case of using the WebAssembly GC extension to represent values, linking might turn out to be as simple as concatenating several modules (and dropping all imports/exports that are resolved?).
 

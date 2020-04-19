@@ -1,0 +1,7 @@
+Download the latest version of the Spidermonkey js-shell here:
+
+```
+https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-central/
+```
+
+In browsers, as of Apr 19, 2020, wasmTextToBinary does not work, but in the js shell, you can use it as a quick way to run `.wat` files.

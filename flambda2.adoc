@@ -8,23 +8,9 @@ This is an attempt of creating a minimal, human-readable, mathematical represent
 
 Purpose: resolve misunderstandings and improve my understanding of how Flambda 2.0 works. May serve as a draft for a formal semantics or an interpreter of Flambda 2.0.
 
-# State
+Dear reader, if you see something wrong, or you see something that can be removed, or if you can answer a question marked with QUESTION in this document, let me know.
 
-## Top-Level State
-
-### Current Continuation
-
-_body_ : Expression
-
-### Environment
-
-_env_: Environment
-
-### Heap
-
-_heap_: Ref -> Value
-
-## Expressions
+# Expressions
 
 Expression _e_ ::=
 
@@ -36,7 +22,7 @@ Expression _e_ ::=
 * `Switch` _scrutinee_ _arms_ |
 * `Invalid`
 
-### `Let`
+## `Let`
 
 _bound_vars_ ::=
 
@@ -53,7 +39,7 @@ _named_ ::=
 * `Prim` _flambda_primitive_
 * `Set_of_closures` _set_of_closures_
 
-### `Let_symbol`
+## `Let_symbol`
 
 _scoping_rule_ ::= `Syntactic` | `Dominator`
 
@@ -74,7 +60,7 @@ _static_const_ ::=
 * `Mutable_string` _string_ |
 * `Immutable_string` _string_
 
-### `Let_cont`
+## `Let_cont`
 
 
 _continuation_handler_ ::= _kinded_parameter_* _e_
@@ -86,8 +72,7 @@ _let_cont_ ::=
 * `Non_recursive` _continuation_handler_ |
 * `Recursive` _continuation_handlers_
 
-### `Apply`
-
+## `Apply`
 
 _call_kind_ ::=
 
@@ -96,7 +81,6 @@ _call_kind_ ::=
 * `C_call` _alloc_ _param_arity_ _return_arity_
 
 _alloc_ ::= B
-
 
 _flambda_arity_ ::= _flambda_kind_*
 
@@ -114,7 +98,7 @@ _callee_ ::= _simple_
 
 _exn_continuation_ ::=  _continuation_ [`(`_simple_ `,` _flambda_kind_`)`]*
 
-### `Apply_cont`
+## `Apply_cont`
 
 _raise_kind_option_ ::=
 * `None` |
@@ -127,7 +111,7 @@ _trap_action_ ::=
 * `Push` _continuation_ |
 * `Pop` _continuation_ _raise_kind_option_
 
-### `Switch`
+## `Switch`
 
 _scrutinee_ ::= _simple_
 
@@ -173,8 +157,26 @@ _flambda_kind_standard_int_or_float_ ::= `Tagged_immediate` | `Naked_immediate` 
 
 _flambda_kind_boxable_number_ ::= `Naked_float` | `Naked_int32` | `Naked_int64` | `Naked_nativeint` | `Untagged_immediate`
 
-## TODO
 
+
+# State
+
+## Top-Level State
+
+### Current Continuation
+
+_body_ : Expression
+
+### Environment
+
+_env_: Environment
+
+### Heap
+
+_heap_: Ref -> Value
+
+
+# TODO
 
 * Ref
 * Value

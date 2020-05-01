@@ -7,9 +7,8 @@
 Purpose: resolve misunderstandings on my side about how Flambda 2.0 works. May serve as a draft for a formal semantics of Flambda 2.0, but will not be completed in every detail.
 
 ## Top-Level State
-* _env_: Environment
+* _current_continuation_: ContinuationValue
 * _heap_: Ref -> Value
-* _body_: Expression
 
 ## Smaller parts that make up the top-level state
 * Continuation
@@ -17,6 +16,8 @@ Purpose: resolve misunderstandings on my side about how Flambda 2.0 works. May s
 * Ref
 * Value
 * ContinuationValue
+** _env_: Environment
+** _body_: Expression
 * Environment =
 ** _continuations_ : Continuation -> ContinuationValue
 ** _return_cont_: Continuation

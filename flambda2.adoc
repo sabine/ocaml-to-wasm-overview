@@ -15,22 +15,36 @@ Purpose: resolve misunderstandings on my side about how Flambda 2.0 works. May s
 ## Smaller parts that make up the top-level state
 * Simple _simple_ ::= _id_
 
+* Expression _e_ ::=
+** `Let` _bound_vars_ `=` _named_ `in` _e_  |
+** `Let_symbol (` _scoping_rule_ `)` _bound_symbols_ `=` _static_const_ `in` _e_ |
+** `Let_cont` TODO |
+** `Apply` TODO |
+** `Apply_cont` TODO |
+** `Switch` TODO |
+** `Invalid` TODO
+
+
+### Let
+
 * BoundVars _bound_vars_ ::=
 ** `Singleton` _var_in_binding_pos_ |
 ** `Set_of_closures` (_name_mode_, _closure_vars_)
-
-* BoundSymbols _bound_symbols_ ::=
-** `Singleton` _symbol_
-** `Sets_of_closures` [_code_and_set_of_closures_]
 
 * Named _named_ ::=
 ** `Simple` _simple_
 ** `Prim` _flambda_primitive_
 ** `Set_of_closures` _set_of_closures_
 
+### Let_symbol
+
 * ScopingRule _scoping_rule_ ::=
 ** `Syntactic` |
 ** `Dominator`
+
+* BoundSymbols _bound_symbols_ ::=
+** `Singleton` _symbol_
+** `Sets_of_closures` [_code_and_set_of_closures_]
 
 * Static Constant Declaration _static_const_ ::=
 ** `Block` _tag_ _mutable_or_immutable_ [_field_of_block_] |
@@ -43,14 +57,9 @@ Purpose: resolve misunderstandings on my side about how Flambda 2.0 works. May s
 ** `Mutable_string` _string_ |
 ** `Immutable_string` _string_
 
-* Expression _e_ ::=
-** `Let` _bound_vars_ `=` _named_ `in` _e_  |
-** `Let_symbol (` _scoping_rule_ `)` _bound_symbols_ `=` _static_const_ `in` _e_ |
-** `Let_cont` TODO |
-** `Apply` TODO |
-** `Apply_cont` TODO |
-** `Switch` TODO |
-** `Invalid` TODO
+
+
+
 * Ref
 * Value
 * Continuation

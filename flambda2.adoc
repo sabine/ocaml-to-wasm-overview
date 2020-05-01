@@ -160,14 +160,12 @@ _target_imm_ ::= _targetint_
 
 # Module
 
-A Flambda 2.0 module M consists of
+_M_ = {
 
-* a mapping of _continuation_ identifiers to _continuation_handler_
-+
-P = _continuation_ -> _continuation_handler_
-
-
-TODO: exported and imported symbols
+* _imported_symbols_ : Map(_symbol_ -> _flambda_kind),
+* _return_continuation_ : _continuation_,
+* _exn_continuation_ : _continuation_,
+* _body_ : _e_}
 
 TODO
 
@@ -185,6 +183,8 @@ TODO
 
 ## Top-Level State
 
+TODO
+
 ### Global Variables
 
 TODO
@@ -194,7 +194,7 @@ TODO
 _env_: Environment
 
 * Environment = {
-** _continuations_ : _continuation_ -> ContinuationValue,
+** _continuations_ : _continuation_ -> _continuation_handler_,
 ** _return_cont_: _continuation_,
 ** _exn_cont_: _continuation_,
 ** _current_body_ : Expression }
@@ -202,4 +202,17 @@ _env_: Environment
 ### Heap
 
 _heap_: Ref -> Value
+
+TODO
+
+# Semantics
+
+## Initial State
+
+TODO
+
+## Step function
+
+TODO
+
 

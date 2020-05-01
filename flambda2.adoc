@@ -44,17 +44,17 @@ _scoping_rule_ ::= `Syntactic` | `Dominator`
 _bound_symbols_ ::=
 
 * `Singleton` _symbol_
-* `Sets_of_closures` [_code_and_set_of_closures_]^*^
+* `Sets_of_closures` [_code_and_set_of_closures_]*
 
 _static_const_ ::=
 
-* `Block` _tag_ _mutable_or_immutable_ [_field_of_block_]^*^ |
-* `Sets_of_closures` [_code_and_set_of_closures_]^*^ |
+* `Block` _tag_ _mutable_or_immutable_ [_field_of_block_]* |
+* `Sets_of_closures` [_code_and_set_of_closures_]* |
 * `Boxed_float` [_B^64^_ | _variable_] |
 * `Boxed_int32` [_B^32^_ | _variable_]  |
 * `Boxed_int64` [_B^64^_ | _variable_]  |
 * `Boxed_nativeint` [_targetint_ | _variable_]  |
-* `Immutable_float_array` [_B^64^_ | _variable_]^*^ |
+* `Immutable_float_array` [_B^64^_ | _variable_]* |
 * `Mutable_string` _string_ |
 * `Immutable_string` _string_
 
@@ -65,7 +65,7 @@ _bindable_continuation_ :== TODO
 
 _continuation_ :== TODO
 
-_continuation_handler_ ::= [_kinded_parameter_]^*^ _e_
+_continuation_handler_ ::= [_kinded_parameter_]* _e_
 
 _continuation_handlers_ : [`(` _continuation_ `,` _continuation_handler_ `)`]
 

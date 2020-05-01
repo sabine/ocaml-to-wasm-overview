@@ -4,6 +4,8 @@
 
 # Sketch of Flambda 2.0 Semantics
 
+This is an attempt of creating a minimal mathematical representation of Flambda 2.0. I tried to choose names that most accurately describe what the things are, if there's something wrong, I'll be happy to correct.
+
 Purpose: resolve misunderstandings on my side about how Flambda 2.0 works. May serve as a draft for a formal semantics of Flambda 2.0, but will not be completed in every detail.
 
 ## Top-Level State
@@ -11,18 +13,30 @@ Purpose: resolve misunderstandings on my side about how Flambda 2.0 works. May s
 * _heap_: Ref -> Value
 
 ## Smaller parts that make up the top-level state
-* Continuation
-* LetExpression _let_e_ ::= `Singleton` _var_in_binding_pos_ | `Set_of_closures` (_name_mode_, _closure_vars_)
+* BoundVar _bound_var_ ::=
+** `Singleton` _var_in_binding_pos_ |
+** `Set_of_closures` (_name_mode_, _closure_vars_)
+
+* BoundSymbols _bound_symbols_ ::=
+** `Singleton` _symbol_
+** `Sets_of_closures` _code_and_set_of_closures_list_
+
+* Named _named_ ::=
+** `Simple` _simple_
+** `Prim` _flambda_primitive_
+** `Set_of_closures` _set_of_closures_
+
 * Expression _e_ ::=
-** `Let` _let_e_ |
-** `Let_symbol` _let_s_ |
-** `Let_cont` _let_cont_ |
-** `Apply` _apply_ |
-** `Apply_cont` _apply_cont_ |
-** `Switch` _switch_ |
-** `Invalid`
+** `Let` _bound_var_ = _named_ `in` _e_  |
+** `Let_symbol` _bound_symbols_ =  TODO |
+** `Let_cont` TODO |
+** `Apply` TODO |
+** `Apply_cont` TODO |
+** `Switch` TODO |
+** `Invalid` TODO
 * Ref
 * Value
+* Continuation
 * ContinuationValue
 ** _env_: Environment
 ** _body_: Expression

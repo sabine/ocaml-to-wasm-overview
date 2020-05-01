@@ -16,7 +16,9 @@ Dear reader, if you see something wrong, or you see something that can be remove
 
 ### Identifier
 
-_id_ is a name.
+_id_ is a name that is used to refer to something in the environment.
+
+QUESTION: is this the correct intuition?
 
 ### Simple
 
@@ -123,6 +125,8 @@ _call_kind_ ::=
 * `Method` _method_kind_ `of` _simple |_
 * `C_call` _alloc_ _param_arity_ _return_arity_
 
+_method_kind_ ::= `Self` | `Public` | `Cached`
+
 _alloc_ ::= B
 
 _flambda_arity_ ::= _flambda_kind_*
@@ -164,34 +168,35 @@ _target_imm_ ::= _targetint_
 
 
 
-# State
+# Program State
+
+## Basic Definitions
+
+### Reference
+
+Ref is the set of abstract references to the heap. We do not care how exactly they look like.
+
+### (Heap) Value
+
+TODO
 
 ## Top-Level State
-
-### Current Continuation
-
-_body_ : Expression
 
 ### Environment
 
 _env_: Environment
 
+* Environment = {
+** _continuations_ : _continuation_ -> ContinuationValue,
+** _return_cont_: _continuation_,
+** _exn_cont_: _continuation_ }
+
 ### Heap
 
 _heap_: Ref -> Value
 
+### Control state
 
-# TODO
-
-* Ref
-* Value
-* Continuation
-* ContinuationValue
-** _env_: Environment
-** _body_: Expression
-* Environment =
-** _continuations_ : Continuation -> ContinuationValue
-** _return_cont_: Continuation
-** _exn_cont_: Continuation
+_current_body_ : Expression
 
 

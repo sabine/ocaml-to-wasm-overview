@@ -4,7 +4,7 @@
 
 # Sketch of Flambda 2.0 Semantics
 
-This is an attempt of creating a minimal mathematical representation of Flambda 2.0. I tried to choose names that most accurately describe what the things are, if there's something wrong, I'll be happy to correct.
+This is an attempt of creating a minimal mathematical representation of Flambda 2.0. I tried to choose names that most accurately describe what the things are. Also, I omit anything that is not absolutely required for the semantics. If there's something wrong, I'll be happy to correct.
 
 Purpose: resolve misunderstandings on my side about how Flambda 2.0 works. May serve as a draft for a formal semantics of Flambda 2.0, but will not be completed in every detail.
 
@@ -13,41 +13,41 @@ Purpose: resolve misunderstandings on my side about how Flambda 2.0 works. May s
 * _heap_: Ref -> Value
 
 ## Smaller parts that make up the top-level state
-Simple _simple_ ::= _id_
+_simple_ ::= _id_
 
 Expression _e_ ::=
 
 * `Let` _bound_vars_ `=` _named_ `in` _e_  |
 * `Let_symbol (` _scoping_rule_ `)` _bound_symbols_ `=` _static_const_ `in` _e_ |
-* `Let_cont` TODO |
+* `Let_cont` TODO  |
 * `Apply` TODO |
 * `Apply_cont` TODO |
 * `Switch` TODO |
 * `Invalid` TODO
 
-### Let
+### `Let`
 
-BoundVars _bound_vars_ ::=
+_bound_vars_ ::=
 
 * `Singleton` _var_in_binding_pos_ |
 * `Set_of_closures` (_name_mode_, _closure_vars_)
 
-Named _named_ ::=
+_named_ ::=
 
 * `Simple` _simple_
 * `Prim` _flambda_primitive_
 * `Set_of_closures` _set_of_closures_
 
-### Let_symbol
+### `Let_symbol`
 
-ScopingRule _scoping_rule_ ::= `Syntactic` | `Dominator`
+_scoping_rule_ ::= `Syntactic` | `Dominator`
 
-BoundSymbols _bound_symbols_ ::=
+_bound_symbols_ ::=
 
 * `Singleton` _symbol_
 * `Sets_of_closures` [_code_and_set_of_closures_]
 
-Static Constant Declaration _static_const_ ::=
+_static_const_ ::=
 
 * `Block` _tag_ _mutable_or_immutable_ [_field_of_block_] |
 * `Sets_of_closures` [_code_and_set_of_closures_] |
@@ -59,8 +59,19 @@ Static Constant Declaration _static_const_ ::=
 * `Mutable_string` _string_ |
 * `Immutable_string` _string_
 
+### `Let_cont`
+
+_let_cont_ ::=
+
+* `Non_recursive` _non_recursive_let_cont_handler_ |
+* `Recursive` _recursive_let_cont_handlers_
+
+_continuation_and_body_ = _bindable_continuation * _e_
+_non_recursive_let_cont_handler_ ::= _continuation_and_body_ * _continuation_handler_
 
 
+_continuation_handlers_ : [_continuation_handler_ <_continuation_>]
+_recursive_let_cont_handlers_ ::= _bindable_continuation_ * _e_ * _continuation_handlers_
 
 
 * Ref

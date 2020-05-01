@@ -32,12 +32,15 @@ Purpose: resolve misunderstandings on my side about how Flambda 2.0 works. May s
 ** `Syntactic` |
 ** `Dominator`
 
-* StaticConst _static_const_ ::=
+* Static Constant Declaration _static_const_ ::=
 ** `Block` _tag_ _mutable_or_immutable_ [_field_of_block_] |
-** `Sets_of_closures` [_code_and_set_of_closures_]
-** `Boxed_float` Numbers.Float_by_bit_pattern.t Or_variable.t
-**  | Boxed_int32 of Int32.t Or_variable.t
-**  | Boxed_int64 of Int64.t Or_variable.t
+** `Sets_of_closures` [_code_and_set_of_closures_] |
+** `Boxed_float` _B^64^_ |
+** `Boxed_float` _variable_ |
+** `Boxed_int32` _B^32^_ |
+** `Boxed_int32` _variable_ |
+** `Boxed_int64` _B^64^_ |
+** `Boxed_int64` _variable_ |
 **  | Boxed_nativeint of Targetint.t Or_variable.t
 **  | Immutable_float_array of Numbers.Float_by_bit_pattern.t Or_variable.t list
 **  | Mutable_string of { initial_value : string; }
@@ -45,7 +48,7 @@ Purpose: resolve misunderstandings on my side about how Flambda 2.0 works. May s
 
 * Expression _e_ ::=
 ** `Let` _bound_vars_ `=` _named_ `in` _e_  |
-** `Let_symbol (` _scoping_rule_ `)` _bound_symbols_ `=` _static_const_ `in` _e_ TODO |
+** `Let_symbol (` _scoping_rule_ `)` _bound_symbols_ `=` _static_const_ `in` _e_ |
 ** `Let_cont` TODO |
 ** `Apply` TODO |
 ** `Apply_cont` TODO |

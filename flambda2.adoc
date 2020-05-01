@@ -8,9 +8,52 @@ This is an attempt of creating a minimal, human-readable, mathematical represent
 
 Purpose: resolve misunderstandings and improve my understanding of how Flambda 2.0 works. May serve as a draft for a formal semantics or an interpreter of Flambda 2.0.
 
-Dear reader, if you see something wrong, or you see something that can be removed, or if you can answer a question marked with QUESTION in this document, let me know.
+Dear reader, if you see something wrong, or you see something that can be removed, let me know.
 
-# Expressions
+# AST
+
+## Basic Definitions
+
+### Identifier
+
+_id_ is a name.
+
+### Simple
+
+_simple_ ::= _id_
+
+QUESTION: what does simple as an identifier refer to? Does this refer to variables whose values are "simple"?
+
+### Variable
+
+_variable_ ::= _id_
+
+_variable_ is an identifier that refers to a variable in the environment
+
+### Continuation
+
+_continuation_ :== _id_
+
+_continuation_ is an identifier that refers to a continuation handler in the environment.
+
+### Kind
+
+_flambda_kind_ ::=
+
+* `Value` |
+* `Naked_number` |
+* `Fabricated`
+
+_naked_number_kind_ ::= `Naked_immediate` | `Naked_float` | `Naked_int32` | `Naked_int64` | `Naked_nativeint`
+
+_flambda_kind_standard_int_ ::= `Tagged_immediate` | `Naked_immediate` | `Naked_int32` | `Naked_int64` | `Naked_nativeint`
+
+_flambda_kind_standard_int_or_float_ ::= `Tagged_immediate` | `Naked_immediate` | `Naked_float` | `Naked_int32` | `Naked_int64` | `Naked_nativeint`
+
+_flambda_kind_boxable_number_ ::= `Naked_float` | `Naked_int32` | `Naked_int64` | `Naked_nativeint` | `Untagged_immediate`
+
+
+## Expressions
 
 Expression _e_ ::=
 
@@ -22,7 +65,7 @@ Expression _e_ ::=
 * `Switch` _scrutinee_ _arms_ |
 * `Invalid`
 
-## `Let`
+### `Let`
 
 _bound_vars_ ::=
 
@@ -39,7 +82,7 @@ _named_ ::=
 * `Prim` _flambda_primitive_
 * `Set_of_closures` _set_of_closures_
 
-## `Let_symbol`
+### `Let_symbol`
 
 _scoping_rule_ ::= `Syntactic` | `Dominator`
 
@@ -60,7 +103,7 @@ _static_const_ ::=
 * `Mutable_string` _string_ |
 * `Immutable_string` _string_
 
-## `Let_cont`
+### `Let_cont`
 
 
 _continuation_handler_ ::= _kinded_parameter_* _e_
@@ -72,7 +115,7 @@ _let_cont_ ::=
 * `Non_recursive` _continuation_handler_ |
 * `Recursive` _continuation_handlers_
 
-## `Apply`
+### `Apply`
 
 _call_kind_ ::=
 
@@ -98,7 +141,7 @@ _callee_ ::= _simple_
 
 _exn_continuation_ ::=  _continuation_ [`(`_simple_ `,` _flambda_kind_`)`]*
 
-## `Apply_cont`
+### `Apply_cont`
 
 _raise_kind_option_ ::=
 * `None` |
@@ -111,51 +154,13 @@ _trap_action_ ::=
 * `Push` _continuation_ |
 * `Pop` _continuation_ _raise_kind_option_
 
-## `Switch`
+### `Switch`
 
 _scrutinee_ ::= _simple_
 
 _arms_ ::= `(` _target_imm_ `, Apply_cont` _continuation_ `(` _arg_* `)` _trap_action_ `)`
 
 _target_imm_ ::= _targetint_
-
-# Basic Definitions
-
-## Identifier
-
-_id_ is a name.
-
-## Simple
-
-_simple_ ::= _id_
-
-If I understand this correctly, _simple_ is an identifier that refers to a variable. Please confirm or refute.
-
-## Variable
-
-_variable_ ::= _id_
-
-## Continuation
-
-_continuation_ :== _id_
-
-A _continuation_ is an identifier that refers to a continuation handler in the environment.
-
-## Kind
-
-_flambda_kind_ ::=
-
-* `Value` |
-* `Naked_number` |
-* `Fabricated`
-
-_naked_number_kind_ ::= `Naked_immediate` | `Naked_float` | `Naked_int32` | `Naked_int64` | `Naked_nativeint`
-
-_flambda_kind_standard_int_ ::= `Tagged_immediate` | `Naked_immediate` | `Naked_int32` | `Naked_int64` | `Naked_nativeint`
-
-_flambda_kind_standard_int_or_float_ ::= `Tagged_immediate` | `Naked_immediate` | `Naked_float` | `Naked_int32` | `Naked_int64` | `Naked_nativeint`
-
-_flambda_kind_boxable_number_ ::= `Naked_float` | `Naked_int32` | `Naked_int64` | `Naked_nativeint` | `Untagged_immediate`
 
 
 

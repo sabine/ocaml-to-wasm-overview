@@ -4,7 +4,7 @@
 
 # Sketch of Flambda 2.0 Semantics
 
-This is an attempt of creating a minimal mathematical representation of Flambda 2.0. I tried to choose names that most accurately describe what the things are. Also, I omit anything that is not absolutely required for the semantics. If there's something wrong, I'll be happy to correct.
+This is an attempt of creating a minimal, human-readable, mathematical representation of Flambda 2.0. I tried to choose names that most accurately describe what things are. Anything that is not absolutely required for the semantics is omitted. If there's something wrong, I'll be happy to correct.
 
 Purpose: resolve misunderstandings on my side about how Flambda 2.0 works. May serve as a draft for a formal semantics of Flambda 2.0, but will not be completed in every detail.
 
@@ -12,8 +12,7 @@ Purpose: resolve misunderstandings on my side about how Flambda 2.0 works. May s
 * _current_continuation_: ContinuationValue
 * _heap_: Ref -> Value
 
-## Smaller parts that make up the top-level state
-_simple_ ::= _id_
+## Expression
 
 Expression _e_ ::=
 
@@ -66,6 +65,8 @@ _let_cont_ ::=
 * `Non_recursive` _non_recursive_let_cont_handler_ |
 * `Recursive` _recursive_let_cont_handlers_
 
+_continuation_handler_ ::= [_kinded_parameter_] * _e_
+
 _continuation_and_body_ = _bindable_continuation_ * _e_
 
 _non_recursive_let_cont_handler_ ::= _continuation_and_body_ * _continuation_handler_
@@ -75,6 +76,10 @@ _continuation_handlers_ : _continuation_ => _continuation_handler_
 
 _recursive_let_cont_handlers_ ::= _bindable_continuation_ * _e_ * _continuation_handlers_
 
+
+## TODO
+
+_simple_ ::= _id_
 
 * Ref
 * Value

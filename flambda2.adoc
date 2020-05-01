@@ -16,8 +16,9 @@ Purpose: resolve misunderstandings on my side about how Flambda 2.0 works. May s
 * Expression
 * Ref
 * Value
-* Environment
-** _k_: Continuation
-** _e_: Continuation
+* Environment =
+** _return_cont_: Continuation_name
+** _exn_cont_: Continuation_name
+** _continuations_ : Continuation_name -> Continuation
 
 

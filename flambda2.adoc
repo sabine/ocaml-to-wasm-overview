@@ -23,7 +23,7 @@ Expression _e_ ::=
 * `Let_cont` _bindable_continuation_ `=` _let_cont_ `in` _e_  |
 * `Apply` _call_kind_ _callee_ `(` _arg_* `)` _continuation_ _exn_continuation_ |
 * `Apply_cont` _continuation_ `(` _arg_* `)` _trap_action_ |
-* `Switch` TODO |
+* `Switch` _scrutinee_ _arms_ |
 * `Invalid` TODO
 
 ### `Let`
@@ -112,6 +112,12 @@ _trap_action_ ::=
 
 * `Push` _continuation_ |
 * `Pop` _continuation_ _raise_kind_option_
+
+### `Switch`
+
+_scrutinee_ ::= _simple_
+
+_arms_ ::= `(` _target_imm_ `, Apply_cont` _continuation_ `(` _arg_* `)` _trap_action_ `)`
 
 ## TODO
 

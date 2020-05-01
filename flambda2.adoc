@@ -12,7 +12,14 @@ Purpose: resolve misunderstandings on my side about how Flambda 2.0 works. May s
 
 ## Smaller parts that make up the top-level state
 * Continuation
-* Expression
+* Expression _e_ ::=
+** `Let` _let_e_
+** `Let_symbol` _let\_s_
+** `Let_cont` _let_cont_
+** `Apply` _apply_
+** `Apply_cont` _apply\_cont_
+** `Switch` _switch_
+** `Invalid`
 * Ref
 * Value
 * ContinuationValue

@@ -4,7 +4,7 @@
 
 # Sketch of Flambda 2.0 Semantics
 
-This is an attempt of creating a minimal, human-readable, mathematical representation of Flambda 2.0. I tried to choose names that most accurately describe what things are. Anything that is not absolutely required for the semantics is omitted. If there's something wrong, I'll be happy to correct.
+This is an attempt of creating a minimal, human-readable, mathematical representation of Flambda 2.0. I tried to choose names that most accurately describe what things are. Anything that is not absolutely required for the semantics is omitted.
 
 Purpose: resolve misunderstandings and improve my understanding of how Flambda 2.0 works. May serve as a draft for a formal semantics or an interpreter of Flambda 2.0.
 
@@ -38,11 +38,7 @@ _continuation_ is an identifier that refers to a continuation handler in the env
 
 ### Kind
 
-_flambda_kind_ ::=
-
-* `Value` |
-* `Naked_number` |
-* `Fabricated`
+_flambda_kind_ ::= `Value` | `Naked_number` | `Fabricated`
 
 _naked_number_kind_ ::= `Naked_immediate` | `Naked_float` | `Naked_int32` | `Naked_int64` | `Naked_nativeint`
 
@@ -162,6 +158,18 @@ _arms_ ::= `(` _target_imm_ `, Apply_cont` _continuation_ `(` _arg_* `)` _trap_a
 _target_imm_ ::= _targetint_
 
 
+# Module
+
+A Flambda 2.0 module M consists of
+
+* a mapping of _continuation_ identifiers to _continuation_handler_
++
+P = _continuation_ -> _continuation_handler_
+
+
+TODO: exported and imported symbols
+
+TODO
 
 # Program State
 
@@ -176,14 +184,6 @@ Ref is the set of abstract references to the heap. We do not care how exactly th
 TODO
 
 ## Top-Level State
-
-### Program
-
-A Flambda 2.0 program is a mapping of _continuation_ identifiers to _continuation_handler_
-
-P = _continuation_ -> _continuation_handler_
-
-TODO
 
 ### Global Variables
 

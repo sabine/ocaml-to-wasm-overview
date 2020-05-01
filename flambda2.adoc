@@ -18,7 +18,7 @@ Expression _e_ ::=
 
 * `Let` _bound_vars_ `=` _named_ `in` _e_  |
 * `Let_symbol (` _scoping_rule_ `)` _bound_symbols_ `=` _static_const_ `in` _e_ |
-* `Let_cont` TODO  |
+* `Let_cont` _bindable_continuation_ `=` _let_cont_ `in` _e_  |
 * `Apply` TODO |
 * `Apply_cont` TODO |
 * `Switch` TODO |
@@ -60,22 +60,19 @@ _static_const_ ::=
 
 ### `Let_cont`
 
-_let_cont_ ::=
 
-* `Non_recursive` _non_recursive_let_cont_handler_ |
-* `Recursive` _recursive_let_cont_handlers_
+_bindable_continuation_ :== TODO
+
+_continuation_ :== TODO
 
 _continuation_handler_ ::= [_kinded_parameter_] * _e_
 
-_continuation_and_body_ = _bindable_continuation_ * _e_
+_continuation_handlers_ : [`(` _continuation_ `,` _continuation_handler_ `)`]
 
-_non_recursive_let_cont_handler_ ::= _continuation_and_body_ * _continuation_handler_
+_let_cont_ ::=
 
-
-_continuation_handlers_ : _continuation_ => _continuation_handler_
-
-_recursive_let_cont_handlers_ ::= _bindable_continuation_ * _e_ * _continuation_handlers_
-
+* `Non_recursive` _continuation_handler_ |
+* `Recursive` _continuation_handlers_
 
 ## TODO
 

@@ -1,0 +1,19 @@
+:toc:
+:toclevels: 5
+
+
+# Sketch of Flambda 2.0 Semantics
+
+Purpose: resolve misunderstandings on my side about how Flambda 2.0 works. May serve as a draft for a formal semantics of Flambda 2.0, but will not be completed in every detail.
+
+## Top-Level State
+* env: Environment
+** k: Continuation
+** e: Continuation
+* h: Ref -> Value
+* Current function body
+
+## Smaller parts that make up the top-level state
+* Continuation
+* Expression
+

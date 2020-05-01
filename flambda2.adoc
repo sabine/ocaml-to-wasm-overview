@@ -18,13 +18,11 @@ Dear reader, if you see something wrong, or you see something that can be remove
 
 _id_ is a name that is used to refer to something in the environment.
 
-QUESTION: is this the correct intuition?
-
 ### Simple
 
 _simple_ ::= _id_
 
-QUESTION: what does simple as an identifier refer to? Does this refer to variables whose values are "simple"?
+QUESTION: what does simple as an identifier refer to? Does this refer to variables whose value is known to be "simple"? How is this different from _variable_?
 
 ### Variable
 
@@ -107,8 +105,9 @@ _static_const_ ::=
 
 ### `Let_cont`
 
+_kinded_parameter_ ::= _variable_ : _flambda_kind_
 
-_continuation_handler_ ::= _kinded_parameter_* _e_
+_continuation_handler_ ::= `cont_handler` (_kinded_parameter_*, _e_)
 
 _continuation_handlers_ : [`(` _continuation_ `,` _continuation_handler_ `)`]*
 
@@ -143,15 +142,11 @@ _function_call_ ::=
 
 _callee_ ::= _simple_
 
-_exn_continuation_ ::=  _continuation_ [`(`_simple_ `,` _flambda_kind_`)`]*
+_exn_continuation_ ::=  _continuation_ [`(` _simple_ `,` _flambda_kind_`)`]*
 
 ### `Apply_cont`
 
-_raise_kind_option_ ::=
-* `None` |
-* `Some Regular` |
-* `Some Reraise` |
-* `Some No_trace`
+_raise_kind_option_ ::= `None` | `Some Regular` | `Some Reraise` | `Some No_trace`
 
 _trap_action_ ::=
 
@@ -182,6 +177,18 @@ TODO
 
 ## Top-Level State
 
+### Program
+
+A Flambda 2.0 program is a mapping of _continuation_ identifiers to _continuation_handler_
+
+P = _continuation_ -> _continuation_handler_
+
+TODO
+
+### Global Variables
+
+TODO
+
 ### Environment
 
 _env_: Environment
@@ -189,14 +196,10 @@ _env_: Environment
 * Environment = {
 ** _continuations_ : _continuation_ -> ContinuationValue,
 ** _return_cont_: _continuation_,
-** _exn_cont_: _continuation_ }
+** _exn_cont_: _continuation_,
+** _current_body_ : Expression }
 
 ### Heap
 
 _heap_: Ref -> Value
-
-### Control state
-
-_current_body_ : Expression
-
 

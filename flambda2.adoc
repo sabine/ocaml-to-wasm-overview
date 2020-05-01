@@ -103,7 +103,7 @@ _static_const_ ::=
 
 _kinded_parameter_ ::= _variable_ : _flambda_kind_
 
-_continuation_handler_ ::= `cont_handler` (_kinded_parameter_*, _e_)
+_continuation_handler_ ::= `cont_handler` _kinded_parameter_* `.` _e_
 
 _continuation_handlers_ : [`(` _continuation_ `,` _continuation_handler_ `)`]*
 
@@ -138,7 +138,7 @@ _function_call_ ::=
 
 _callee_ ::= _simple_
 
-_exn_continuation_ ::=  _continuation_ [`(` _simple_ `,` _flambda_kind_`)`]*
+_exn_continuation_ ::=  _continuation_ [`(` _simple_ `,` _flambda_kind_ `)`]*
 
 ### `Apply_cont`
 

@@ -8,6 +8,8 @@ This is an attempt of creating a minimal, human-readable, mathematical represent
 
 Purpose: resolve misunderstandings on my side about how Flambda 2.0 works. May serve as a draft for a formal semantics of Flambda 2.0, but will not be completed in every detail.
 
+# State
+
 ## Top-Level State
 * _current_continuation_: ContinuationValue
 * _heap_: Ref -> Value

@@ -8,12 +8,16 @@ Purpose: resolve misunderstandings on my side about how Flambda 2.0 works. May s
 
 ## Top-Level State
 * _env_: Environment
-** _k_: Continuation
-** _e_: Continuation
 * _h_: Ref -> Value
-* Current function body
+* _b_: Current function body
 
 ## Smaller parts that make up the top-level state
 * Continuation
 * Expression
+* Ref
+* Value
+* Environment
+** _k_: Continuation
+** _e_: Continuation
+
 

@@ -75,27 +75,28 @@ _let_cont_ ::=
 
 ### Apply
 
-_alloc_ ::= B
 
 _call_kind_ ::=
 
 * `Function` _function_call_ |
-* `Method` _method_kind_ `on` _simple_
+* `Method` _method_kind_ `on` _simple |_
 * `C_call` _alloc_ _param_arity_ _return_arity_
 
-_return_arity_ ::= _flambda_arity_
+_alloc_ ::= B
 
 _param_arity_ ::= _flambda_arity_
+
+_return_arity_ ::= _flambda_arity_
 
 _function_call_ ::=
 
 * `Direct` _code_id_ _closure_id_ _return_arity_ |
-* `Indirect_unknown_arity`
+* `Indirect_unknown_arity` |
 * `Indirect_known_arity` _param_arity_ _return_arity_
 
 _callee_ ::= _simple_
 
-_exn_continuation_ ::=  _continuation_ (_simple_,_flambda_kind_)*
+_exn_continuation_ ::=  _continuation_ [`(`_simple_ `,` _flambda_kind_`)`]*
 
 
 

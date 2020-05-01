@@ -84,6 +84,9 @@ _call_kind_ ::=
 
 _alloc_ ::= B
 
+
+_flambda_arity_ ::= _flambda_kind_*
+
 _param_arity_ ::= _flambda_arity_
 
 _return_arity_ ::= _flambda_arity_
@@ -117,9 +120,31 @@ _scrutinee_ ::= _simple_
 
 _arms_ ::= `(` _target_imm_ `, Apply_cont` _continuation_ `(` _arg_* `)` _trap_action_ `)`
 
-## TODO
+# Other Definitions
+
+## Simple
 
 _simple_ ::= _id_
+
+
+## Kind
+
+_flambda_kind_ ::=
+
+* `Value` |
+* `Naked_number` |
+* `Fabricated`
+
+_naked_number_kind_ ::= `Naked_immediate` | `Naked_float` | `Naked_int32` | `Naked_int64` | `Naked_nativeint`
+
+_flambda_kind_standard_int_ ::= `Tagged_immediate` | `Naked_immediate` | `Naked_int32` | `Naked_int64` | `Naked_nativeint`
+
+_flambda_kind_standard_int_or_float_ ::= `Tagged_immediate` | `Naked_immediate` | `Naked_float` | `Naked_int32` | `Naked_int64` | `Naked_nativeint`
+
+_flambda_kind_boxable_number_ ::= `Naked_float` | `Naked_int32` | `Naked_int64` | `Naked_nativeint` | `Untagged_immediate`
+
+## TODO
+
 
 * Ref
 * Value

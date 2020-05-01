@@ -6,13 +6,23 @@
 
 This is an attempt of creating a minimal, human-readable, mathematical representation of Flambda 2.0. I tried to choose names that most accurately describe what things are. Anything that is not absolutely required for the semantics is omitted. If there's something wrong, I'll be happy to correct.
 
-Purpose: resolve misunderstandings on my side about how Flambda 2.0 works. May serve as a draft for a formal semantics of Flambda 2.0.
+Purpose: resolve misunderstandings on my side about how Flambda 2.0 works. May serve as a draft for a formal semantics or an interpreter of Flambda 2.0.
 
 # State
 
 ## Top-Level State
-* _current_continuation_: ContinuationValue
-* _heap_: Ref -> Value
+
+### Current Continuation
+
+_body_ : Expression
+
+### Environment
+
+_env_: Environment
+
+### Heap
+
+_heap_: Ref -> Value
 
 ## Expressions
 
@@ -62,7 +72,6 @@ _static_const_ ::=
 
 ### `Let_cont`
 
-_continuation_ :== _id_
 
 _continuation_handler_ ::= _kinded_parameter_* _e_
 
@@ -120,7 +129,9 @@ _scrutinee_ ::= _simple_
 
 _arms_ ::= `(` _target_imm_ `, Apply_cont` _continuation_ `(` _arg_* `)` _trap_action_ `)`
 
-# Other Definitions
+_target_imm_ ::= _targetint_
+
+# Basic Definitions
 
 ## Identifier
 
@@ -130,6 +141,13 @@ _id_ is a name.
 
 _simple_ ::= _id_
 
+If I understand this correctly, _simple_ is an identifier that refers to a variable. Please confirm or refute.
+
+## Continuation
+
+_continuation_ :== _id_
+
+A _continuation_ is an identifier that refers to a continuation handler in the environment.
 
 ## Kind
 

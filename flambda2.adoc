@@ -99,6 +99,12 @@ _static_const_ ::=
 * `Mutable_string` _string_ |
 * `Immutable_string` _string_
 
+_field_of_block_ ::=
+
+* `Symbol` _symbol_ |
+* `Tagged_immediate` _target_imm_ |
+* `Dynamically_computed` _variable_
+
 ### `Let_cont`
 
 _kinded_parameter_ ::= _variable_ : _flambda_kind_
@@ -162,7 +168,7 @@ _target_imm_ ::= _targetint_
 
 _M_ = {
 
-* _imported_symbols_ : Map(_symbol_ -> _flambda_kind),
+* _imported_symbols_ : Map(_symbol_ -> _flambda_kind_),
 * _return_continuation_ : _continuation_,
 * _exn_continuation_ : _continuation_,
 * _body_ : _e_}

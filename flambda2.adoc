@@ -225,7 +225,7 @@ I don't know if this is sufficient to describe all the different heap blocks the
 
 I have the suspicion, that it might make sense to make a more fine-grained model that takes into account the different kinds of tags that come with specific assumptions about the block. I'm holding off on that for now, though.
 
-It seems that in Flambda 2.0, the closure representation does not contain the dreaded infix blocks anymore (which would have made the heap model more complex than this). Flambda has this nice representation of closures operationg `Project_var` and `Select_closure`. Maybe, if this turns out to be useful, this can be used to add a more abstract representation of closures here. Maybe not.
+It seems that in Flambda 2.0, the closure representation does not contain the dreaded infix blocks anymore (which would have made the heap model more complex than this). Flambda has closure operations `Project_var` and `Select_closure`. Maybe, if this turns out to be useful, this can be used to add a more abstract representation of closures here. Maybe not.
 
 ## Top-Level State
 
@@ -235,7 +235,7 @@ Environment = {
 * _continuations_ : _continuation_ ⇀ _continuation_handler_,
 * _return_cont_: _continuation_,
 * _exn_cont_: _continuation_,
-* _current_body_ : Expression }
+* _current_body_ : _e_ }
 
 Heap = Ref ⇀ Value
 
@@ -263,6 +263,8 @@ _env0_ (_C_) = {
 _heap_ = ∅ 
 
 The initial heap is empty.
+
+TODO: I need to somehow insert here the notion of the imported global symbols being available. Reason being that evaluation of imported global symbols depends on whatever their semantics is.
 
 ## Step function
 

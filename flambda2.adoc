@@ -210,7 +210,9 @@ _heap_field_ ::=
 
 I don't know if this is sufficient to describe all the different heap blocks there are.
 
-I do have the suspicion, that it might make sense to make a more fine-grained model that takes into account the different tags that each come with specific assumptions about the block, I assume. In particular, how to model closure blocks and their Infix blocks in an abstract sense is unclear to me, at this point.
+I have the suspicion, that it might make sense to make a more fine-grained model that takes into account the different kinds of tags that come with specific assumptions about the block.
+
+In particular, I'm not sure how to deal with the "set of closures" blocks and their infix closure blocks. In principle, I can represent them here, as the infix blocks can be represented by means of ordinary references. I know that the OCaml closure representation on linear memory is optimized in such a way that the infix closure blocks are inlined into the larger "set of closures" block. It seems likely that on Flambda 2.0, this inlined representation of closure blocks in a set-of-closures block is already assumed. In this case, this abstract heap model will not work, and I need to add a special case for "set of closures" blocks.
 
 ## Top-Level State
 

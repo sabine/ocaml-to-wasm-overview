@@ -211,7 +211,7 @@ On WASM, this specializes to: a `funcref` or an index into a global function tab
 
 Here is an attempt to describe what a heap value from the POV of Flambda 2.0 looks like, in the most general sense:
 
-Value = {(x~1~, ..., x~n~) | x~i~ ∈ _heap_field_*}
+Value = {(x~1~, ..., x~n~) | x~i~ ∈ _heap_field_, 1<i<n, n ∈ ℕ}
 
 _heap_field_ ::=
 

@@ -189,7 +189,7 @@ I assume that _return_continuation_ and _exn_continuation_ act as placeholders f
 
 The _body_ of the compilation unit is the Flambda 2.0 expression that corresponds to all OCaml code of the file. So, this _body_ will likely define some global symbols and assign values to them.
 
-At initialization, the _body_ is run with an environment that contains all the necessary information about the symbols imported from other files. That means, in order to initialize a compilation unit, all the other compilation units that it depends on must be initialized beforehand.
+To initialize the compilation unit at runtime, the _body_ is run with an environment that contains all the necessary information about the symbols imported from other files. That means, in order to initialize a compilation unit, all the other compilation units that it depends on must be initialized beforehand.
 
 # Program State
 
@@ -211,7 +211,7 @@ On WASM, this specializes to: a `funcref` or an index into a global function tab
 
 Here is an attempt to describe what a heap value from the POV of Flambda 2.0 looks like, in the most general sense:
 
-A Value _v_ is a sequence of _heap_field_.
+Value = {x | x \in _heap_field_*}
 
 _heap_field_ ::=
 
@@ -231,14 +231,13 @@ It seems that in Flambda 2.0, the closure representation does not contain the dr
 
 TODO
 
-_env_: Environment
+_env_: Environment =
 
-* Environment = {
-** _global_symbols_: Map(_symbol_ => Value),
-** _continuations_ : Map(_continuation_ => _continuation_handler_),
-** _return_cont_: _continuation_,
-** _exn_cont_: _continuation_,
-** _current_body_ : Expression }
+* _global_symbols_: Map(_symbol_ => Value),
+* _continuations_ : Map(_continuation_ => _continuation_handler_),
+* _return_cont_: _continuation_,
+* _exn_cont_: _continuation_,
+* _current_body_ : Expression }
 
 _heap_: Ref -> Value
 

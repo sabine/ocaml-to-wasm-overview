@@ -82,10 +82,15 @@ _named_ ::=
 
 _scoping_rule_ ::= `Syntactic` | `Dominator`
 
+Q: does the scoping rule affect semantics, or can I omit this here?
+
 _bound_symbols_ ::=
 
 * `Singleton` _symbol_
 * `Sets_of_closures (code_ids` _code_id_*, `closure_symbols` Map(_closure_id_ => _symbol_)`)`*
+
+Q: Looking at https://github.com/ocaml-flambda/ocaml/blob/6ff563bcaa20d0e0ebecc689f9ed54baeba454b6/middle_end/flambda2.0/terms/let_symbol_expr.rec.ml#L22, I am confused: why is this a `Set` and not a list? How does this correspond to _code_and_set_of_closures_ below? I would expect that _bound_symbols_ defines essentially a list of symbols which are being bound, and that the value assigned to it is a list whose elements have both the function declaration _code_ (for which code is to be emitted), and the _set_of_closures_.
+Q: why do we define set*s* of closures, instead of defining a single set of closures for every `Let_symbol` expression?
 
 _static_const_ ::=
 
@@ -171,22 +176,22 @@ _arms_ ::= `(` _target_imm_ `, Apply_cont` _continuation_ `(` _arg_* `)` _trap_a
 _target_imm_ ::= _targetint_
 
 
-# Module
+# Compilation unit
 
-_M_ = {
+_C_ = {
 
 * _imported_symbols_ : Map(_symbol_ -> _flambda_kind_),
 * _return_continuation_ : _continuation_,
 * _exn_continuation_ : _continuation_,
 * _body_ : _e_}
 
-This is what the Flambda 2.0 unit looks like. I assume that this corresponds 1:1 to an OCaml Module.
+This is what the Flambda 2.0 unit looks like. I assume that this corresponds 1:1 to an `.ml` file.
 
-I assume that _return_continuation_ and _exn_continuation_ act as placeholders for the continuations provided by whoever calls the module initialization function.
+I assume that _return_continuation_ and _exn_continuation_ act as placeholders for the continuations provided by whoever calls the initialization function.
 
-The _body_ of the module is the Flambda 2.0 expression that corresponds to all OCaml code of the module. So, this _body_ will likely define some global symbols and assign values to them.
+The _body_ of the compilation unit is the Flambda 2.0 expression that corresponds to all OCaml code of the file. So, this _body_ will likely define some global symbols and assign values to them.
 
-At module initialization, the _body_ is run with an environment that contains all the necessary information about the symbols imported from other modules. That means, in order to initialize a module, all the modules that it depends on must be initialized beforehand.
+At initialization, the _body_ is run with an environment that contains all the necessary information about the symbols imported from other files. That means, in order to initialize a compilation unit, all the other compilation units that it depends on must be initialized beforehand.
 
 # Program State
 
@@ -200,9 +205,9 @@ Ref is the set of abstract references to the heap. We do not care how exactly th
 
 FuncRef is the set of abstract references to functions. The point of this is to have a way to call a function.
 
-On x86 this specializes to: the memory address where the machine instructions that correspond to the function lives.
+On x86 this specializes to: a pointer into linear memory, pointing to the location of the machine instructions emitted for the function.
 
-On WASM, this specializes to: a `funcref` or an index into a global function table that refers to the WASM function that corresponds to the original function.
+On WASM, this specializes to: a `funcref` or an index into a global function table that refers to the WASM function emitted for the original function.
 
 ### (Heap) Value
 

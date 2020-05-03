@@ -231,8 +231,8 @@ It seems that in Flambda 2.0, the closure representation does not contain the dr
 
 Environment = {
 
-* _global_symbols_: Map(_symbol_ => Value),
-* _continuations_ : Map(_continuation_ => _continuation_handler_),
+* _global_symbols_: _symbol_ ⇀ Value),
+* _continuations_ : _continuation_ ⇀ _continuation_handler_,
 * _return_cont_: _continuation_,
 * _exn_cont_: _continuation_,
 * _current_body_ : Expression }
@@ -254,13 +254,13 @@ Given a compilation unit _C_:
 
 _env0_ (_C_) = {
 
-* _global_symbols_ = {},
-* _continuations_ = {},
+* _global_symbols_ = ∅,
+* _continuations_ = ∅,
 * _return_cont_ = _C.return_continuation_,
 * _exn_cont_ = _C.exn_continuation_,
 * _body_ = _C.body_ }
 
-_heap_ = {}
+_heap_ = ∅ 
 
 The initial heap is empty.
 

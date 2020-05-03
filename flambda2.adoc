@@ -229,7 +229,7 @@ It seems that in Flambda 2.0, the closure representation does not contain the dr
 
 ## Top-Level State
 
-_env_: Environment =
+Environment = {
 
 * _global_symbols_: Map(_symbol_ => Value),
 * _continuations_ : Map(_continuation_ => _continuation_handler_),
@@ -237,7 +237,10 @@ _env_: Environment =
 * _exn_cont_: _continuation_,
 * _current_body_ : Expression }
 
-_heap_: Ref -> Value
+Heap = Ref ⇀ Value
+
+The heap is a partial function from Ref to Value.
+
 
 Q: should there be anything else here?
 
@@ -257,6 +260,9 @@ _env0_ (_C_) = {
 * _exn_cont_ = _C.exn_continuation_,
 * _body_ = _C.body_ }
 
+_heap_ = {}
+
+The initial heap is empty.
 
 ## Step function
 

@@ -251,7 +251,7 @@ TODO
 
 Given a compilation unit _C_:
 
-_env0(C)_ = {
+_env0_ (_C_) = {
 
 * _global_symbols_ = {},
 * _continuations_ = {},

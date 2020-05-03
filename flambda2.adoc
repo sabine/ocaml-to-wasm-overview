@@ -4,7 +4,9 @@
 
 # Sketch of Flambda 2.0 Semantics
 
-This is an attempt of creating a minimal, human-readable, mathematical representation of Flambda 2.0. I tried to shorten things to the point that it's possible to get an impression what is going on at a quick glance. Anything that is not absolutely required for stating the semantics is omitted (i.e. all kinds of debug and optimization-relevant info are left out here).
+This is an attempt of creating a minimal, human-readable, mathematical representation of Flambda 2.0. I tried to shorten things to the point that it's possible to get an impression what is going on at a quick glance. Sometimes I had to come up with syntax, in order to keep things brief. This is very much in flux.
+
+Anything that is not absolutely required for stating the semantics is omitted (i.e. all kinds of debug and optimization-relevant info are left out here).
 
 Purpose: resolve misunderstandings and improve my understanding of how Flambda 2.0 works. May serve as a draft for a formal semantics or an interpreter of Flambda 2.0.
 
@@ -109,7 +111,7 @@ _field_of_block_ ::=
 * `Dynamically_computed` _variable_
 
 
-_code_and_set_of_closures_ ::= `(code ` Map(_code_id_ => _code_) `,` `set_of_closures` _set_of_closures_ `)`
+_code_and_set_of_closures_ ::= `(code` Map(_code_id_ => _code_) `,` `set_of_closures` _set_of_closures_ `)`
 
 _code_ ::= `(` _continuation_, _exn_continuation_, _kinded_parameter_*, _e_, _flambda_arity_ `)`
 
@@ -119,7 +121,7 @@ _set_of_closures_ ::= `(function_decls` _function_declarations_, `closure_elemen
 
 _kinded_parameter_ ::= _variable_ : _flambda_kind_
 
-_continuation_handler_ ::= `cont_handler` _kinded_parameter_* `.` _e_
+_continuation_handler_ ::= `cont_handler (args` _kinded_parameter_* `, body` _e_ `)`
 
 _continuation_handlers_ : [_continuation_ `=>` _continuation_handler_]*
 
@@ -127,6 +129,8 @@ _let_cont_ ::=
 
 * `Non_recursive` _continuation_handler_ |
 * `Recursive` _continuation_handlers_
+
+Q: can someone give me a code example where I can see a Flambda 2.0 come up with a `Let_cont` expression? So far, the code I came up with, I got only `Let_symbol` expressions with closures.
 
 ### `Apply`
 
@@ -213,11 +217,7 @@ Here is an attempt to describe what a heap value from the POV of Flambda 2.0 loo
 
 Value = {(x~1~, ..., x~n~) | x~i~ ∈ HeapField, n ∈ ℕ}
 
-HeapField =
-
-* {`Targetint` i | i ∈ _targetint_}
-* ∪ {`FuncAddress` f | f ∈ FuncRef}
-* ∪ {`Ref` r | r ∈ Ref}
+HeapField = {`Targetint` i | i ∈ _targetint_} ∪ {`FuncAddress` f | f ∈ FuncRef} ∪ {`Ref` r | r ∈ Ref}
 
 I suppose that the target integers can or should be refined to all the different integer types of Flambda 2.0.
 

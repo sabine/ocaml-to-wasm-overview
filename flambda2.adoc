@@ -187,7 +187,7 @@ At module initialization, the _body_ is run with an environment that contains al
 
 ### Reference
 
-Ref is the set of abstract references to the heap. We do not care how exactly they look like. We assume the presence of a garbage collector (whether this is one we implement, or one that the host environment will provide, we do not distinguish on, at this point).
+Ref is the set of abstract references to the heap. We do not care how exactly they look like. We assume the presence of a garbage collector that manages these references (whether this is one we implement, or one that the host environment will provide, we do not distinguish on, at this point).
 
 ### Function Reference
 
@@ -198,15 +198,19 @@ On WASM, this specializes to: a `funcref` or an index into a global function tab
 
 ### (Heap) Value
 
-Here is an attempt to describe what a heap value from the POV of Flambda 2.0 looks like, in the most abstract sense:
+Here is an attempt to describe what a heap value from the POV of Flambda 2.0 looks like, in the most general sense:
 
-A Value _v_ is a list of _heap_field_s.
+A Value _v_ is a sequence of _heap_field_.
 
 _heap_field_ ::=
 
 * `Targetint` _targetint_ |
 * `FuncAddress` FuncRef |
-* `Value` Ref
+* `Ref` Ref
+
+I don't know if this is sufficient to describe all the different heap blocks there are.
+
+I do have the suspicion, that it might make sense to make a more fine-grained model that takes into account the different tags that each come with specific assumptions about the block, I assume. In particular, how to model closure blocks and their Infix blocks in an abstract sense is unclear to me, at this point.
 
 ## Top-Level State
 

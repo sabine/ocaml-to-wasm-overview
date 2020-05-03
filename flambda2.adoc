@@ -173,7 +173,13 @@ _M_ = {
 * _exn_continuation_ : _continuation_,
 * _body_ : _e_}
 
-TODO
+This is what the Flambda 2.0 unit looks like. I assume that this corresponds 1:1 to an OCaml Module.
+
+I assume that _return_continuation_ and _exn_continuation_ act as placeholders for the continuations provided by whoever calls the module initialization function.
+
+The _body_ of the module is the Flambda 2.0 expression that corresponds to all OCaml code of the module. So, this _body_ will likely define some global symbols and assign values to them.
+
+At module initialization, the _body_ is run with an environment that contains all the necessary information about the symbols imported from other modules. That means, in order to initialize a module, all the modules that it depends on must be initialized beforehand.
 
 # Program State
 
@@ -181,21 +187,30 @@ TODO
 
 ### Reference
 
-Ref is the set of abstract references to the heap. We do not care how exactly they look like.
+Ref is the set of abstract references to the heap. We do not care how exactly they look like. We assume the presence of a garbage collector (whether this is one we implement, or one that the host environment will provide, we do not distinguish on, at this point).
+
+### Function Reference
+
+FuncRef is the set of abstract references to functions. The point of this is to refer to a function so that we can call it.
+
+On x86-64 this specializes to: the memory address where the compiled code of the function lives.
+On WASM, this specializes to: a `funcref` or an index into a global function table.
 
 ### (Heap) Value
 
-TODO
+Here is an attempt to describe what a heap value from the POV of Flambda 2.0 looks like, in the most abstract sense:
+
+A Value _v_ is a list of _heap_field_s.
+
+_heap_field_ ::=
+
+* `Targetint` _targetint_ |
+* `FuncAddress` FuncRef |
+* `Value` Ref
 
 ## Top-Level State
 
 TODO
-
-### Global Variables
-
-TODO
-
-### Environment
 
 _env_: Environment
 
@@ -205,9 +220,8 @@ _env_: Environment
 ** _exn_cont_: _continuation_,
 ** _current_body_ : Expression }
 
-### Heap
-
 _heap_: Ref -> Value
+
 
 TODO
 

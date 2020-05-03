@@ -85,7 +85,7 @@ _scoping_rule_ ::= `Syntactic` | `Dominator`
 _bound_symbols_ ::=
 
 * `Singleton` _symbol_
-* `Sets_of_closures` _code_and_set_of_closures_*
+* `Sets_of_closures (code_ids` Set(_code_id_), `closure_symbols` Map(_closure_id_ => _symbol_))*
 
 _static_const_ ::=
 

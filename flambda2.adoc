@@ -4,11 +4,9 @@
 
 # Sketch of Flambda 2.0 Semantics
 
-This is an attempt of creating a minimal, human-readable, mathematical representation of Flambda 2.0. I tried to choose names that most accurately describe what things are. Anything that is not absolutely required for the semantics is omitted.
+This is an attempt of creating a minimal, human-readable, mathematical representation of Flambda 2.0. I tried to shorten things to the point that it's possible to get an impression what is going on at a quick glance. Anything that is not absolutely required for stating the semantics is omitted (i.e. all kinds of debug and optimization-relevant info are left out here).
 
 Purpose: resolve misunderstandings and improve my understanding of how Flambda 2.0 works. May serve as a draft for a formal semantics or an interpreter of Flambda 2.0.
-
-Dear reader, if you see something wrong, or you see something that can be removed, let me know.
 
 # AST
 
@@ -16,19 +14,19 @@ Dear reader, if you see something wrong, or you see something that can be remove
 
 ### Identifier
 
-_id_ is a name that is used to refer to something in the environment.
+_id_ is a name that is used to refer to something (Q: in the environment? Or somewhere else, too?).
 
 ### Simple
 
 _simple_ ::= _id_
 
-QUESTION: what does simple as an identifier refer to? Does this refer to variables whose value is known to be "simple"? How is this different from _variable_?
+Q: what does simple as an identifier refer to? Does this refer to variables whose value is known to be "simple"? How is this different from _variable_?
 
 ### Variable
 
 _variable_ ::= _id_
 
-_variable_ is an identifier that refers to a variable in the environment
+_variable_ is an identifier that refers to a variable in the environment. Q: Is this correct?
 
 ### Continuation
 
@@ -221,11 +219,13 @@ _heap_field_ ::=
 * `FuncAddress` FuncRef |
 * `Ref` Ref
 
+I suppose that the target integers can or should be refined to all the different integer types of Flambda 2.0.
+
 I don't know if this is sufficient to describe all the different heap blocks there are.
 
 I have the suspicion, that it might make sense to make a more fine-grained model that takes into account the different kinds of tags that come with specific assumptions about the block. I'm holding off on that for now, though.
 
-It seems that in Flambda 2.0, the closure representation does not contain the dreaded infix blocks anymore (which would have made the heap model more complex than this).
+It seems that in Flambda 2.0, the closure representation does not contain the dreaded infix blocks anymore (which would have made the heap model more complex than this). Flambda has this nice representation of closures operationg `Project_var` and `Select_closure`. Maybe, if this turns out to be useful, this can be used to add a more abstract representation of closures here. Maybe not.
 
 ## Top-Level State
 
@@ -234,7 +234,8 @@ TODO
 _env_: Environment
 
 * Environment = {
-** _continuations_ : _continuation_ -> _continuation_handler_,
+** _global_symbols_: Map(_symbol_ => Value),
+** _continuations_ : Map(_continuation_ => _continuation_handler_),
 ** _return_cont_: _continuation_,
 ** _exn_cont_: _continuation_,
 ** _current_body_ : Expression }
@@ -248,10 +249,17 @@ TODO
 
 ## Initial State
 
-TODO
+Given a compilation unit _C_:
+
+_env0(C)_ = {
+
+* _global_symbols_ = {},
+* _continuations_ = {},
+* _return_cont_ = _C.return_continuation_,
+* _exn_cont_ = _C.exn_continuation_,
+* _body_ = _C.body_ }
+
 
 ## Step function
 
 TODO
-
-

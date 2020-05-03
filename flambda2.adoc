@@ -115,6 +115,8 @@ _code_and_set_of_closures_ ::= `(code` Map(_code_id_ => _code_) `,` `set_of_clos
 
 _code_ ::= `(` _continuation_, _exn_continuation_, _kinded_parameter_*, _e_, _flambda_arity_ `)`
 
+Q: how are _code_ and _continuation_handler_ (from `Let_cont`) related? It seems that both have a list of parameters and a body. _code_ also has the arity of the return value, whereas continuation handlers, if I understand correctly, never return. (They always call another continuation in tail position.)
+
 _set_of_closures_ ::= `(function_decls` _function_declarations_, `closure_elements` Map(_var_within_closure_ => _simple_) `)`
 
 ### `Let_cont`
@@ -231,7 +233,7 @@ It seems that in Flambda 2.0, the closure representation does not contain the dr
 
 Environment = {
 
-* _global_symbols_: _symbol_ ⇀ Value),
+* _symbol_values_: _symbol_ ⇀ Value),
 * _continuations_ : _continuation_ ⇀ _continuation_handler_,
 * _return_cont_: _continuation_,
 * _exn_cont_: _continuation_,
@@ -254,7 +256,7 @@ Given a compilation unit _C_:
 
 _env0_ (_C_) = {
 
-* _global_symbols_ = ∅,
+* _symbol_values_ = ∅,
 * _continuations_ = ∅,
 * _return_cont_ = _C.return_continuation_,
 * _exn_cont_ = _C.exn_continuation_,
@@ -264,7 +266,7 @@ _heap_ = ∅
 
 The initial heap is empty.
 
-TODO: I need to somehow insert here the notion of the imported global symbols being available. Reason being that evaluation of imported global symbols depends on whatever their semantics is.
+TODO: I need to somehow insert here the notion of the imported global symbols being available. Reason being that evaluation of imported global symbols depends on whatever their semantics is. I guess, this can go into _symbol_values_?
 
 ## Step function
 

@@ -229,8 +229,6 @@ It seems that in Flambda 2.0, the closure representation does not contain the dr
 
 ## Top-Level State
 
-TODO
-
 _env_: Environment =
 
 * _global_symbols_: Map(_symbol_ => Value),
@@ -241,6 +239,7 @@ _env_: Environment =
 
 _heap_: Ref -> Value
 
+Q: should there be anything else here?
 
 TODO
 
@@ -261,4 +260,4 @@ _env0_ (_C_) = {
 
 ## Step function
 
-TODO
+TODO: given an _env_ and a _heap, define what _env'_ and _heap'_ look like.

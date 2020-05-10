@@ -287,6 +287,7 @@ TODO: given an _env_ and a _heap, define what _env'_ and _heap'_ look like.
 Anything not mentioned about _env'_ is assumed to be the same as in _env_.
 
 Let's look at the different cases of _env.body_:
+
 1. Phantom let: `Let Singleton Phantom` _variable_ = _named_ `in` _e_
 +
 _env'.body_ = _e_

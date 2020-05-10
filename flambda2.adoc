@@ -270,14 +270,38 @@ The initial heap is empty.
 
 TODO: I need to somehow insert here the notion of the imported global symbols being available. Reason being that evaluation of imported global symbols depends on whatever their semantics is. I guess, this can go into _symbol_values_?
 
+## Evaluating different things
+
+_eval_simple_ _env_ _simple_ = TODO
+
+_eval_primitive_ _env_ _flambda_primitive_ = TODO
+
+_eval_set_of_closures_ _env_ _set_of_closures_ = TODO
+
+_eval_named_ _env_ _named_ = 
+
 ## Step function
 
 TODO: given an _env_ and a _heap, define what _env'_ and _heap'_ look like.
 
-Let's look at the different cases of _env.body_:
+Anything not mentioned about _env'_ is assumed to be the same as in _env_.
 
-1. `Let Singleton` _name_mode_ _variable_ = _named_ `in` _e_
-+
-_env'.bound_variables_ = _env.bound_variables ∪ { _variable_ ↦ _eval_ _env_ _named_ }
+Let's look at the different cases of _env.body_:
+1. Phantom let: `Let Singleton Phantom` _variable_ = _named_ `in` _e_
 +
 _env'.body_ = _e_
+2. Normal let: `Let Singleton Normal` _variable_ = _named_ `in` _e_
++
+_env'.bound_variables_ = _env.bound_variables_ ∪ { _variable_ ↦ _eval_named_ _env_ _named_ }
++
+_env'.body_ = _e_
+3. In_types let: `Let Singleton In_types` _variable_ = _named_ `in` _e_
++
+TODO: I have no clue what In_types means, find out about that.
++
+_env'.bound_variables_ = _env.bound_variables_ ∪ { _variable_ ↦ _eval_named_ _env_ _named_ }
++
+_env'.body_ = _e_
+4. Phantom set of closures let: `Let Set_of_closures (Phantom,` _closure_vars_ `)` = `Set_of_closures` _set_of_closures_ `in` _e_
++
+TODO: continue

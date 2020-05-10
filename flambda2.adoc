@@ -48,6 +48,16 @@ _flambda_kind_standard_int_or_float_ ::= `Tagged_immediate` | `Naked_immediate` 
 
 _flambda_kind_boxable_number_ ::= `Naked_float` | `Naked_int32` | `Naked_int64` | `Naked_nativeint` | `Untagged_immediate`
 
+### Primitive
+
+_flambda_primitive_ ::=
+
+* `Unary` _unary_primitive_ _simple_ |
+* `Binary` _binary_primitive_ _simple_ _simple_ |
+* `Ternary` _ternary_primitive_ _simple_ _simple_ _simple_ |
+* `Variadic` _variadic_primitive_ _simple_* |
+
+TODO: list primitives
 
 ## Expressions
 

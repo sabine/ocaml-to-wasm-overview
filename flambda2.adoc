@@ -271,3 +271,8 @@ TODO: I need to somehow insert here the notion of the imported global symbols be
 ## Step function
 
 TODO: given an _env_ and a _heap, define what _env'_ and _heap'_ look like.
+
+Let's look at the different cases:
+1. _env.body_ = `Let` _bound_vars_ = _named_ `in` _e_
++
+_env'.body_ = _e_

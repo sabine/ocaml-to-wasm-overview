@@ -278,7 +278,15 @@ _eval_primitive_ _env_ _flambda_primitive_ = TODO
 
 _eval_set_of_closures_ _env_ _set_of_closures_ = TODO
 
-_eval_named_ _env_ _named_ = 
+### Evaluating _named_
+
+_eval_named_ _env_ _named_ = _value_ 
+
+where
+
+a. _value_ = _eval_simple _env_ _simple_ iff _named_ = `Simple` _simple_
+b. _value_ = _eval_primitive _env_ _flambda_primitive_ iff _named_ = `Prim` _flambda_primitive_
+c. _value = _eval_set_of_closures_ _env_ _set_of_closures_ iff _named_ = `Set_of_closures` _set_of_closures_
 
 ## Step function
 
@@ -300,9 +308,10 @@ _env'.body_ = _e_
 +
 TODO: I have no clue what In_types means, find out about that.
 +
-_env'.bound_variables_ = _env.bound_variables_ ∪ { _variable_ ↦ _eval_named_ _env_ _named_ }
-+
 _env'.body_ = _e_
 4. Phantom set of closures let: `Let Set_of_closures (Phantom,` _closure_vars_ `)` = `Set_of_closures` _set_of_closures_ `in` _e_
 +
 TODO: continue
++
+_env'.body_ = _e_
+

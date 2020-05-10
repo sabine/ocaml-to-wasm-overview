@@ -278,5 +278,6 @@ Let's look at the different cases of _env.body_:
 
 1. `Let Singleton` _name_mode_ _variable_ = _named_ `in` _e_
 +
-_env'.bound_variables_ = _env.bound_variables ∪ {_variable_ ↦ _eval_ _env_ _named_}
+_env'.bound_variables_ = _env.bound_variables ∪ { _variable_ ↦ _eval_ _env_ _named_ }
++
 _env'.body_ = _e_

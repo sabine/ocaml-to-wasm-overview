@@ -284,9 +284,9 @@ _eval_named_ _env_ _named_ = _value_
 
 where
 
-a. _value_ = _eval_simple _env_ _simple_ iff _named_ = `Simple` _simple_
-b. _value_ = _eval_primitive _env_ _flambda_primitive_ iff _named_ = `Prim` _flambda_primitive_
-c. _value = _eval_set_of_closures_ _env_ _set_of_closures_ iff _named_ = `Set_of_closures` _set_of_closures_
+a. _value_ = _eval_simple _env_ _simple_ *iff* _named_ = `Simple` _simple_
+b. _value_ = _eval_primitive _env_ _flambda_primitive_ *iff* _named_ = `Prim` _flambda_primitive_
+c. _value_ = _eval_set_of_closures_ _env_ _set_of_closures_ *iff* _named_ = `Set_of_closures` _set_of_closures_
 
 ## Step function
 

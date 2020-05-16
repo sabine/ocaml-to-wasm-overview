@@ -306,21 +306,34 @@ Let's look at the different cases of _env.body_:
 1. Phantom let: `Let Singleton Phantom` _variable_ = _named_ `in` _e_
 +
 _env'.body_ = _e_
++
+As far as I understand, a phantom variable could as well not exist, wrt to the semantics of the program.
+
 2. Normal let: `Let Singleton Normal` _variable_ = _named_ `in` _e_
 +
 _env'.bound_variables_[_variable_] = _eval_named_ _env_ _named_
 +
 _env'.body_ = _e_
+
 3. In_types let: `Let Singleton In_types` _variable_ = _named_ `in` _e_
 +
 TODO: I have no clue what In_types means, find out about that.
 +
 _env'.body_ = _e_
+
 4. Phantom set of closures let: `Let Set_of_closures (Phantom,` _closure_vars_ `)` = `Set_of_closures` _set_of_closures_ `in` _e_
 +
-TODO: continue
-+
 _env'.body_ = _e_
+
+5. Normal set of closures: `Let Set_of_closures (Normal,` _closure_vars_ `)` = `Set_of_closures` _set_of_closures_ `in` _e_
++
+TODO
+
+6. In_types set of closures: `Let Set_of_closures(In_types,` _closure_vars_ `)` = `Set_of_closures` _set_of_closures_ `in` _e_
++
+TODO
+
+
 
 ### `Let_symbol`
 
@@ -334,4 +347,6 @@ where _continuation_handlers[i] = _continuation_~i~ `=>` `cont_handler (args` _k
 
 For all _i_:
 
-_env'.continuations[continuation_~i~_]_ = `cont_handler args` _kinded_parameters_~i~ `, body` _body_~i~
+_env'.continuations[continuation_~i~_]_ = `cont_handler (args` _kinded_parameters_~i~ `, body` _body_~i~ `)`
+
+

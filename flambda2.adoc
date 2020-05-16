@@ -66,8 +66,8 @@ Expression _e_ ::=
 * `Let` _bound_vars_ `=` _named_ `in` _e_  |
 * `Let_symbol (` _scoping_rule_ `)` _bound_symbols_ `=` _static_const_ `in` _e_ |
 * `Let_cont` [_continuation_ `=>` _continuation_handler_]* `in` _e_  |
-* `Apply` _call_kind_ _callee_ `(` _arg_* `)` _continuation_ _exn_continuation_ |
-* `Apply_cont` _continuation_ `(` _arg_* `)` _trap_action_ |
+* `Apply` _call_kind_ _callee_ `(` _simple_* `)` _continuation_ _exn_continuation_ |
+* `Apply_cont` _continuation_ `(` _simple_* `)` _trap_action_ |
 * `Switch` _scrutinee_ _arms_ |
 * `Invalid`
 
@@ -349,4 +349,20 @@ For all _i_:
 
 _env'.continuations[continuation_~i~_]_ = `cont_handler (args` _kinded_parameters_~i~ `, body` _body_~i~ `)`
 
+_env'.body_ = _e_
 
+### `Apply`
+
+TODO
+
+### `Apply_cont`
+
+Let _env.body_ = `Apply_cont` _c_ `(` _args_ `)` _continuation_ _exception_continuation_
+
+and let _env.continuations[c]_ = `cont_handler (args` _kinded_parameters_ `, body` _e_ `)`
+
+Then,
+
+_env'.variables[kinded_parameters_~i~_.variable]_ = _env.variables[args_~i~_]_
+
+_env'.body_ = _e_

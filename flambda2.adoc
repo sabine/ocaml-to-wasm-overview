@@ -366,3 +366,7 @@ Then,
 _env'.variables[kinded_parameters_~i~_.variable]_ = _env.variables[args_~i~_]_
 
 _env'.body_ = _e_
+
+_env'.cont_ = _continuation_
+
+_env'.exn_cont_ = _exception_continuation_

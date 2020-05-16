@@ -216,11 +216,11 @@ On x86 this specializes to: a pointer into linear memory, pointing to the locati
 
 On WASM, this specializes to: a `funcref` or an index into a global function table that refers to the WASM function emitted for the original function.
 
-### (Heap) Value
+### Heap Value
 
 Here is an attempt to describe what a heap value from the POV of Flambda 2.0 looks like, in the most general sense:
 
-Value = {(x~1~, ..., x~n~) | x~i~ ∈ HeapField, n ∈ ℕ}
+HeapValue = {(x~1~, ..., x~n~) | x~i~ ∈ HeapField, n ∈ ℕ}
 
 HeapField = {`Targetint` i | i ∈ _targetint_} ∪ {`FuncAddress` f | f ∈ FuncRef} ∪ {`Ref` r | r ∈ Ref}
 
@@ -231,6 +231,12 @@ I don't know if this is sufficient to describe all the different heap blocks the
 I have the suspicion, that it might make sense to make a more fine-grained model that takes into account the different kinds of tags that come with specific assumptions about the block. I'm holding off on that for now, though.
 
 It seems that in Flambda 2.0, the closure representation does not contain the dreaded infix blocks anymore (which would have made the heap model more complex than this). Flambda has closure operations `Project_var` and `Select_closure`. Maybe, if this turns out to be useful, this can be used to add a more abstract representation of closures here. Maybe not.
+
+### Value
+
+A Value is either an integer that is one bit smaller than that of the target architecture, or a reference to the heap.
+
+Value = {`Targetint` x | x ∈ B^architecture_int_size-1^} ∪ {`Ref` r | r ∈ Ref}
 
 ## Top-Level State
 
@@ -243,11 +249,9 @@ Environment = {
 * _exn_cont_: _continuation_,
 * _current_body_ : _e_ }
 
-Heap = Ref ⇀ Value
+Heap = Ref ⇀ HeapValue
 
-The heap is a partial function from Ref to Value.
-
-TODO: this is clearly wrong. _bound_variables_ should probably represent values on the stack, which can either be trivial values like _targetint_ and references to heap values, but never heap values directly!
+The heap is a partial function from Ref to HeapValue.
 
 Q: should there be anything else here?
 
@@ -364,7 +368,7 @@ and let _env.continuations[c]_ = `cont_handler (args` _kinded_parameters_ `, bod
 
 Then,
 
-_env'.variables[kinded_parameters_~i~_.variable]_ = _env.variables[args_~i~_]_
+_env'.bound_variables[kinded_parameters_~i~_.variable]_ = _env.bound_variables[args_~i~_]_
 
 _env'.body_ = _e_
 
@@ -376,9 +380,9 @@ _env'.exn_cont_ = _exception_continuation_
 
 Let _env.body_ = `Switch` _scrutinee_ _arms_
 
-and let _imm_ = _env.variables[scrutinee]_ is an immediate of the target architecture.
+and let _imm_ = _env.bound_variables[scrutinee]_ is an immediate of the target architecture.
 
-Q: does that mean _simple_ is a type of variable that can hold only immediate values of the target architecture?
+Q: does that mean _simple_ is a special type of variable that can hold only immediate values of the target architecture? Or do I need to consider the case of a boxed integer here, too?
 
 Then,
 

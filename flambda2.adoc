@@ -178,7 +178,7 @@ _trap_action_ ::=
 
 _scrutinee_ ::= _simple_
 
-_arms_ ::= `(` _target_imm_ `, Apply_cont` _continuation_ `(` _arg_* `)` _trap_action_ `)`
+_arms_ ::= Map (_target_imm_ `=> Apply_cont` _continuation_ `(` _arg_* `)` _trap_action_ )
 
 _target_imm_ ::= _targetint_
 
@@ -370,3 +370,15 @@ _env'.body_ = _e_
 _env'.cont_ = _continuation_
 
 _env'.exn_cont_ = _exception_continuation_
+
+### `Switch`
+
+Let _env.body_ = `Switch` _scrutinee_ _arms_
+
+and let _imm_ = _env.variables[scrutinee]_ is an immediate of the target architecture.
+
+Q: does that mean _simple_ is a variable that can hold only immediate values of the target architecture?
+
+Then,
+
+_env'.body_ = _arms_[_imm_]

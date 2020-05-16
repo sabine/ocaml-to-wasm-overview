@@ -330,5 +330,5 @@ TODO
 
 _env.body_ = `Let_cont` _continuation_handlers_ `in` _e_
 
-where _continuation_handlers[i] = _continuation~i~_ `=>` `cont_handler (args` _kinded_parameters~i~_ `, body` _body~i~_ `)` `in` _e_
+where _continuation_handlers[i] = _continuation_~i~ `=>` `cont_handler (args` _kinded_parameters_~i~ `, body` _body_~i~ `)` `in` _e_
 

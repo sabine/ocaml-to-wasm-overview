@@ -247,6 +247,7 @@ Heap = Ref ⇀ Value
 
 The heap is a partial function from Ref to Value.
 
+TODO: this is clearly wrong. _bound_variables_ should probably represent values on the stack, which can either be trivial values like _targetint_ and references to heap values, but never heap values directly!
 
 Q: should there be anything else here?
 
@@ -377,7 +378,7 @@ Let _env.body_ = `Switch` _scrutinee_ _arms_
 
 and let _imm_ = _env.variables[scrutinee]_ is an immediate of the target architecture.
 
-Q: does that mean _simple_ is a variable that can hold only immediate values of the target architecture?
+Q: does that mean _simple_ is a type of variable that can hold only immediate values of the target architecture?
 
 Then,
 

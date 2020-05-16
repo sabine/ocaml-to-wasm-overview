@@ -282,6 +282,8 @@ TODO: I need to somehow insert here the notion of the imported global symbols be
 
 ## Evaluating different things
 
+All the different eval functions map an environment and some thing to the Value of that thing in the given environment.
+
 _eval_simple_ _env_ _simple_ = TODO
 
 _eval_primitive_ _env_ _flambda_primitive_ = TODO
@@ -306,12 +308,14 @@ Anything not mentioned about _env'_ is assumed to be the same as in _env_.
 
 Let's look at the different cases of _env.body_:
 
+### `Let`
+
 1. Phantom let: `Let Singleton Phantom` _variable_ = _named_ `in` _e_
 +
 _env'.body_ = _e_
 2. Normal let: `Let Singleton Normal` _variable_ = _named_ `in` _e_
 +
-_env'.bound_variables_ = _env.bound_variables_ ∪ { _variable_ ↦ _eval_named_ _env_ _named_ }
+_env'.bound_variables_[_variable_] = _eval_named_ _env_ _named_
 +
 _env'.body_ = _e_
 3. In_types let: `Let Singleton In_types` _variable_ = _named_ `in` _e_
@@ -324,4 +328,13 @@ _env'.body_ = _e_
 TODO: continue
 +
 _env'.body_ = _e_
+
+### `Let_symbol`
+
+TODO
+
+### `Let_cont`
+
+1. Non-recursive: `Let_cont` _continuation_ `=` `Non_recursive` `cont_handler (args` _kinded_parameter* `, body` _body_e_ `)` `in` _e_
+
 

@@ -14,21 +14,58 @@ Purpose: resolve misunderstandings and improve my understanding of how Flambda 2
 
 ## Basic Definitions
 
-### Identifier
+### Flambda Value
 
-_id_ is a name that is used to refer to something (Q: in the environment? Or somewhere else, too?).
+A Flambda value can be either
 
-### Simple
-
-_simple_ ::= _id_
-
-Q: what does simple as an identifier refer to? Does this refer to variables whose value is known to be "simple"? How is this different from _variable_?
+* An OCaml Value (Immediate or pointer to well-formed OCaml value) 
+* Naked float (machine-width floating-point number)
+* Naked immediate ((target_machine_width-1)-integer)
+* there is more, all the naked stuff
 
 ### Variable
 
 _variable_ ::= _id_
 
-_variable_ is an identifier that refers to a variable in the environment. Q: Is this correct?
+_variable_ is an identifier that refers to a Flambda value in the the value environment.
+
+
+Note: a variable originates either in the source code or a it is introduced by the compiler.
+
+Note: this corresponds to Ident.t in the toolchain before Flambda, like the type checker or Lambda.
+
+Note: In the normal compilation chain, this is a cmm-variable, and a variable corresponds to a pseudo-register in the backend.
+
+### Symbol
+
+_symbol_ ::= _id_
+
+_symbol_ is an identifier that refers to a statically-allocated OCaml value, but not an immediate.
+
+Traditionally, the interpretation of a _symbol_ is the address of an object file symbol as described by the operating system specification. Symbols will never be read until they are completely initialized and once they are completely initialized, their contents will never change. 
+
+NOTE: for performance reasons, it makes sense to statically allocate this in a way that it never moves.
+
+### Register-width constant
+
+A _reg_width_constant_ that fits in a register of the target machine we compile to.
+
+* Tagged immediate
+* Naked immediate
+* Naked target-width integer (nativeint)
+* Naked int32
+* Naked int64
+* Naked float
+
+This is the same as an Flambda value, except for pointer to a well-formed OCaml value. This is because we refer to them by symbol names (see Simple).
+
+### Simple
+
+_simple_ ::= `Reg_width_const` _reg_with_constant_ | `Variable` _variable_ 
+
+Simple describes everything that can fit in a register, constant or non-constant. A major purpose of this is to avoid the necessity for let-bindings for register-width constants.
+
+Note: Simple doesn't have any sub-expressions. There is nothing happening when interpreting this, except (in the case of variable), a lookup of the value in the environment, i.e. no beta-reduction going on here.
 
 ### Continuation
 
@@ -36,9 +73,17 @@ _continuation_ :== _id_
 
 _continuation_ is an identifier that refers to a continuation handler in the environment.
 
+Note: continuations are second class, i.e. they exist in the operational semantics, but they are not values. The definitions and uses of continuations are static, they do not change dynamically as the program runs. 
+
 ### Kind
 
-_flambda_kind_ ::= `Value` | `Naked_number` | `Fabricated`
+Kinds classify Flambda values. Kinds are second class in the sense that are assigned by the compiler, and never by the source program. An error with kinds is always a compiler bug, since all valid Lambda IR code must be assigned correct kinds by flambda. Note: the code does not need to pass the OCaml typechecker, as long as it is valid Lambda IR.
+
+Kinds provide the essential information that the backend needs to know in order to decide what register or other thing to put a value in.
+
+Note: In particular, this means that the compiler compiles operations on values of kind `Value` using only the information that the kind is `Value`. The fact that the value is a well-formed OCaml value is the only thing the compiler can rely on.
+
+_flambda_kind_ ::= `Value` | `Naked_number`
 
 _naked_number_kind_ ::= `Naked_immediate` | `Naked_float` | `Naked_int32` | `Naked_int64` | `Naked_nativeint`
 
@@ -58,6 +103,14 @@ _flambda_primitive_ ::=
 * `Variadic` _variadic_primitive_ _simple_* |
 
 TODO: list primitives
+
+Primitives perform various kinds of operations, e.g. allocation, loads, stores, arithmetic, etc. Some primitives depend on the environment (they have co-effects), some primitives affect the environment (they have effects), some do both, some do neither.
+
+Primitives never perform control flow, they do not raise exception.
+
+Note: Allocation cannot raise an OCaml exception. If allocation fails, that is a fatal error, unrecoverable, but not an OCaml exception!
+
+TODO: look at the primitives list lambda.mli in detail. Bounds checks are primitives in Lambda IR. In the primitive conversion, from Lambda IR to Flambda, the checks are made explicit. Look at this and print out some examples of how the check is compiled to Flambda.
 
 ## Expressions
 

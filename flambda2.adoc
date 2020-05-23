@@ -67,13 +67,15 @@ Simple describes everything that can fit in a register, constant or non-constant
 
 Note: Simple doesn't have any sub-expressions. There is nothing happening when interpreting this, except (in the case of variable), a lookup of the value in the environment, i.e. no beta-reduction going on here.
 
+Q: It looks like the property that all simple variables that occur in the Flambda 2.0 program always have values that fit in a register is an invariant, and that this property comes from a higher compilation layer.
+
 ### Continuation
 
 _continuation_ :== _id_
 
 _continuation_ is an identifier that refers to a continuation handler in the environment.
 
-Note: continuations are second class, i.e. they exist in the operational semantics, but they are not values. The definitions and uses of continuations are static, they do not change dynamically as the program runs. 
+Note: continuations are second class, i.e. they exist in the operational semantics, but they are not values. The definitions and uses of continuations are static, they do not change dynamically as the program runs.
 
 ### Kind
 

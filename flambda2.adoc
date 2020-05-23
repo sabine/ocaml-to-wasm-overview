@@ -61,7 +61,7 @@ This is the same as an Flambda value, except for pointer to a well-formed OCaml 
 
 ### Simple
 
-_simple_ ::= `Reg_width_const` _reg_with_constant_ | `Variable` _variable_ 
+_simple_ ::= `Const` _reg_with_constant_ | `Variable` _variable_ 
 
 Simple describes everything that can fit in a register, constant or non-constant. A major purpose of this is to avoid the necessity for let-bindings for register-width constants.
 

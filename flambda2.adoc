@@ -455,9 +455,13 @@ _env'.exn_cont_ = _exception_continuation_
 
 Let _env.body_ = `Switch` _scrutinee_ _arms_
 
-and let _imm_ = _env.bound_variables[scrutinee]_ is an immediate of the target architecture.
+1. If _scrutinee_ = `Reg_width_constant` _imm_, then
 
-Q: does that mean _simple_ is a special type of variable that can hold only immediate values of the target architecture? Or do I need to consider the case of a boxed integer here, too?
+_env'.body_ = _arms_[_imm_]
+
+2. If _scrutinee_ = `Variable` _var_
+
+and let _imm_ = _env.bound_variables[var]_  (Q: does this make sense, is the value of a simple variable always something that fits in a register?)
 
 Then,
 

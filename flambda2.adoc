@@ -279,9 +279,9 @@ _heap_value_ = {(x~1~, ..., x~n~) | x~i~ ∈ HeapField, n ∈ ℕ}
 
 A _heap_value_ is a sequence of _heap_field_, where a _heap_field_ is either
 
-1. `Targetint` _i_    an integer of the target architecture
-2. `FuncRef` f     a reference to the program code of a function
-3. `HeapRef` r     a reference to another heap value
+1. `Targetint` _i_  -  an integer of the target architecture
+2. `FuncRef` _f_    - a reference to the program code of a function
+3. `HeapRef` _r_    - a reference to another heap value
 
 _heap_field = {`Targetint` i | i ∈ _targetint_} ∪ {`FuncAddress` f | f ∈ FuncRef} ∪ {`Ref` r | r ∈ Ref}
 

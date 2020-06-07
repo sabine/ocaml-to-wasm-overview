@@ -275,6 +275,10 @@ On WASM, this specializes to: a `funcref` or an index into a global function tab
 
 ### Heap Block
 
+Generally, from an abstract POV, the heap is a partial mapping from heap references to heap blocks:
+
+Heap = HeapRef ⇀ HeapValue
+
 Here is an attempt to describe what a heap block from the POV of Flambda 2.0 looks like, in the most general sense:
 
 _heap_block_ = {(x~1~, ..., x~n~) | x~i~ ∈ HeapField, n ∈ ℕ}
@@ -297,7 +301,7 @@ It seems that in Flambda 2.0, the closure representation does not contain the dr
 A _Value_ is either an integer that is one bit smaller than that of the target architecture, or a reference to the heap:
 
 1. `Targetint` x, where x ∈ B^architecture_int_size-1^
-2. `Ref` r, where r ∈ Ref
+2. `HeapRef` r, where r ∈ HeapRef
 
 ## Top-Level State
 
@@ -310,7 +314,7 @@ Environment = {
 * _exn_cont_: _continuation_,
 * _current_body_ : _e_ }
 
-Heap = Ref ⇀ HeapValue
+Heap = HeapRef ⇀ HeapValue
 
 The heap is a partial function from Ref to HeapValue.
 

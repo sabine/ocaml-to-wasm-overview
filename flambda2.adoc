@@ -416,6 +416,12 @@ _eval_simple_ _env_ _simple_ = TODO
 
 _eval_set_of_closures_ _env_ _set_of_closures_ = TODO
 
+## Primitives
+
+Some primitives depend on the environment, some have effects on the environment, some do both, some neither. They get a special section because there are a lot of primitives.
+
+_eval_primitive_ _env_ _flambda_primitive_ = TODO
+
 ### Named
 
 _eval_named_ _env_ _named_ = _value_ 
@@ -425,12 +431,6 @@ where
 a. _value_ = _eval_simple _env_ _simple_ *iff* _named_ = `Simple` _simple_
 b. _value_ = _eval_primitive _env_ _flambda_primitive_ *iff* _named_ = `Prim` _flambda_primitive_
 c. _value_ = _eval_set_of_closures_ _env_ _set_of_closures_ *iff* _named_ = `Set_of_closures` _set_of_closures_
-
-## Primitives
-
-Some primitives depend on the environment, some have effects on the environment, some do both, some neither. They get a special section because there are a lot of primitives.
-
-_eval_primitive_ _env_ _flambda_primitive_ = TODO
 
 ## Expressions
 

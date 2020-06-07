@@ -542,7 +542,7 @@ _env'.body_ = _arms_[_imm_]
 
 2. If _scrutinee_ = `Variable` _var_
 
-and let _imm_ = _env.bound_variables[var]_  (Q: does this make sense, is the value of a simple variable always something that fits in a register?)
+and let _imm_ = _env.bound_variables[var]_
 
 Then,
 

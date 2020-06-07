@@ -273,32 +273,31 @@ On x86 this specializes to: a pointer into linear memory, pointing to the locati
 
 On WASM, this specializes to: a `funcref` or an index into a global function table that refers to the WASM function emitted for the original function.
 
-### Heap Value
+### Heap Block
 
-Here is an attempt to describe what a heap value from the POV of Flambda 2.0 looks like, in the most general sense:
+Here is an attempt to describe what a heap block from the POV of Flambda 2.0 looks like, in the most general sense:
 
-_heap_value_ = {(x~1~, ..., x~n~) | x~i~ ∈ HeapField, n ∈ ℕ}
+_heap_block_ = {(x~1~, ..., x~n~) | x~i~ ∈ HeapField, n ∈ ℕ}
 
-A _heap_value_ is a sequence of _heap_field_, where a _heap_field_ is either
+A _heap_block_ is a sequence of _heap_field_, where a _heap_field_ is either
 
 1. `Targetint` _i_  -  an integer of the target architecture
 2. `FuncRef` _f_    - a reference to the program code of a function
 3. `HeapRef` _r_    - a reference to another heap value
-4. `Pointer` _p_    - a pointer into linear memory of the target architecture
-
-I suppose that the target integers can or should be refined to all the different integer types of Flambda 2.0.
+4. `Pointer` _p_    - a pointer into linear memory of the target architecture, purpose: interoperate with other programming languages (traditionally with C), work with low-level APIs
 
 I don't know if this is sufficient to describe all the different heap blocks there are.
 
-I have the suspicion, that it might make sense to make a more fine-grained model that takes into account the different kinds of tags that come with specific assumptions about the block. I'm holding off on that for now, though.
+I have the suspicion, that there are WebAssembly GC proposals where it maked sense to make a more fine-grained model that takes into account the different kinds of tags that come with specific assumptions about the block. I'm holding off on that for now, though, since some of the proposals will allow us to implement a MVP based on array heap blocks.
 
 It seems that in Flambda 2.0, the closure representation does not contain the dreaded infix blocks anymore (which would have made the heap model more complex than this). Flambda has closure operations `Project_var` and `Select_closure`. Maybe, if this turns out to be useful, this can be used to add a more abstract representation of closures here. Maybe not.
 
 ### Value
 
-A Value is either an integer that is one bit smaller than that of the target architecture, or a reference to the heap.
+A _Value_ is either an integer that is one bit smaller than that of the target architecture, or a reference to the heap:
 
-Value = {`Targetint` x | x ∈ B^architecture_int_size-1^} ∪ {`Ref` r | r ∈ Ref}
+1. `Targetint` x, where x ∈ B^architecture_int_size-1^
+2. `Ref` r, where r ∈ Ref
 
 ## Top-Level State
 

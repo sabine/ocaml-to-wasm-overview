@@ -466,6 +466,8 @@ Binary primitive
 
 Semantics: _simple_index_ must evaluate in the current environment to some integer value. By invariant, this index respects the array bounds (since there is always a check right before that guarantees this). _simple_array_ must be a heap reference. Then, the value of the array element is looked up from the heap block using the _array_kind_ to determine which exact fields must be loaded from the heap block.
 
+TODO: find out how exactly the array kind affects the heap block access.
+
 ### Named
 
 _eval_named_ _env_ _named_ = _value_ 

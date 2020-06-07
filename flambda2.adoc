@@ -303,6 +303,8 @@ A _Value_ is either an integer that is one bit smaller than that of the target a
 1. `Targetint` x, where x ∈ B^architecture_int_size-1^
 2. `HeapRef` r, where r ∈ HeapRef
 
+Question: in 20.2 of https://caml.inria.fr/pub/docs/manual-ocaml/intfc.html#s%3Ac-ocaml-datatype-repr, a pointer to a block allocated with malloc or a C value is listed, as well. I suppose, we need that, too, in order to interoperate with C or another linear-memory based language. I do not know if we can omit that for now. (Same goes for the target machine pointer in the heap blocks, btw.)
+
 ## Top-Level State
 
 Environment = {

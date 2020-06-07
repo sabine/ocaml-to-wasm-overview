@@ -437,7 +437,7 @@ _duplicate_array_kind_ ::=
 * `Naked_floats` (_length_)
 * `Float_array_opt_dynamic`
 
-TODO: what is the effect?
+Question: I assume that this makes an identical array on the heap and returns a HeapRef to that. In the case of `Immediates` array, this would be a single heap block being allocated with the correct tag and length. In the case of `Values`, it should make a deep copy, I guess.
 
 ### Named
 

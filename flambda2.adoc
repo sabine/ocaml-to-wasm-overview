@@ -112,6 +112,62 @@ NOTE: bounds checks are part of the semantics of primitives in Lambda IR. In the
 
 Look at this and print out some examples of how the check is compiled to Flambda.
 
+### Example: Array.get
+
+In Lambda:
+
+```
+(let
+  (arr/80 = (duparray[int] [0: 1 2 3 4 5])
+   b/81 =[int] (array.get[int] arr/80 7))
+  (makeblock 0 arr/80 b/81))
+```
+
+In Flambda2:
+
+```
+(let_symbol
+ ▶ Test.camlTest__const_block5 = (Immutable_block (tag 0) (1 2 3 4 5))
+ ▶ Test.camlTest__string10 = (Immutable_string "index out of bounds")
+ ▶ Test.camlTest__exn_bucket21 =
+  (Immutable_block (tag 0) (.predef_exn.caml_exn_Invalid_argument
+   Test.camlTest__string10))
+ (let
+  (arr/44 =
+    (((Duplicate_array Immediates (source Immutable) (dest Mutable))
+      Test.camlTest__const_block5)
+     <wasm-tests/a07_array_access//test.ml:1,10--23>))
+  ((let
+    (prim/45 =
+      (((Array_length Immediates) arr/44)
+       <wasm-tests/a07_array_access//test.ml:3,8--23>)
+     prim/46 =
+      ((<u 7 prim/45) <wasm-tests/a07_array_access//test.ml:3,8--23>))
+    (switch prim/46
+    | 0 ↦ raise k3 Test.camlTest__exn_bucket21
+             <wasm-tests/a07_array_access//test.ml:3,8--23>
+    | 1 ↦ goto k12))
+   k12:
+    (let
+     (b/47 =
+       (((Array_load Immediates Mutable) arr/44 7)
+        <wasm-tests/a07_array_access//test.ml:3,8--23>))
+     (let_symbol
+      ▷ Test.camlTest__module_block13 =
+       (Immutable_block (tag 0) (arr/44 b/47))
+      ▶ Test.camlTest = (Immutable_block (tag 0) (arr/44 b/47))
+      module_init_end k4 Test.camlTest)))))
+```
+
+The resulting Flambda2 code uses two Array-related primitives:
+
+1. `Array.length`
+2. `Array_load`
+
+It explicitly raises the exception, if the array length check fails. The exception value is provided in the global data region of the module.
+
+
+
 ### TODO
 
 ## Expressions

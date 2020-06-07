@@ -456,7 +456,7 @@ _env'.body_ = _e_
 
 3. _env.body_ =  `Let Singleton In_types` _variable_ = _named_ `in` _e_
 +
-TODO: I have no clue what In_types means, find out about that.
+Question: What does In_types mean?
 +
 _env'.body_ = _e_
 

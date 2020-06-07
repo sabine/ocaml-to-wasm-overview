@@ -547,3 +547,5 @@ and let _imm_ = _env.bound_variables[var]_
 Then,
 
 _env'.body_ = _arms_[_imm_]
+
+Question: do we ever have null-pointer checks here in the switch statement?

@@ -422,6 +422,23 @@ Some primitives depend on the environment, some have effects on the environment,
 
 _eval_primitive_ _env_ _flambda_primitive_ = TODO
 
+### `Duplicate_array`
+
+Unary primitive
+
+`Duplicate_array` {_duplicate_array_kind_ _source_mutability_ _destination_mutability_} _simple_
+
+where
+
+_duplicate_array_kind_ ::=
+
+* `Immediates`
+* `Values`
+* `Naked_floats` (_length_)
+* `Float_array_opt_dynamic`
+
+TODO: what is the effect?
+
 ### Named
 
 _eval_named_ _env_ _named_ = _value_ 

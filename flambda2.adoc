@@ -159,14 +159,15 @@ In Flambda2:
       module_init_end k4 Test.camlTest)))))
 ```
 
-The resulting Flambda2 code uses two Array-related primitives:
+The resulting Flambda2 code uses three Array-related primitives:
 
-1. `Array.length`
-2. `Array_load`
+1. `Duplicate_array`
+2. `Array.length`
+3. `Array_load`
 
 It explicitly raises the exception, if the array length check fails. The exception value is provided in the global data region of the module.
 
-
+Question: Naively, I expect that the `Duplicate_array` primitive of Flambda2 does the same as the arraydup primitive of Lambda. Is this true?
 
 ### TODO
 

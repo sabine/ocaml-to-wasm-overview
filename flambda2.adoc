@@ -30,11 +30,11 @@ _variable_ ::= _id_
 _variable_ is an identifier that refers to a Flambda value in the the value environment.
 
 
-Note: a variable originates either in the source code or a it is introduced by the compiler.
+NOTE: a variable originates either in the source code or a it is introduced by the compiler.
 
-Note: this corresponds to Ident.t in the toolchain before Flambda, like the type checker or Lambda.
+NOTE: this corresponds to Ident.t in the toolchain before Flambda, like the type checker or Lambda.
 
-Note: In the normal compilation chain, this is a cmm-variable, and a variable corresponds to a pseudo-register in the backend.
+NOTE: In the existing compilation chain, this is a cmm-variable, and a variable corresponds to a pseudo-register in the backend.
 
 ### Symbol
 
@@ -65,9 +65,7 @@ _simple_ ::= `Const` _reg_with_constant_ | `Variable` _variable_
 
 Simple describes everything that can fit in a register, constant or non-constant. A major purpose of this is to avoid the necessity for let-bindings for register-width constants.
 
-Note: Simple doesn't have any sub-expressions. There is nothing happening when interpreting this, except (in the case of variable), a lookup of the value in the environment, i.e. no beta-reduction going on here.
-
-Q: It looks like the property that all simple variables that occur in the Flambda 2.0 program always have values that fit in a register is an invariant, and that this property comes from a higher compilation layer.
+NOTE: Simple doesn't have any sub-expressions. There is nothing happening when interpreting this, except (in the case of variable), a lookup of the value in the environment, i.e. no beta-reduction going on here.
 
 ### Continuation
 
@@ -75,7 +73,7 @@ _continuation_ :== _id_
 
 _continuation_ is an identifier that refers to a continuation handler in the environment.
 
-Note: continuations are second class, i.e. they exist in the operational semantics, but they are not values. The definitions and uses of continuations are static, they do not change dynamically as the program runs.
+NOTE: continuations are second class, i.e. they exist in the operational semantics, but they are not values. The definitions and uses of continuations are static, they do not change dynamically as the program runs.
 
 ### Kind
 
@@ -83,7 +81,7 @@ Kinds classify Flambda values. Kinds are second class in the sense that are assi
 
 Kinds provide the essential information that the backend needs to know in order to decide what register or other thing to put a value in.
 
-Note: In particular, this means that the compiler compiles operations on values of kind `Value` using only the information that the kind is `Value`. The fact that the value is a well-formed OCaml value is the only thing the compiler can rely on.
+NOTE: In particular, this means that the compiler compiles operations on values of kind `Value` using only the information that the kind is `Value`. The fact that the value is a well-formed OCaml value is the only thing the compiler can rely on.
 
 _flambda_kind_ ::= `Value` | `Naked_number`
 
@@ -110,7 +108,7 @@ Primitives perform various kinds of operations, e.g. allocation, loads, stores, 
 
 Primitives never perform control flow, they do not raise exception.
 
-Note: Allocation cannot raise an OCaml exception. If allocation fails, that is a fatal error, unrecoverable, but not an OCaml exception!
+NOTE: Allocation cannot raise an OCaml exception. If allocation fails, that is a fatal error, unrecoverable, but not an OCaml exception!
 
 TODO: look at the primitives list lambda.mli in detail. Bounds checks are primitives in Lambda IR. In the primitive conversion, from Lambda IR to Flambda, the checks are made explicit. Look at this and print out some examples of how the check is compiled to Flambda.
 

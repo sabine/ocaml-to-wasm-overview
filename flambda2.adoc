@@ -169,7 +169,7 @@ Question: what happens when multiple modules that use the same exceptions are li
 
 Question: Naively, I expect that the `Duplicate_array` primitive of Flambda2 does the same as the arraydup primitive of Lambda. Is this true?
 
-### TODO
+### TODO: discuss more interesting primitives
 
 ## Expressions
 

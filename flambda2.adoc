@@ -237,7 +237,7 @@ _code_and_set_of_closures_ ::= `(code` Map(_code_id_ => _code_) `,` `set_of_clos
 
 _code_ ::= `(` _continuation_, _exn_continuation_, _kinded_parameter_*, _e_, _flambda_arity_ `)`
 
-Q: how are _code_ and _continuation_handler_ (from `Let_cont`) related? It seems that both have a list of parameters and a body. _code_ also has the arity of the return value, whereas continuation handlers, if I understand correctly, never return. (They always call another continuation in tail position.)
+Q: how are _code_ and _continuation_handler_ (from `Let_cont`) related? It seems that both have a list of parameters and a body. _code_ also has the arity of the return value, whereas continuation handlers never return. Is this the only difference?
 
 _set_of_closures_ ::= `(function_decls` _function_declarations_, `closure_elements` Map(_var_within_closure_ => _simple_) `)`
 

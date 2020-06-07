@@ -227,6 +227,8 @@ _trap_action_ ::=
 * `Push` _continuation_ |
 * `Pop` _continuation_ _raise_kind_option_
 
+QUESTION: In the output from flambda2, I see `raise` and `goto`. I suspect that `goto` corresponds either to `Push` or to `Pop` with raise kind option `None`. Probably the former. Then, `raise` would correspond to `Pop`. What is actually the case here?
+
 ### `Switch`
 
 _scrutinee_ ::= _simple_

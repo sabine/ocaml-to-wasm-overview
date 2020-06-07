@@ -108,9 +108,7 @@ Primitives never perform control flow, they do not raise exception.
 
 NOTE: Allocation cannot raise an OCaml exception. If allocation fails, that is a fatal error, unrecoverable, but not an OCaml exception!
 
-NOTE: bounds checks are part of the semantics of primitives in Lambda IR. In the primitive conversion, from Lambda IR to Flambda, the checks are made explicit (see lambda_to_flambda_primitives.ml). I.e. the primitives of Lambda IR can raise exceptions, the primitives of Flambda2.0 IR cannot raise exceptions.
-
-Look at this and print out some examples of how the check is compiled to Flambda.
+NOTE: bounds checks are part of the semantics of primitives in Lambda IR. In the primitive conversion, from Lambda IR to Flambda, the checks are made explicit (see `lambda_to_flambda_primitives.ml`). I.e. the primitives of Lambda IR can raise exceptions, the primitives of Flambda2.0 IR cannot raise exceptions.
 
 ### Example: Array.get
 
@@ -165,7 +163,9 @@ The resulting Flambda2 code uses three Array-related primitives:
 2. `Array.length`
 3. `Array_load`
 
-It explicitly raises the exception, if the array length check fails. The exception value is provided in the global data region of the module.
+It explicitly raises the exception, if the array length check fails. The exception value is provided in the data region of the module.
+
+Question: what happens when multiple modules that use the same exceptions are linked? Do we need to deduplicate things or do we just live with the fact that the same exceptions live in different modules' data regions?
 
 Question: Naively, I expect that the `Duplicate_array` primitive of Flambda2 does the same as the arraydup primitive of Lambda. Is this true?
 

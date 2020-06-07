@@ -404,9 +404,9 @@ The initial heap is empty.
 
 TODO: I need to somehow insert here the notion of the imported global symbols being available. Reason being that evaluation of imported global symbols depends on whatever their semantics is. I guess, this can go into _symbol_values_?
 
-## Evaluation 
+## Evaluation of small bits and pieces
 
-All the different eval functions map an environment and some thing to the Value of that thing in the given environment.
+All the different eval functions map an environment and some thing to the Value of that thing in the given environment. The functions I list here are generally effect-free, but depend on the environment.
 
 ### Simple
 
@@ -426,11 +426,13 @@ a. _value_ = _eval_simple _env_ _simple_ *iff* _named_ = `Simple` _simple_
 b. _value_ = _eval_primitive _env_ _flambda_primitive_ *iff* _named_ = `Prim` _flambda_primitive_
 c. _value_ = _eval_set_of_closures_ _env_ _set_of_closures_ *iff* _named_ = `Set_of_closures` _set_of_closures_
 
-### Primitives
+## Primitives
+
+Some primitives depend on the environment, some have effects on the environment, some do both, some neither. They get a special section because there are a lot of primitives.
 
 _eval_primitive_ _env_ _flambda_primitive_ = TODO
 
-### Expressions
+## Expressions
 
 TODO: given an _env_ and a _heap_, define what _env'_ and _heap'_ look like.
 

@@ -156,7 +156,7 @@ Overview of the bucklescript compiler: https://github.com/BuckleScript/bucklescr
 +
 git compare of the bucklescript fork of the ocaml compiler to the official ocaml compiler: https://github.com/ocaml/ocaml/compare/4.02...BuckleScript:4.02.3+BS
 
-* **[probably abandoned]** the Grain Language -> WASM https://github.com/grain-lang/grain
+* the Grain Language -> WASM https://github.com/grain-lang/grain
 +
 Even though the source language used here is not OCaml, there might be some interesting observations in here about compiling a functional language to WASM.
 +

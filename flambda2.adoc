@@ -1,0 +1,597 @@
+:toc:
+:toclevels: 5
+
+
+# Sketch of Flambda 2.0 Semantics
+
+This is an attempt of creating a minimal, human-readable, mathematical representation of Flambda 2.0. I tried to shorten things to the point that it's possible to get an impression what is going on at a quick glance. Sometimes I had to come up with syntax, in order to keep things brief. This is very much in flux.
+
+Anything that is not absolutely required for stating the semantics is omitted (i.e. all kinds of debug and optimization-relevant info are left out here).
+
+Purpose: resolve misunderstandings and improve my understanding of how Flambda 2.0 works. May serve as a draft for a formal semantics or an interpreter of Flambda 2.0.
+
+# AST
+
+## Basic Definitions
+
+### Flambda Value
+
+A Flambda value can be either
+
+* An OCaml Value (Immediate or pointer to well-formed OCaml value) 
+* Naked float (machine-width floating-point number)
+* Naked immediate ((target_machine_width-1)-integer)
+* there is more, all the naked stuff
+
+### Variable
+
+_variable_ ::= _id_
+
+_variable_ is an identifier that refers to a Flambda value in the the value environment.
+
+
+NOTE: a variable originates either in the source code or a it is introduced by the compiler.
+
+NOTE: this corresponds to Ident.t in the toolchain before Flambda, like the type checker or Lambda.
+
+NOTE: In the existing compilation chain, this is a cmm-variable, and a variable corresponds to a pseudo-register in the backend.
+
+### Symbol
+
+_symbol_ ::= _id_
+
+_symbol_ is an identifier that refers to a statically-allocated OCaml value, but not an immediate.
+
+Traditionally, the interpretation of a _symbol_ is the address of an object file symbol as described by the operating system specification. Symbols will never be read until they are completely initialized and once they are completely initialized, their contents will never change. 
+
+NOTE: for performance reasons, it makes sense to statically allocate this in a way that it never moves.
+
+### Register-width constant
+
+A _reg_width_constant_ that fits in a register of the target machine we compile to.
+
+* Tagged immediate
+* Naked immediate
+* Naked target-width integer (nativeint)
+* Naked int32
+* Naked int64
+* Naked float
+
+This is the same as an Flambda value, except for pointer to a well-formed OCaml value. This is because we refer to them by symbol names (see Simple).
+
+### Simple
+
+_simple_ ::= `Const` _reg_with_constant_ | `Variable` _variable_ 
+
+Simple describes everything that can fit in a register, constant or non-constant. A major purpose of this is to avoid the necessity for let-bindings for register-width constants.
+
+NOTE: Simple doesn't have any sub-expressions. There is nothing happening when interpreting this, except (in the case of variable), a lookup of the value in the environment, i.e. no beta-reduction going on here.
+
+### Continuation
+
+_continuation_ :== _id_
+
+_continuation_ is an identifier that refers to a continuation handler in the environment.
+
+NOTE: continuations are second class, i.e. they exist in the operational semantics, but they are not values. The definitions and uses of continuations are static, they do not change dynamically as the program runs.
+
+### Kind
+
+Kinds classify Flambda values. Kinds are second class in the sense that are assigned by the compiler, and never by the source program. An error with kinds is always a compiler bug, since all valid Lambda IR code must be assigned correct kinds by flambda. Note: the code does not need to pass the OCaml typechecker, as long as it is valid Lambda IR.
+
+Kinds provide the essential information that the backend needs to know in order to decide what register or other thing to put a value in.
+
+NOTE: In particular, this means that the compiler compiles operations on values of kind `Value` using only the information that the kind is `Value`. The fact that the value is a well-formed OCaml value is the only thing the compiler can rely on.
+
+_flambda_kind_ ::= `Value` | `Naked_number`
+
+_naked_number_kind_ ::= `Naked_immediate` | `Naked_float` | `Naked_int32` | `Naked_int64` | `Naked_nativeint`
+
+_flambda_kind_standard_int_ ::= `Tagged_immediate` | `Naked_immediate` | `Naked_int32` | `Naked_int64` | `Naked_nativeint`
+
+_flambda_kind_standard_int_or_float_ ::= `Tagged_immediate` | `Naked_immediate` | `Naked_float` | `Naked_int32` | `Naked_int64` | `Naked_nativeint`
+
+_flambda_kind_boxable_number_ ::= `Naked_float` | `Naked_int32` | `Naked_int64` | `Naked_nativeint` | `Untagged_immediate`
+
+## Primitives
+
+_flambda_primitive_ ::=
+
+* `Unary` _unary_primitive_ _simple_ |
+* `Binary` _binary_primitive_ _simple_ _simple_ |
+* `Ternary` _ternary_primitive_ _simple_ _simple_ _simple_ |
+* `Variadic` _variadic_primitive_ _simple_* |
+
+Primitives perform various kinds of operations, e.g. allocation, loads, stores, arithmetic, etc. Some primitives depend on the environment (they have co-effects), some primitives affect the environment (they have effects), some do both, some do neither.
+
+Primitives never perform control flow, they do not raise exception.
+
+NOTE: Allocation cannot raise an OCaml exception. If allocation fails, that is a fatal error, unrecoverable, but not an OCaml exception!
+
+NOTE: bounds checks are part of the semantics of primitives in Lambda IR. In the primitive conversion, from Lambda IR to Flambda, the checks are made explicit (see `lambda_to_flambda_primitives.ml`). I.e. the primitives of Lambda IR can raise exceptions, the primitives of Flambda2.0 IR cannot raise exceptions.
+
+### Example: Array.get
+
+In Lambda:
+
+```
+(let
+  (arr/80 = (duparray[int] [0: 1 2 3 4 5])
+   b/81 =[int] (array.get[int] arr/80 7))
+  (makeblock 0 arr/80 b/81))
+```
+
+In Flambda2:
+
+```
+(let_symbol
+ ▶ Test.camlTest__const_block5 = (Immutable_block (tag 0) (1 2 3 4 5))
+ ▶ Test.camlTest__string10 = (Immutable_string "index out of bounds")
+ ▶ Test.camlTest__exn_bucket21 =
+  (Immutable_block (tag 0) (.predef_exn.caml_exn_Invalid_argument
+   Test.camlTest__string10))
+ (let
+  (arr/44 =
+    (((Duplicate_array Immediates (source Immutable) (dest Mutable))
+      Test.camlTest__const_block5)
+     <wasm-tests/a07_array_access//test.ml:1,10--23>))
+  ((let
+    (prim/45 =
+      (((Array_length Immediates) arr/44)
+       <wasm-tests/a07_array_access//test.ml:3,8--23>)
+     prim/46 =
+      ((<u 7 prim/45) <wasm-tests/a07_array_access//test.ml:3,8--23>))
+    (switch prim/46
+    | 0 ↦ raise k3 Test.camlTest__exn_bucket21
+             <wasm-tests/a07_array_access//test.ml:3,8--23>
+    | 1 ↦ goto k12))
+   k12:
+    (let
+     (b/47 =
+       (((Array_load Immediates Mutable) arr/44 7)
+        <wasm-tests/a07_array_access//test.ml:3,8--23>))
+     (let_symbol
+      ▷ Test.camlTest__module_block13 =
+       (Immutable_block (tag 0) (arr/44 b/47))
+      ▶ Test.camlTest = (Immutable_block (tag 0) (arr/44 b/47))
+      module_init_end k4 Test.camlTest)))))
+```
+
+The resulting Flambda2 code uses three Array-related primitives:
+
+1. `Duplicate_array`
+2. `Array.length`
+3. `Array_load`
+
+It explicitly raises the exception, if the array length check fails. The exception value is provided in the data region of the module.
+
+Question: what happens when multiple modules that use the same exceptions are linked? Do we need to deduplicate things or do we just live with the fact that the same exceptions live in different modules' data regions?
+
+Question: Naively, I expect that the `Duplicate_array` primitive of Flambda2 does the same as the arraydup primitive of Lambda. Is this true?
+
+### TODO: discuss more interesting primitives
+
+## Expressions
+
+Expression _e_ ::=
+
+* `Let` _bound_vars_ `=` _named_ `in` _e_  |
+* `Let_symbol (` _scoping_rule_ `)` _bound_symbols_ `=` _static_const_ `in` _e_ |
+* `Let_cont` [_continuation_ `=>` _continuation_handler_]* `in` _e_  |
+* `Apply` _call_kind_ _callee_ `(` _simple_* `)` _continuation_ _exn_continuation_ |
+* `Apply_cont` _continuation_ `(` _simple_* `)` _trap_action_ |
+* `Switch` _scrutinee_ _arms_ |
+* `Invalid`
+
+### `Let`
+
+_bound_vars_ ::=
+
+* `Singleton` _var_in_binding_pos_ |
+* `Set_of_closures` (_name_mode_, _closure_vars_)
+
+_name_mode_ ::= `Normal` | `Phantom` | `In_types`
+
+_var_in_binding_pos_ ::= _name_mode_ _variable_
+
+_named_ ::=
+
+* `Simple` _simple_
+* `Prim` _flambda_primitive_
+* `Set_of_closures` _set_of_closures_
+
+### `Let_symbol`
+
+_scoping_rule_ ::= `Syntactic` | `Dominator`
+
+Q: does the scoping rule affect semantics, or can I omit this here?
+
+_bound_symbols_ ::=
+
+* `Singleton` _symbol_
+* `Sets_of_closures (code_ids` _code_id_*, `closure_symbols` Map(_closure_id_ => _symbol_)`)`*
+
+Q: Looking at https://github.com/ocaml-flambda/ocaml/blob/6ff563bcaa20d0e0ebecc689f9ed54baeba454b6/middle_end/flambda2.0/terms/let_symbol_expr.rec.ml#L22, I am confused: why is this a `Set` and not a list? How does this correspond to _code_and_set_of_closures_ below? I would expect that _bound_symbols_ defines essentially a list of symbols which are being bound, and that the value assigned to it is a list whose elements have both the function declaration _code_ (for which code is to be emitted), and the _set_of_closures_.
+Q: why do we define set*s* of closures, instead of defining a single set of closures for every `Let_symbol` expression?
+
+_static_const_ ::=
+
+* `Block` _tag_ _mutable_or_immutable_ _field_of_block_* |
+* `Sets_of_closures` _code_and_set_of_closures_* |
+* `Boxed_float` [_B^64^_ | _variable_] |
+* `Boxed_int32` [_B^32^_ | _variable_]  |
+* `Boxed_int64` [_B^64^_ | _variable_]  |
+* `Boxed_nativeint` [_targetint_ | _variable_]  |
+* `Immutable_float_array` [_B^64^_ | _variable_]* |
+* `Mutable_string` _string_ |
+* `Immutable_string` _string_
+
+_field_of_block_ ::=
+
+* `Symbol` _symbol_ |
+* `Tagged_immediate` _target_imm_ |
+* `Dynamically_computed` _variable_
+
+
+_code_and_set_of_closures_ ::= `(code` Map(_code_id_ => _code_) `,` `set_of_closures` _set_of_closures_ `)`
+
+_code_ ::= `(` _continuation_, _exn_continuation_, _kinded_parameter_*, _e_, _flambda_arity_ `)`
+
+Q: how are _code_ and _continuation_handler_ (from `Let_cont`) related? It seems that both have a list of parameters and a body. _code_ also has the arity of the return value, whereas continuation handlers never return. Is this the only difference?
+
+_set_of_closures_ ::= `(function_decls` _function_declarations_, `closure_elements` Map(_var_within_closure_ => _simple_) `)`
+
+### `Let_cont`
+
+_kinded_parameter_ ::= _variable_ : _flambda_kind_
+
+_continuation_handler_ ::= `cont_handler (args` _kinded_parameter_* `, body` _e_ `)`
+
+Q: can someone give me a code example where I can see a Flambda 2.0 come up with a `Let_cont` expression? So far, the code I came up with, I got only `Let_symbol` expressions with closures.
+
+### `Apply`
+
+_call_kind_ ::=
+
+* `Function` _function_call_ |
+* `Method` _method_kind_ `of` _simple |_
+* `C_call` _alloc_ _param_arity_ _return_arity_
+
+_method_kind_ ::= `Self` | `Public` | `Cached`
+
+_alloc_ ::= B
+
+_flambda_arity_ ::= _flambda_kind_*
+
+_param_arity_ ::= _flambda_arity_
+
+_return_arity_ ::= _flambda_arity_
+
+_function_call_ ::=
+
+* `Direct` _code_id_ _closure_id_ _return_arity_ |
+* `Indirect_unknown_arity` |
+* `Indirect_known_arity` _param_arity_ _return_arity_
+
+_callee_ ::= _simple_
+
+_exn_continuation_ ::= `exn_cont` _continuation_ `(` [_simple_ `=>` _flambda_kind_]* `)`
+
+### `Apply_cont`
+
+_raise_kind_option_ ::= `None` | `Some Regular` | `Some Reraise` | `Some No_trace`
+
+_trap_action_ ::=
+
+* `Push` _continuation_ |
+* `Pop` _continuation_ _raise_kind_option_
+
+QUESTION: In the output from flambda2, I see `raise` and `goto`. I suspect that `goto` corresponds either to `Push` or to `Pop` with raise kind option `None`. Probably the former. Then, `raise` would correspond to `Pop`. What is actually the case here?
+
+### `Switch`
+
+_scrutinee_ ::= _simple_
+
+_arms_ ::= Map (_target_imm_ `=> Apply_cont` _continuation_ `(` _arg_* `)` _trap_action_ )
+
+_target_imm_ ::= _targetint_
+
+
+# Compilation unit
+
+_C_ = {
+
+* _imported_symbols_ : Map(_symbol_ -> _flambda_kind_),
+* _return_continuation_ : _continuation_,
+* _exn_continuation_ : _continuation_,
+* _body_ : _e_}
+
+This is what the Flambda 2.0 unit looks like. I assume that this corresponds 1:1 to an `.ml` file.
+
+I assume that _return_continuation_ and _exn_continuation_ act as placeholders for the continuations provided by whoever calls the initialization function.
+
+Question: who is the caller of the initialization function? Since modules may depend on other modules, I expect there is an order in which the module initialization functions are being called. I also assume, that at some base level, the operating system is the original caller of the initialization functions and the main function, so that exceptions can bubble through to the top-level, outside of the OCaml program.
+
+The _body_ of the compilation unit is the Flambda 2.0 expression that corresponds to all OCaml code of the file. So, this _body_ will likely define some global symbols and assign values to them.
+
+To initialize the compilation unit at runtime, the _body_ is run with an environment that contains all the necessary information about the symbols imported from other files. That means, in order to initialize a compilation unit, all the other compilation units that it depends on must be initialized beforehand.
+
+# Program State
+
+## Basic Definitions
+
+### Reference
+
+Ref is the set of abstract references to the heap. We do not care how exactly they look like. We assume the presence of a garbage collector that manages these references (whether this is one we implement, or one that the host environment will provide, we do not distinguish on, at this point).
+
+### Function Reference
+
+FuncRef is the set of abstract references to functions. The point of this is to have a way to call a function.
+
+On x86 this specializes to: a pointer into linear memory, pointing to the location of the machine instructions emitted for the function.
+
+On WASM, this specializes to: a `funcref` or an index into a global function table that refers to the WASM function emitted for the original function.
+
+### Heap Block
+
+Generally, from an abstract POV, the heap is a partial mapping from heap references to heap blocks:
+
+Heap = HeapRef ⇀ HeapValue
+
+Here is an attempt to describe what a heap block from the POV of Flambda 2.0 looks like, in the most general sense:
+
+_heap_block_ = {(x~1~, ..., x~n~) | x~i~ ∈ HeapField, n ∈ ℕ}
+
+A _heap_block_ is a sequence of _heap_field_, where a _heap_field_ is either
+
+1. `Targetint` _i_  -  an integer of the target architecture
+2. `FuncRef` _f_    - a reference to the program code of a function
+3. `HeapRef` _r_    - a reference to another heap value
+4. `Pointer` _p_    - a pointer into linear memory of the target architecture, purpose: interoperate with other programming languages (traditionally with C), work with low-level APIs
+
+I don't know if this is sufficient to describe all the different heap blocks there are.
+
+I have the suspicion, that there are WebAssembly GC proposals where it maked sense to make a more fine-grained model that takes into account the different kinds of tags that come with specific assumptions about the block. I'm holding off on that for now, though, since some of the proposals will allow us to implement a MVP based on array heap blocks.
+
+It seems that in Flambda 2.0, the closure representation does not contain the dreaded infix blocks anymore (which would have made the heap model more complex than this). Flambda has closure operations `Project_var` and `Select_closure`. Maybe, if this turns out to be useful, this can be used to add a more abstract representation of closures here. Maybe not.
+
+### Value
+
+A _Value_ is either an integer that is one bit smaller than that of the target architecture, or a reference to the heap:
+
+1. `Targetint` x, where x ∈ B^architecture_int_size-1^
+2. `HeapRef` r, where r ∈ HeapRef
+
+Question: in 20.2 of https://caml.inria.fr/pub/docs/manual-ocaml/intfc.html#s%3Ac-ocaml-datatype-repr, a pointer to a block allocated with malloc or a C value is listed, as well. I suppose, we need that, too, in order to interoperate with C or another linear-memory based language. I do not know if we can omit that for now. (Same goes for the target machine pointer in the heap blocks, btw.)
+
+## Top-Level State
+
+Environment = {
+
+* _symbol_values_: _symbol_ ⇀ Value,
+* _bound_variables_: _variable_  ⇀ Value,
+* _continuations_ : _continuation_ ⇀ _continuation_handler_,
+* _return_cont_: _continuation_,
+* _exn_cont_: _continuation_,
+* _current_body_ : _e_ }
+
+Heap = HeapRef ⇀ HeapValue
+
+The heap is a partial function from Ref to HeapValue.
+
+Q: should there be anything else here?
+
+TODO
+
+# Semantics
+
+## Initial State
+
+Given a compilation unit _C_:
+
+_env0_ (_C_) = {
+
+* _symbol_values_ = ∅,
+* _bound_variables_ = ∅,
+* _continuations_ = ∅,
+* _return_cont_ = _C.return_continuation_,
+* _exn_cont_ = _C.exn_continuation_,
+* _body_ = _C.body_ }
+
+_heap_ = ∅ 
+
+The initial heap is empty.
+
+TODO: I need to somehow insert here the notion of the imported global symbols being available. Reason being that evaluation of imported global symbols depends on whatever their semantics is. I guess, this can go into _symbol_values_?
+
+## Evaluation of small bits and pieces
+
+All the different eval functions map an environment and some thing to the Value of that thing in the given environment. The functions I list here are generally effect-free, but depend on the environment.
+
+### Simple
+
+_eval_simple_ _env_ _simple_ = TODO
+
+### Set of Closures
+
+_eval_set_of_closures_ _env_ _set_of_closures_ = TODO
+
+## Primitives
+
+Some primitives depend on the environment, some have effects on the environment, some do both, some neither. They get a special section because there are a lot of primitives.
+
+_eval_primitive_ _env_ _flambda_primitive_ = TODO
+
+### `Duplicate_array`
+
+Unary primitive
+
+`Duplicate_array` {_duplicate_array_kind_ _source_mutability_ _destination_mutability_} _simple_
+
+where
+
+_duplicate_array_kind_ ::=
+
+* `Immediates`
+* `Values`
+* `Naked_floats` (_length_)
+* `Float_array_opt_dynamic`
+
+Semantics: I assume that this makes an identical array on the heap and returns a HeapRef to that. In the case of `Immediates` array, this would be a single heap block being allocated with the correct tag and length. In the case of `Values`, it should make a deep copy, I guess.
+
+### `Array_length`
+
+Unary primitive
+
+`Array_length` (_array_kind_) _simple_
+
+where
+
+_array_kind_ ::=
+
+* `Immediates`
+* `Values`
+* `Naked_floats` (_length_)
+* `Float_array_opt_dynamic`
+
+Question: why are there separate _array_kind_ and _duplicate_array_kind_ types?
+
+Semantics: Calculates the length of the array based on the heap block's length field and the array kind.
+
+### `Array_load`
+
+Binary primitive
+
+`Array_load` (_array_kind_, _mutability_) _simple_array_ _simple_index_
+
+Semantics: _simple_index_ must evaluate in the current environment to some integer value. By invariant, this index respects the array bounds (since there is always a check right before that guarantees this). _simple_array_ must be a heap reference. Then, the value of the array element is looked up from the heap block using the _array_kind_ to determine which exact fields must be loaded from the heap block.
+
+TODO: find out how exactly the array kind affects the heap block access.
+
+### Named
+
+_eval_named_ _env_ _named_ = _value_ 
+
+where
+
+a. _value_ = _eval_simple _env_ _simple_ *iff* _named_ = `Simple` _simple_
+b. _value_ = _eval_primitive _env_ _flambda_primitive_ *iff* _named_ = `Prim` _flambda_primitive_
+c. _value_ = _eval_set_of_closures_ _env_ _set_of_closures_ *iff* _named_ = `Set_of_closures` _set_of_closures_
+
+## Expressions
+
+TODO: given an _env_ and a _heap_, define what _env'_ and _heap'_ look like.
+
+Anything not mentioned about _env'_ is assumed to be the same as in _env_.
+
+Let's look at the different cases of _env.body_:
+
+### `Let`
+
+1. _env.body_ =  `Let Singleton Phantom` _variable_ = _named_ `in` _e_
++
+_env'.body_ = _e_
++
+As far as I understand, a phantom variable could as well not exist, wrt to the semantics of the program.
+
+2. _env.body_ =  `Let Singleton Normal` _variable_ = _named_ `in` _e_
++
+_env'.bound_variables_[_variable_] = _eval_named_ _env_ _named_
++
+_env'.body_ = _e_
+
+3. _env.body_ =  `Let Singleton In_types` _variable_ = _named_ `in` _e_
++
+Question: What does In_types mean?
++
+_env'.body_ = _e_
+
+4. _env.body_ =  `Let Set_of_closures (Phantom,` _closure_vars_ `)` = `Set_of_closures` _set_of_closures_ `in` _e_
++
+_env'.body_ = _e_
+
+5. _env.body_ =  `Let Set_of_closures (Normal,` _closure_vars_ `)` = `Set_of_closures` _set_of_closures_ `in` _e_
++
+TODO
+
+6. _env.body_ =  `Let Set_of_closures(In_types,` _closure_vars_ `)` = `Set_of_closures` _set_of_closures_ `in` _e_
++
+TODO
+
+
+
+### `Let_symbol`
+
+1. _env.body_ =  `Let_symbol (Syntactic) Singleton` _symbol_ `=` _static_const_ `in` _e_
+
+TODO
+
+_env'.body_ = _e_
+
+2. _env.body_ =  `Let_symbol (Dominator) Singleton` _symbol_ `=` _static_const_ `in` _e_
+
+TODO
+
+_env'.body_ = _e_
+
+3. _env.body_ =  `Let_symbol (Syntactic)` _sets_of_closures_ `=` _static_const_ `in` _e_
+
+TODO
+
+_env'.body_ = _e_
+
+4. _env.body_ =  `Let_symbol (Dominator)` _sets_of_closures_ `=` _static_const_ `in` _e_
+
+TODO
+
+_env'.body_ = _e_
+
+### `Let_cont`
+
+_env.body_ = `Let_cont` _continuation_handlers_ `in` _e_
+
+where _continuation_handlers[i] = _continuation_~i~ `=>` `cont_handler (args` _kinded_parameters_~i~ `, body` _body_~i~ `)` `in` _e_
+
+For all _i_:
+
+_env'.continuations[continuation_~i~_]_ = `cont_handler (args` _kinded_parameters_~i~ `, body` _body_~i~ `)`
+
+_env'.body_ = _e_
+
+### `Apply`
+
+TODO
+
+### `Apply_cont`
+
+Let _env.body_ = `Apply_cont` _c_ `(` _args_ `)` _continuation_ _exception_continuation_
+
+and let _env.continuations[c]_ = `cont_handler (args` _kinded_parameters_ `, body` _e_ `)`
+
+Then,
+
+_env'.bound_variables[kinded_parameters_~i~_.variable]_ = _env.bound_variables[args_~i~_]_
+
+_env'.body_ = _e_
+
+_env'.cont_ = _continuation_
+
+_env'.exn_cont_ = _exception_continuation_
+
+### `Switch`
+
+Let _env.body_ = `Switch` _scrutinee_ _arms_
+
+1. If _scrutinee_ = `Reg_width_constant` _imm_, then
+
+_env'.body_ = _arms_[_imm_]
+
+2. If _scrutinee_ = `Variable` _var_
+
+and let _imm_ = _env.bound_variables[var]_
+
+Then,
+
+_env'.body_ = _arms_[_imm_]
+
+Question: do we ever have null-pointer checks here in the switch statement?

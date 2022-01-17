@@ -409,5 +409,12 @@ Boxing is the act of allocating a heap block to store a primitive value. This is
 Tagging is done with integers everywhere, in order to be able to store them unboxed on the heap without confusing the garbage collector (who scans the heap for pointers and will confuse integers ending with 0 with pointers)
 
 * Wouter van Oortmerssen — Bring your language to Wasm! https://github.com/sabine/ocaml-to-wasm-overview.git
-
++
 Hands-on intro to how to generate WASM code. Also brief discussion of language features and tools that can be used.
+
+* "Run OCaml in the browser by WebAssembly
+" https://okcdz.medium.com/run-ocaml-in-the-browser-by-webassembly-31ce464594c6
++
+Running OCaml in the browser by compiling the OCaml bytecode interpreter to WASM. Adding support of libraries such as Unix library, Ctypes, Base, Core_kernel.
++
+https://github.com/vincentdchan/ocaml

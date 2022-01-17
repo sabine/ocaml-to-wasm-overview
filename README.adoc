@@ -253,6 +253,10 @@ sebmarkbage compiled the OCaml bytecode interpreter, as well as the GC to WASM u
 +
 I tried to compile this, but am stuck at the problem described in https://github.com/sebmarkbage/ocamlrun-wasm/issues/1[Issue 1]
 
+* https://github.com/vincentdchan/ocaml
++
+same principle as sebmarkbage's approach, but adds support of libraries such as Unix library, Ctypes, Base, Core_kernel
+
 
 ## Indirect Roads to WASM
 
@@ -418,3 +422,7 @@ Hands-on intro to how to generate WASM code. Also brief discussion of language f
 Running OCaml in the browser by compiling the OCaml bytecode interpreter to WASM. Adding support of libraries such as Unix library, Ctypes, Base, Core_kernel.
 +
 https://github.com/vincentdchan/ocaml
+
+* binaryen_dsl package on opam https://opam.ocaml.org/packages/binaryen_dsl/
++
+wrapper around Binaryen that allows to generate WAT and WASM files from a formalization of the Binaryen DSL. Not sure how complete it is, as it is a very new package.
